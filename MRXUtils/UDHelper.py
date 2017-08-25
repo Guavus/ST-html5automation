@@ -837,7 +837,8 @@ def availableQuickLink(setup,screenName,parent='ktrs',child='a',childForCustomCl
     availableQuickLinkList = []
     h=getHandle(setup, screenName, parent)
     for ele in h[parent][child]:
-        availableQuickLinkList.append(str(ele.text))
+        if not 'disable' in ele.get_attribute('class').lower():
+            availableQuickLinkList.append(str(ele.text))
     if h[parent][childForCustomClick][0].is_enabled():
         availableQuickLinkList.append('Calender')
 
