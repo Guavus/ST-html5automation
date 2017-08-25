@@ -400,7 +400,7 @@ def isError(setup):
         logger.error("Error Pop Up Message = %s",errorMessage)
         logger.debug("Closing Error Pop Up")
         resultlogger.info("ERROR :: Screenshot with name = %s is saved <br>",r)
-        resultlogger.info("******* Error Pop Up found = %s *******<br>",errorMessage)
+        resultlogger.info("<font color='red'>******* Error Pop Up found = %s *******<br> </font>",errorMessage)
         try:
             logger.info('Going to click on Ok button')
             eHandle[Constants.ERRORBODY][Constants.ERRORBUTTON][0].click()
@@ -439,7 +439,7 @@ def confirm(setup,button='OK'):
             logger.error("Error Pop Up Message = %s", errorMessage)
             logger.debug("Closing Error Pop Up")
             resultlogger.info("ERROR :: Screenshot with name = %s is saved <br>", r)
-            resultlogger.info("******* Error Pop Up found = %s *******<br>", errorMessage)
+            resultlogger.info("<font color='red'>******* Error Pop Up found = %s *******<br> </font>", errorMessage)
             eHandle[Constants.CONFIRMATIONBODY][Constants.CONFIRMATIONCLOSE][0].click()
             try:
                 eHandle[Constants.CONFIRMATIONBODY][Constants.CONFIRMATIONCLOSE][0].click()
