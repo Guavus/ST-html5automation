@@ -93,8 +93,7 @@ def checkEqualAssert(expected, actual, time="", measure="", message="",testcase_
     tcPass = "<b><font color='green'> PASS</font></b><br>"
     tcFail = "<b><font color='red'> FAIL</font></b><br>"
 
-
-    if type(expected)==list and type(actual)==list and expected!=actual:
+    if type(expected) == list and type(actual) == list and len(expected) == len(actual) and expected != actual:
         for i in range(len(expected)):
             checkEqualValueAssert(expected[i],actual[i],time,measure,message,testcase_id)
 
