@@ -969,12 +969,15 @@
        
   </measure_Mapping>
 
-  <segment_Filters_Mapping>
-      <measure id = "Segment Name" backEnd_ID="campaign_name" /> 
-      <measure id = "Owner" backEnd_ID="campaign_owner_name" /> 
-      <measure id = "User Count" backEnd_ID="segment_size" />  
-      <measure id = "# Session" backEnd_ID="sessioncount" /> 
-  </segment_Filters_Mapping>
+  <segment_Table_Mapping>
+      <dimension id = "Segment Name" backEnd_ID="campaign_name" /> 
+      <dimension id = "Owner" backEnd_ID="campaign_owner_name" /> 
+      <dimension id = "User Count" backEnd_ID="segment_size" />  
+      <dimension id = "Created on" backEnd_ID="created" /> 
+      <dimension id = "Status" backEnd_ID="campaign_state" /> 
+      <dimension id = "Source" backEnd_ID="source" /> 
+      <dimension id = "Access" backEnd_ID="visibility" />   
+  </segment_Table_Mapping>
 
 
 </data>
