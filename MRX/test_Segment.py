@@ -19,7 +19,7 @@ try:
     segmentScreenHandle = getHandle(setup,MRXConstants.SEGMENTSCREEN,'allbuttons')
     segmentDetails=setup.cM.getNodeElements("segmentDetails","segment")
 
-######################################### Blank Segment Name scenario ##################################################
+    ##################################### Blank Segment Name scenario ##################################################
     segmentScreenInstance.cm.clickButton("Import", segmentScreenHandle)
     popUpHandle = getHandle(setup, MRXConstants.POPUPSCREEN)
     segmentScreenInstance.cm.sendkeys_input(' ', popUpHandle, 0)
@@ -28,7 +28,7 @@ try:
     button_Status=segmentScreenInstance.cm.isButtonEnabled('Import', getHandle(setup, MRXConstants.POPUPSCREEN, "allbuttons"))
     checkEqualAssert(False,button_Status,message='Verify that a user is not allowed to enter an empty segment name',testcase_id='MKR-1696')
     segmentScreenInstance.cm.clickButton('Cancel', popUpHandle)
-########################################## Error out segment can not be used ###########################################
+    ###################################### Error out segment can not be used ###########################################
     segmentScreenInstance.cm.clickButton("Import", segmentScreenHandle)
     popUpHandle1 = getHandle(setup, MRXConstants.POPUPSCREEN)
     segmentScreenInstance.cm.sendkeys_input('MKR1740', popUpHandle1, 0)
@@ -39,7 +39,47 @@ try:
     checkEqualAssert(False, button_Status, message='An error out segment can not be used (Import Button should be disable)',testcase_id='MKR-1740')
     segmentScreenInstance.cm.clickButton('Cancel', popUpHandle1)
 
-    ########################################################################################################################
+    ########################################For same Segment Name Functionality ########################################
+    segmentScreenInstance.cm.clickButton("Import", segmentScreenHandle)
+    popUpHandle = getHandle(setup, MRXConstants.POPUPSCREEN)
+    segmentScreenInstance.cm.sendkeys_input('autoSegment', popUpHandle, 0)
+    fileDir = find_realPath('segment_sample.csv')
+    popUpHandle['browsebuttons']['browsebutton'][0].find_elements_by_xpath('./*/*')[0].send_keys(str(fileDir))
+    button_Status = segmentScreenInstance.cm.isButtonEnabled('Import',getHandle(setup, MRXConstants.POPUPSCREEN, "allbuttons"))
+    if button_Status:
+        segmentScreenInstance.cm.clickButton('Import', getHandle(setup, MRXConstants.POPUPSCREEN, "allbuttons"))
+        segmentScreenInstance.cm.clickButton("Import", segmentScreenHandle)
+        popUpHandle = getHandle(setup, MRXConstants.POPUPSCREEN)
+        segmentScreenInstance.cm.sendkeys_input('autoSegment', popUpHandle, 0)
+        fileDir = find_realPath('segment_sample.csv')
+        popUpHandle['browsebuttons']['browsebutton'][0].find_elements_by_xpath('./*/*')[0].send_keys(str(fileDir))
+        button_Status = segmentScreenInstance.cm.isButtonEnabled('Import',getHandle(setup, MRXConstants.POPUPSCREEN, "allbuttons"))
+        if button_Status:
+            msg=''
+            segmentScreenInstance.cm.clickButton('Import', popUpHandle)
+            popUpHandle = getHandle(setup, MRXConstants.POPUPSCREEN)
+            for ele in popUpHandle['allspans']['span']:
+                if 'red' in str(ele.get_attribute('style')).lower():
+                    msg=str(ele.text)
+                    break
+            button_Status = segmentScreenInstance.cm.isButtonEnabled('Import',getHandle(setup, MRXConstants.POPUPSCREEN,"allbuttons"))
+            checkEqualAssert(False,button_Status,message="Segment with same name can't Import")
+            checkEqualAssert(MRXConstants.MSGFORSAMESEGMENT.strip(),msg.strip(),message="Verify Message during import Segment with same name")
+        segmentScreenInstance.cm.clickButton('Cancel', getHandle(setup, MRXConstants.POPUPSCREEN, "allbuttons"))
+    else:
+        segmentScreenInstance.cm.clickButton('Cancel', getHandle(setup, MRXConstants.POPUPSCREEN, "allbuttons"))
+
+    setup.d.close()
+
+    import MRX.DeleteSegment
+
+    ####################################################################################################################
+
+    setup = SetUp()
+    login(setup,Constants.USERNAME,Constants.PASSWORD)
+    segmentScreenInstance = SegmentScreenClass(setup.d)
+    segmentScreenHandle = getHandle(setup,MRXConstants.SEGMENTSCREEN,'allbuttons')
+    segmentDetails=setup.cM.getNodeElements("segmentDetails","segment")
 
     flag_Top_segment=True
     for k, segmentDetail in segmentDetails.iteritems():
@@ -84,7 +124,7 @@ try:
     import MRX.EditSegment
     import MRX.SegmentFilter
     import MRX.Filterscenario
-    import MRX.DeleteSegment
+    #import MRX.DeleteSegment
     import MRX.MultiWindowFunctionality
 
 

@@ -31,6 +31,7 @@ class MRXConstants(Constants):
 
     TimeRangeSpliter='-'
     NUMBEROFFILTERSCENARIO = 6
+    SEGMENT_TABLE_AT_BACKEND='campaign'
 
     MinimumUserConfig=15
     Source_User_Distribution='User Distribution'
@@ -46,3 +47,4 @@ class MRXConstants(Constants):
     ADMIN='admin'
     NODATAMSG='No Rows To Show'
     MONTHLIST=['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+    MSGFORSAMESEGMENT='Segment name already exists,please give different name.'
