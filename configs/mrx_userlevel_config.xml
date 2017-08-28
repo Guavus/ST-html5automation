@@ -25,6 +25,10 @@
         <endtime id ="4" year="2017" month ="02" day="13" hour="00" min="00"/>
     </availabletimerange>
 
+    <headerComponent>
+        <component id="0" leftLogoFlag="True" screenFlag="True" numberOfScreen='3' listOfScreen="USER DISTRIBUTION,SEGMENTS,DATA EXTRACTION" projectTitleFlag="True" projectTitle="Marketing Reflex"  userNameFlag="True" profilePicFlag="True" helpIconFlag="True" switcherIconFlag="True" testcaseID="MKR-1646"/>
+    </headerComponent>
+
 
     <!--YYYY MONTH DD HH min  => '%d %b %Y %H:%M'-->
     <availabletimerangepoint>

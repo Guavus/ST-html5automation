@@ -137,6 +137,12 @@ class Constants(object):
     CONFIRMFILTERHEADER = 'header'
     CONFIRMFILTERBUTTON = 'button'
     CALENDERPOPUP = "calender_popUp"
+    INVALIDCREDENTIAL_POPUP_MESSAGE='Invalid credentials, please enter correct username and password.'
+    INVALIDCREDENTIAL_MESSAGE='Enter valid Credentials.'
+    INVALIDUSERNAME_MESSAGE='Enter a valid Username.'
+    INVALIDPASSWORD_MESSAGE='Enter a valid Password.'
+    VALIDATE_HEADER='validate_Header'
+
 
 
     ERRORHEADERINCONFIRMATIONPOPUP='Error'

@@ -25,6 +25,19 @@
         <dst id="US/Pacific" start2015="8 Mar 2015 02:00" end2015="1 Nov 2016 02:00" start2016="13 Mar 2016 02:00" end2016="6 Nov 2016 02:00" start2017="12 Mar 2016 02:00" end2017="5 Nov 2016 02:00" offset="-8" />
     </dst_list>
 
+    <loginScreen_Scenario>
+        <scenario id="0" username="" password="admin123" isInCorrect="True" testcaseID="MKR-1644"/>
+        <scenario id="1" username="admin2" password="" isInCorrect="True" testcaseID="MKR-1644"/>
+        <scenario id="2" username="" password="" isInCorrect="True" testcaseID="MKR-1644"/>
+
+        <scenario id="3" username=" " password="admin1234" isInCorrect="True" testcaseID="MKR-1644"/>
+        <scenario id="4" username="admin2" password=" " isInCorrect="True" testcaseID="MKR-1644"/>
+        <scenario id="5" username=" " password=" " isInCorrect="True" testcaseID="MKR-1644"/>
+
+        <scenario id="6" username="admin1" password="admin123" isInCorrect="True" testcaseID="MKR-1644"/>
+        <scenario id="7" username="admin" password="Admin123" isInCorrect="True" testcaseID="MKR-1644"/>
+        <scenario id="8" username="admin" password="admin123" isInCorrect="False" testcaseID="MKR-1643"/>
+    </loginScreen_Scenario>
 
     <!--<measures>-->
         <!--<measure id = "Bitrate_downlink_absolute_average"/>-->
@@ -103,6 +116,7 @@
             <component id = "username" parent="False"/>
             <component id = "password" parent="False"/>
             <component id = "signin" parent="False"/>
+            <component id ="msg" parent="False"/>
         </screenConfig>
 
 
@@ -115,6 +129,11 @@
             <!--<component id = "exploreList" selector = 'class name' locator="row" parent="True"/>-->
         </screenConfig>
 
+        <screenConfig id = "validate_Header">
+            <component id="leftHeader" selector="css selector" locator='[class*=navbar-header]' parent="True"/>
+            <component id = "rightHeader" selector="css selector" locator='[class*=nav-right-template]' parent="True"/>
+            <component id="centerHeader" selector="css selector" locator='[class*=navbar-nav-center-template]' parent="True"/>
+        </screenConfig>
 
 
         <screenConfig id = "TableDummy_Screen">
@@ -241,6 +260,10 @@
         <componentConfig id="signin">
             <component id = "signin" selector="css selector" locator='[type="submit"]' action="click"/>
             <!--<component id = "signin" selector="css selector" locator='[translate="login.form.button"]' action="click"/>-->
+        </componentConfig>
+
+        <componentConfig id="msg">
+            <component id = "msg" selector = 'css selector' locator = '[class*=loginErrorMessage]'/>
         </componentConfig>
 
         <componentConfig id="search">
@@ -419,6 +442,23 @@
             <component id = "switchertemplate" selector="id" locator ="switchertemplate" />
             <component id ="helpIcon" selector="class name" locator="dropdown-toggle"/>
         </componentConfig>
+
+        <componentConfig id = 'leftHeader'>
+            <component id = "img_Logo" selector="tag name" locator='img'/>
+            <component id = "project_Name" selector="tag name" locator ="span" />
+        </componentConfig>
+
+
+        <componentConfig id = 'rightHeader'>
+            <component id = "switcher" selector="id" locator='switchertemplate' />
+            <component id = "image" selector="tag name" locator ="img" />
+            <component id ="userName" selector="tag name" locator="span"/>
+        </componentConfig>
+
+        <componentConfig id = 'centerHeader'>
+            <component id = "alllinks" selector="tag name" locator='a'/>
+        </componentConfig>
+
 
         <componentConfig id="report">
             <component id = "create" selector="class name" locator='createReportBtn' />
