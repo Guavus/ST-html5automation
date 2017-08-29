@@ -3,35 +3,52 @@ from classes.Components.TimeRangeComponentClass import *
 from classes.Pages.MRXScreens.SegmentScreenClass import *
 from MRXUtils.MRXConstants import *
 from MRXUtils import SegmentHelper
+from MRXUtils import UDHelper
 import json
 
 
 
 def measureAndDimensionAfterMapping(tableMap):
     query={}
-    query['table_data']=[]
+    query['data']=[]
     query['table_header']=[]
+    count=0
     dimensions = ConfigManager().getNodeElements("segment_Table_Mapping", "dimension")
 
     for i in range(len(tableMap['header'])):
         if dimensions.has_key(str(tableMap['header'][i])):
             query['table_header'].append(dimensions[str(tableMap['header'][i])]['backEnd_ID'])
 
-    for k, row_value in tableMap['rows'].iteritems():
+    # for k, row_value in tableMap['rows'].iteritems():
+    #     if len(row_value)==9:
+    #         row_value.pop()
+    #         row_value.pop()
+    #         query['data'].append(row_value)
+    #         count=count+1
+
+    for row_value in tableMap['rows']:
         if len(row_value)==9:
             row_value.pop()
             row_value.pop()
-            query['table_data'].append(row_value)
+            query['data'].append(row_value)
+            count=count+1
 
+    query['count']=count
     return query
 
 
-def fireBV(dataFromUI,method,table_name,testcase=''):
+def fireBV(dataFromUI,method,table_name,sort_property,testcase=''):
     sleep(1)
     dataFromUI_For_Dump=deepcopy(dataFromUI)
+    dataFromUI_For_Dump['measure']=[]
+    dataFromUI_For_Dump['dimension'] = []
     dataFromUI_For_Dump['method']=method
     dataFromUI_For_Dump['table_name']=table_name
     dataFromUI_For_Dump['testcase']=testcase
+    dataFromUI_For_Dump['sort_property']=sort_property
+
+    import time
+    dataFromUI_For_Dump['id'] = str(time.time()).split('.')[0]
 
     logger.info("Going to dump info from UI for Backend Data validation ::" + str(dataFromUI_For_Dump))
     with open("DumpFileForSegment.txt",mode='a') as fs:
@@ -44,9 +61,15 @@ try:
     setup = SetUp()
     login(setup,Constants.USERNAME,Constants.PASSWORD)
     segmentScreenInstance = SegmentScreenClass(setup.d)
-    segmentScreenHandle = getHandle(setup,MRXConstants.SEGMENTSCREEN)
-    global_filter = setup.cM.getNodeElements("segmentFilter", "filter")
+    exploreHandle = getHandle(setup, MRXConstants.ExploreScreen)
+    segmentScreenInstance.explore.exploreList.launchModule(exploreHandle, "USER DISTRIBUTION")
+    UDHelper.clearFilter(setup, MRXConstants.UDSCREEN)
+    udpFilterFromUDRScreenWithoutAnyFilter = UDHelper.getUDPFiltersFromScreen(MRXConstants.UDSCREEN, setup)
 
+    exploreHandle = getHandle(setup, MRXConstants.ExploreScreen)
+    segmentScreenInstance.explore.exploreList.launchModule(exploreHandle,"SEGMENTS")
+    segmentScreenHandle = getHandle(setup, MRXConstants.SEGMENTSCREEN)
+    global_filter = setup.cM.getNodeElements("segmentFilter", "filter")
     filtericonlocation_y = getHandle(setup, MRXConstants.SEGMENTSCREEN, 'filterArea')['filterArea']['nofilterIcon'][0].location['y']
 
     exportIconLocation_y= setup.d.execute_script("return document.getElementsByClassName('exportImg dropdown-toggle')")[0].location['y']
@@ -59,13 +82,13 @@ try:
     ########################################################################################################################
 
     tableHandle = getHandle(setup, MRXConstants.SEGMENTSCREEN, 'table')
-    tableMap1 = segmentScreenInstance.table.getTableDataMap(tableHandle, driver=setup)
-    dataFromUI=measureAndDimensionAfterMapping(tableMap1)
+    tableData = segmentScreenInstance.table.getTableData1(tableHandle,length=20)
+    dataFromUI=measureAndDimensionAfterMapping(tableData)
 
-    fireBV(dataFromUI,'',MRXConstants.SEGMENT_TABLE_AT_BACKEND)
+    fireBV(dataFromUI,'getTop',MRXConstants.SEGMENT_TABLE_AT_BACKEND,sort_property="created")
 
     #segmentScreenInstance.cm.clickButton('Refresh', getHandle(setup, MRXConstants.SEGMENTSCREEN, 'allbuttons'))
-
+    tableMap1 = segmentScreenInstance.table.getTableDataMap(tableHandle, driver=setup)
     click_status=SegmentHelper.clickOnfilterIcon(setup,MRXConstants.SEGMENTSCREEN,'nofilterIcon')
     expected = SegmentHelper.setSegmentFilter(setup,segmentScreenInstance,k=1)
     segmentScreenInstance.cm.clickButton("Apply Filters", getHandle(setup, MRXConstants.FILTERSCREEN, 'allbuttons'))
@@ -78,7 +101,8 @@ try:
 
     tableHandle = getHandle(setup, MRXConstants.SEGMENTSCREEN, 'table')
     tableMap2 = segmentScreenInstance.table.getTableDataMap(tableHandle, driver=setup)
-    checkEqualAssert(MRXConstants.NO_FILTER, str(filterFromScreenAfterClear),message='Verify No filter text on Segment Screen')
+
+    checkEqualAssert(str(udpFilterFromUDRScreenWithoutAnyFilter).strip(), str(filterFromScreenAfterClear).strip(),message='Verify No filter text on Segment Screen',testcase_id='MKR-3450')
 
     checkEqualAssert(len(tableMap1['rows']),len(tableMap2['rows']),message='Verify Cross (X) functionality on Segment Screen :: Before any filter total segment ='+str(len(tableMap1['rows']))+' After Clear Applied Filter total Segment ='+str(len(tableMap2['rows'])),testcase_id='MKR-1690')
     #h=getHandle(setup,MRXConstants.SEGMENTSCREEN,'filterArea')
