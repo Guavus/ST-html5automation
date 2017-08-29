@@ -268,6 +268,45 @@ class TableComponentClass(BaseComponentClass):
         return [data, h]
         return rows
 
+    ######################### By following method we tried to get table row with scroll#################################
+    def getRow_WithRowHandle(self,colcount,h,driver,colIndex=0,scroll=False):
+
+        if scroll:
+            if len(h['ROWS']) > 7:
+                driver.d.execute_script("return arguments[0].scrollIntoView();", h['ROWS'][len(h['ROWS'])-6*colcount])
+            else:
+                driver.d.execute_script("return arguments[0].scrollIntoView();", h['ROWS'][len(h['ROWS']) - 1 * colcount])
+
+            sleep(4)
+            h = self.utility.utility.getHandle(driver,"TableDummy_Screen","table")["table"]
+
+        elHandle=h['ROWSWITHSCROLL']
+
+        if len(elHandle)<1:
+            logger.info("No DATA On Table")
+            return Constants.NODATA
+
+        rows = []
+        temp = []
+
+        for ele in elHandle:
+            temp = str(ele.text).strip().split('\n')
+            if any(temp):
+                rows.append(temp)
+
+        data = {}
+        for row in rows:
+            if colIndex == -1:
+                data[str(row)] = row
+            else:
+                if row[colIndex] in data.keys():
+                     row[colIndex]=row[colIndex]+"_DST"
+                data[row[colIndex]] = row
+
+        return [rows,h]
+
+    ####################################################################################################################
+
     def addrows(self,colcount,h,driver,length,colIndex):
         rows = {}
         while True:
@@ -318,12 +357,33 @@ class TableComponentClass(BaseComponentClass):
             if flag:
                 return rowsList
 
+    ######################### By following method we tried to get table row with scroll#################################
 
+    def addrows_WithRowHandle_FormTableData(self,colcount,h,driver,colIndex):
+        rowsList = []
+        while True:
+            flag = True
+            if not rowsList:
+                t = self.getRow_WithRowHandle(colcount,h,driver,colIndex)
+                if t==Constants.NODATA:
+                    return t
+                rowsList = t[0]
+                h = t[1]
+                flag=False
+            else:
+                flag=True
+                t = self.getRow_WithRowHandle(colcount,h,driver,colIndex,True)
+                newrowsList = t[0]
+                h = t[1]
 
+                for newrow in newrowsList:
+                    if newrow not in rowsList:
+                        flag = False
+                        rowsList.append(newrow)
+            if flag:
+                return rowsList
 
-
-
-
+    ####################################################################################################################
 
     def getAllRowsAfterScroll(self,colcount,h,parent,driver,length,colIndex):
         return self.addrows(colcount,h[parent],driver,length,colIndex)
@@ -332,19 +392,13 @@ class TableComponentClass(BaseComponentClass):
         return self.addrowsFormTableData(colcount, h[parent], driver, length, colIndex)
 
 
+    ######################### By following method we tried to get table row with scroll#################################
 
-        # if rowCount <= 15:
-        #     looprange=rowCount*colcount
-        # else:
-        #     looprange = 15 * colcount
-        # for i in range(looprange):
-        #     if len(temp) < colcount:
-        #         temp.append(elHandle[i].text)
-        #     else:
-        #         rows.append(temp)
-        #         temp = [elHandle[i].text]
+    def getAllRows_WithRowHandle_AfterScroll(self, colcount, h, parent, driver,colIndex):
+        return self.addrows_WithRowHandle_FormTableData(colcount, h[parent], driver,colIndex)
 
-        # return a 2D array
+    ####################################################################################################################
+
 
     def getRowIndexFromTable(self,columnIndex,tableHandle,value):
         data2=self.getTableData1(tableHandle,length=24)
@@ -473,11 +527,6 @@ class TableComponentClass(BaseComponentClass):
         return rows
 
 
-
-
-
-
-
     def scrollVertical(self):
         pass
 
@@ -494,6 +543,16 @@ class TableComponentClass(BaseComponentClass):
         except Exception as e:
             return e
 
+    ######################### By following method we tried to get table row with scroll#################################
+    def getTableDataInRowWithScroll(self,h,driver="",parent="table",colIndex=0):
+        try:
+            data = {}
+            data['header'] = self.getIterfaceHeaders(h[parent])
+            data['rows'] = self.getAllRows_WithRowHandle_AfterScroll(len(data['header']),h,parent,driver,colIndex)
+            return data
+        except Exception as e:
+            return e
+    ####################################################################################################################
     # def setSelectionIndex(self,index,colCount,rowCount,h):
     #     elHandle=h['ROWS']
     #     newIndex = (colCount)*(index-1)+1
