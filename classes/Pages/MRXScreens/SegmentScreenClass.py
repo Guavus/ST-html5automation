@@ -16,5 +16,6 @@ class SegmentScreenClass(BasePageClass):
         self.table = TableComponentClass()
         self.calendar = CalendarComponentClass()
         self.globalfilter = GlobalFiltersPopClass(driver)
+        self.explore = ExplorePageClass(driver)
         # Common Components
         BasePageClass.__init__(self,driver)
