@@ -26,7 +26,19 @@
     </availabletimerange>
 
     <headerComponent>
-        <component id="0" leftLogoFlag="True" screenFlag="True" numberOfScreen='3' listOfScreen="USER DISTRIBUTION,SEGMENTS,DATA EXTRACTION" projectTitleFlag="True" projectTitle="Marketing Reflex"  userNameFlag="True" profilePicFlag="True" helpIconFlag="True" switcherIconFlag="True" testcaseID="MKR-1646"/>
+        <component id="0"
+                   leftLogoFlag="True"
+                   screenFlag="True"
+                   numberOfScreen='3'
+                   listOfScreen="USER DISTRIBUTION,SEGMENTS,DATA EXTRACTION"
+                   projectTitleFlag="True"
+                   projectTitle="Marketing Reflex"
+                   userNameFlag="True"
+                   profilePicFlag="True"
+                   helpIconFlag="True"
+                   switcherIconFlag="True"
+                   testcaseID="MKR-1646"
+        />
     </headerComponent>
 
 
