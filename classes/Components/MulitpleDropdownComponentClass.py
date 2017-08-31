@@ -144,13 +144,15 @@ class MulitpleDropdownComponentClass(DropdownComponentClass):
             if 'E' in value and 'not-equal' in activeDropDowns[index].find_elements_by_css_selector('i[class*=equal-sign-style]')[E_NE_index].get_attribute('class'):
                 #activeDropDowns[index].find_elements_by_css_selector('i[class*=equalSignStyle]')[E_NE_index].click()
 
-                activeDropDowns[index].find_elements_by_css_selector('i[class*=equal-sign-style]')[E_NE_index].click()
+                #activeDropDowns[index].find_elements_by_css_selector('i[class*=equal-sign-style]')[E_NE_index].click()
+                activeDropDowns[index].find_elements_by_css_selector('span[class*=sign-txt-style]')[E_NE_index].click()
 
             elif 'NE' in value and 'equal' in activeDropDowns[index].find_elements_by_css_selector('i[class*=equal-sign-style]')[E_NE_index].get_attribute('class'):
 
                 #activeDropDowns[index].find_elements_by_css_selector('i[class*=equalSignStyle]')[E_NE_index].click()
 
-                activeDropDowns[index].find_elements_by_css_selector('i[class*=equal-sign-style]')[E_NE_index].click()
+                #activeDropDowns[index].find_elements_by_css_selector('i[class*=equal-sign-style]')[E_NE_index].click()
+                activeDropDowns[index].find_elements_by_css_selector('span[class*=sign-txt-style]')[E_NE_index].click()
 
             elif not('E' in value) and not('NE' in value):
                 return ''
@@ -269,7 +271,7 @@ class MulitpleDropdownComponentClass(DropdownComponentClass):
             if el.get_attribute("type") == "text":
                 el.send_keys(value)
                 #return self.getOptionsAvailable(h,index)
-                valueList=self.getOptionsAvailable_MRX(h,index)
+                valueList=self.getOptionsAvailable_MRX(h,index,parent=parent)
                 activeDropDowns[index].click()
                 return valueList
 

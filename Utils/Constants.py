@@ -13,7 +13,8 @@ class Constants(object):
     if PROJECT == "MRX":
         byteUnits = ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"]
         TimeRangeSpliter='-'
-        ConfigXMLFile=['../configs/mural_coreconfig.xml', '../configs/mrx_solutionconfig.xml','../configs/mrx_userlevel_config.xml']
+        #ConfigXMLFile=['../configs/mural_coreconfig.xml', '../configs/mrx_solutionconfig.xml','../configs/mrx_userlevel_config.xml']
+        ConfigXMLFile=['../configs/mural_coreconfig.xml', '../configs/mrx_solutionconfig.xml','../configs/mrx_userlevel_config.xml','../configs/dummy.xml']
     else:
         byteUnits = ["", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"]
         TimeRangeSpliter = 'to'

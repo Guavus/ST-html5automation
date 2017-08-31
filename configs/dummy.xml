@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<data>
+    <screenConfigs>
+
+        <screenConfig id="Dummy_Screen">
+            <component id="Dummy_Multi" selector="class name" locator="content-container" parent="True"/>
+            <component id = "table" selector="tag name" locator="gvs-grid" parent="True"/>
+            <component id = "c_control" selector="class name" locator="component-controls" parent="True"/>
+
+            <component id = "piechart" selector="tag name" locator='gvs-pie-chart'  action="" parent="True" />
+            <component id = "pielegend" selector="tag name" locator='gvs-pie-legend' action="" parent="True" />
+
+        </screenConfig>
+
+        <screenConfig id = "TableDummy_Screen">
+            <component id = "table" selector="tag name" locator="gvs-grid" parent="True"/>
+        </screenConfig>
+
+    </screenConfigs>
+
+    <componentConfigs>
+        <componentConfig id="Dummy_Multi">
+            <component id = "multiselect-dropdown" selector="tag name" locator="gvs-multiselect-dropdown" wait="skip"/>
+        </componentConfig>
+
+        <componentConfig id="c_control">
+            <component id="check" selector="css selector" locator="input[type=checkbox]" />
+        </componentConfig>
+
+    </componentConfigs>
+
+</data>
