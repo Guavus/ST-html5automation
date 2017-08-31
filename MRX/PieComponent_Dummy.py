@@ -9,8 +9,7 @@ This script cover testing of below method
 2. Get selection from Pie (Selected Index and data)
 3. Get selection from PieLegend (Selected Index and data)
 4. Get toolTip data ( By hover on Pie chart)
-5. Get all date from table (with scrolling)
-6. Set totalSelection on Pie
+5. Set totalSelection on Pie
 
 '''
 
