@@ -4,6 +4,7 @@ from classes.Pages.MRXScreens.SegmentScreenClass import *
 from MRXUtils.MRXConstants import *
 from MRXUtils import SegmentHelper
 from MRXUtils import UDHelper
+from Utils.AvailableMethod import *
 import json
 
 
@@ -85,7 +86,7 @@ try:
     tableData = segmentScreenInstance.table.getTableData1(tableHandle,length=20)
     dataFromUI=measureAndDimensionAfterMapping(tableData)
 
-    fireBV(dataFromUI,'getTop',MRXConstants.SEGMENT_TABLE_AT_BACKEND,sort_property="created")
+    fireBV(dataFromUI,AvailableMethod.Top_Row,MRXConstants.SEGMENT_TABLE_AT_BACKEND,sort_property="created")
 
     #segmentScreenInstance.cm.clickButton('Refresh', getHandle(setup, MRXConstants.SEGMENTSCREEN, 'allbuttons'))
     tableMap1 = segmentScreenInstance.table.getTableDataMap(tableHandle, driver=setup)
