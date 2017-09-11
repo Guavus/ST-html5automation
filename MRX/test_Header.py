@@ -4,7 +4,10 @@ from classes.Pages.ExplorePageClass import *
 try:
     setup = SetUp()
     login(setup,Constants.USERNAME,Constants.PASSWORD)
+
     #exploreInstance = ExplorePageClass(setup.d)
+    #exploreInstance.launchModule(exploreHandle, "USER DISTRIBUTION")
+
     exploreHandle = getHandle(setup, Constants.VALIDATE_HEADER)
 
     headerComponents = setup.cM.getNodeElements("headerComponent", "component")
@@ -16,30 +19,40 @@ try:
         if headerComponent['screenFlag']=='True':
             checkEqualAssert(headerComponent['numberOfScreen'],str(len(exploreHandle['centerHeader']['alllinks'])),message="Validate Center Header i.e Number of available Screen", testcase_id=headerComponent['testcaseID'])
             allScreen=True
+            availableScreenList=[]
             for ele in exploreHandle['centerHeader']['alllinks']:
-                if not str(ele.text) in headerComponent['listOfScreen']:
-                    allScreen=False
-                    break
-            checkEqualAssert(True,allScreen,message="Validate Screen Name at Center of Header ::"+str(headerComponent['listOfScreen']), testcase_id=headerComponent['testcaseID'])
+                availableScreenList.append(str(ele.text).strip())
+            availableScreen=','.join(availableScreenList)
+            checkEqualAssert(headerComponent['listOfScreen'],availableScreen,message="Validate Screen Name at Center of Header ::"+str(headerComponent['listOfScreen']), testcase_id=headerComponent['testcaseID'])
 
         if headerComponent['userNameFlag']=="True":
-            userFlag=False
+            count=0
             for ele in exploreHandle['rightHeader']['userName']:
                 if str(Constants.USERNAME).strip()==str(ele.text).strip():
-                    userFlag=True
-                    break
-            checkEqualAssert(True,userFlag,message="Validate User Name :: "+Constants.USERNAME+" Present on Right Side ", testcase_id=headerComponent['testcaseID'])
+                    count=count+1
+
+            checkEqualAssert(1,count,message="Validate User Name :: "+Constants.USERNAME+" Present on Right Side ", testcase_id=headerComponent['testcaseID'])
+
+
+        isProfilePicPresent=False
+        isHelpIconPresent=False
+        for img in exploreHandle['rightHeader']['image']:
+            if 'profile' in str(img.get_attribute('src')):
+                isProfilePicPresent=True
+            elif 'help' in str(img.get_attribute('src')):
+                isHelpIconPresent=True
+
 
         if headerComponent['profilePicFlag']=="True":
-            pass
+            checkEqualAssert(True,isProfilePicPresent,message="Validate User Image Present on Right Side",testcase_id=headerComponent['testcaseID'])
 
         if headerComponent['switcherIconFlag']=="True":
             checkEqualAssert(1, len(exploreHandle['rightHeader']['switcher']), message="Validate Switcher Present on Right Side",testcase_id=headerComponent['testcaseID'])
 
         if headerComponent['helpIconFlag']=="True":
-            pass
+            checkEqualAssert(True,isHelpIconPresent,message="Validate Help Icon Present on Right Side",testcase_id=headerComponent['testcaseID'])
 
-    #exploreInstance.launchModule(exploreHandle, "USER DISTRIBUTION")
+    setup.d.close()
 
 except Exception as e:
     isError(setup)
