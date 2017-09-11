@@ -1,3 +1,4 @@
+from Utils.utility import *
 from classes.DriverHelpers.DriverHelper import *
 from selenium import webdriver
 from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
@@ -22,7 +23,7 @@ class SetUp:
         if security:
             if "chrome" == Constants.BROWSER:
                 os.system("mkdir "+Constants.chromdownloadpath)
-                os.system("rm -rf "+Constants.chromdownloadpath + delimiter + "*")
+                removeFileAtGivenPath(Constants.chromdownloadpath)
 
                 chromeOptions = webdriver.ChromeOptions()
                 # chromeOptions.add_argument("--kiosk")
