@@ -94,6 +94,27 @@ class PieComponentClass(BaseComponentClass):
         else:
             self.setSelectionIndex(index,handlers['legendText'])
 
+    def setSelectionOnPieWithIndex(self, index, handlrs, force=False):
+        '''
+        This method do the Selection on the Pie Chart as per the index supplied
+        :param index: Index to be selected
+        :param handlers: Handlers to PieChart
+        :return: True/False
+        '''
+        handlers = self.compHandlers('piechart', handlrs)
+        selectedIndex = self.getPieSelections(handlrs)
+        if not force and index in selectedIndex:
+            return True
+        else:
+            self.setSelectionIndex(index, handlers['arcs'])
+
+    def setMultipleSelectionOnPie(self,setup,index_list,key,screen,parent='piechart'):
+        ActionChains(setup.d).key_down(key).perform()
+        for index in index_list:
+            h = self.utility.utility.getHandle(setup, screen, parent)
+            self.setSelectionOnPieWithIndex(index,h)
+        ActionChains(setup.d).key_up(key).perform()
+
     # def getSelection(self,handlrs):
     #     '''
     #     This method gives the selected Index, its Corresponding Text and Value

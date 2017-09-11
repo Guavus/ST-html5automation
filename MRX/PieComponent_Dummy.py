@@ -22,8 +22,10 @@ try:
 
     data=PieInstance.getToolTipInfo(setup, setup.dH, getHandle(setup,Constants.DUMMY_SCREEN,"piechart"))
     Pie_Selection=setup.cM.getNodeElements("PieSelection_Scenario","PieSelection")
-    PieInstance.setSelection(int(Pie_Selection['0']['value']),getHandle(setup,Constants.DUMMY_SCREEN),force=True)
+    #PieInstance.setSelection(int(Pie_Selection['0']['value']),getHandle(setup,Constants.DUMMY_SCREEN),force=True)
+    #PieInstance.setSelectionOnPieWithIndex(int(Pie_Selection['0']['value']), getHandle(setup, Constants.DUMMY_SCREEN), force=True)
 
+    PieInstance.setMultipleSelectionOnPie(setup,[2,4,7],Keys.COMMAND,Constants.DUMMY_SCREEN)
     i = PieInstance.getPieSelections(getHandle(setup, Constants.DUMMY_SCREEN,"piechart"))
     j = PieLegendInstance.getSelection(getHandle(setup,Constants.DUMMY_SCREEN,"pielegend"))
     r = PieLegendInstance.getData11(getHandle(setup,Constants.DUMMY_SCREEN,"pielegend"))
