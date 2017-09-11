@@ -483,7 +483,7 @@ class TableComponentClass(BaseComponentClass):
             return e
 
 
-    def setSelectionIndex(self,index,colCount,rowCount,h,driver=""):
+    def setSelectionIndex(self,index,colCount,rowCount='',h='',driver=""):
         elHandle=h['ROWS']
         newIndex = (colCount)*(index-1)+1
 
@@ -493,6 +493,7 @@ class TableComponentClass(BaseComponentClass):
                     driver.execute_script("return arguments[0].scrollIntoView();", elHandle[i])
                 elHandle[i].click()
                 return True
+        return False
 
     def getSelectedRow(self,h,parent='table',child='SELECTED_ROWS'):
         try:
