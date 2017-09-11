@@ -53,9 +53,10 @@ class TreeComponentClass(BaseComponentClass):
             if 'leaf' in ele.find_elements_by_xpath('.//*')[1].get_attribute('class'):
                 continue
             else:
-                count = count + 1
+                count_1 = count
                 ele.find_elements_by_class_name('toggle-children')[0].click()
-                self.expandTree1(setup,ele,count)
+                time.sleep(1)
+                self.expandTree1(setup,ele,count_1+1)
 
     def expandTree1_old(self,treeElementHandle):
         for ele in treeElementHandle.find_elements_by_tag_name('tree-node'):
