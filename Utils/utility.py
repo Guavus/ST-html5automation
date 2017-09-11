@@ -29,6 +29,8 @@ import time
 import os
 import datetime
 import calendar
+import platform
+import glob
 from classes.Pages.GenerateReportsPopClass import *
 from classes.Pages.ReportsModuleClass import *
 from classes.Pages.GlobalFiltersPopClass import *
@@ -562,6 +564,25 @@ def getHandle(obj,pageName,parent="NA"):
 def find_realPath(filename):
     return os.path.realpath(str(filename))
 
+def get_CWD():
+    return os.getcwd()
+
+def filesAtGivenPath(path):
+    if platform.system() == "Windows":
+        delimiter = "\\"
+    else:
+        delimiter = "/"
+    file = glob.glob(path+delimiter + "*")
+
+    return file
+
+def removeFileAtGivenPath(path):
+    if platform.system() == "Windows":
+        delimiter = "\\"
+        os.system("del /F /Q " + path + delimiter + "*")
+    else:
+        delimiter = "/"
+        os.system("rm -rf " + path + delimiter + "*")
 
 
 def testScreen(obj,pageName,isStartScreen=False):

@@ -4,6 +4,8 @@ from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
 
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.chrome.options import *
+import os
+import platform
 
 
 
@@ -12,11 +14,24 @@ class SetUp:
 
         security = True
 
+        if platform.system() == "Windows":
+            delimiter = "\\"
+        else:
+            delimiter = "/"
+
         if security:
             if "chrome" == Constants.BROWSER:
+                os.system("mkdir "+Constants.chromdownloadpath)
+                os.system("rm -rf "+Constants.chromdownloadpath + delimiter + "*")
+
                 chromeOptions = webdriver.ChromeOptions()
                 # chromeOptions.add_argument("--kiosk")
                 chromeOptions.add_argument("--start-maximized")
+                exp_options = {}
+                exp_options['profile.default_content_settings.popups'] = 0
+                downloadFilepath = Constants.chromdownloadpath
+                exp_options['download.default_directory'] = downloadFilepath
+                chromeOptions.add_experimental_option("prefs", exp_options)
 
                 # self.d = webdriver.Firefox()
                 self.d = webdriver.Chrome(Constants.chromedriverpath, chrome_options=chromeOptions)
