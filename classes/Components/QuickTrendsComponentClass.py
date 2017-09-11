@@ -188,6 +188,34 @@ class QuickTrendsComponentClass(BaseComponentClass):
             logger.error("Got Exception while performing hover actions = %s",str(e))
             return e
 
+    def hoverOverTicksGetMainBarChartText_DCT(self, setup, h1, screenName, parent="trend-main", child="trendchart",parent_tooltip="trend-header", child_tooltip="qttooltip"):
+        try:
+            totalbar, barHandle = self.getAllBarForHover_DCT(h1, parent=parent, child=child)
+            tooltipText = {}
+            for el in barHandle:
+                colorBeforeHover=el.value_of_css_property('fill')
+                logger.info("Going to perform Hover Action")
+                setup.dH.action.move_to_element(el).perform()
+                time.sleep(2)
+                colorAfterHover = el.value_of_css_property('fill')
+                if colorAfterHover==colorBeforeHover:
+                    logger.info('Not able to Perform Hover Action')
+                else:
+                    logger.info("Hover Action Performed")
+                    # tempHandlers = self.util.utility.getHandle(setup, screenName, parent)
+                    # time.sleep(1)  # only to show in demo
+                    # headerhandles = self.util.utility.getHandle(setup, screenName, parent_tooltip)
+                    # time.sleep(1)  # only to show in demo
+                    # tooltipText[str(tempHandlers[parent][child_tooltip][0].text)] = str(headerhandles[parent_tooltip][child_tooltip][0].text)
+
+            # logger.debug("Got tooltip data =  %s", str(tooltipText))
+            return tooltipText
+
+        except Exception as e:
+            logger.error("Got Exception while performing hover actions = %s", str(e))
+            return e
+
+
 
     def getHoverText(self, h,parent="trend-header", child="qttooltip",index=0,setup=""):
         try:
@@ -319,9 +347,24 @@ class QuickTrendsComponentClass(BaseComponentClass):
             paths.append(self.rgb_to_hex(el.get_attribute("style").split(':')[1].split(';')[0]))
         return paths
 
+    def getColorFromBar_DCT(self, h, parent="trend-main", child="trendchart", indexOfComp=0):
+        totalbar, handle = self.getAllBar_DCT(h, parent=parent, child=child, indexOfComp=indexOfComp)
+        paths = []
+        for el in handle[0].find_elements_by_css_selector("rect"):
+            paths.append(self.rgb_to_hex(el.value_of_css_property('fill')))
+        return paths
+
 
     def getAllBar(self,h,parent="trend-main", child="trendchart",indexOfComp=0):
         handle = h[parent][child][indexOfComp].find_elements_by_css_selector("g.time-bin")
+        return len(handle),handle
+
+    def getAllBar_DCT(self,h,parent="trend-main", child="trendchart",indexOfComp=0):
+        handle = h[parent][child][indexOfComp].find_elements_by_css_selector("g.chart-bar-element-group")
+        return len(handle),handle
+
+    def getAllBarForHover_DCT(self,h,parent="trend-main", child="trendchart",indexOfComp=0):
+        handle = h[parent][child][indexOfComp].find_elements_by_css_selector("rect[class*=chart-selection-element]")
         return len(handle),handle
 
 
