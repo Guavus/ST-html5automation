@@ -84,7 +84,7 @@ try:
                     isError(setup)
                     actualtoggleState = DEHelper.getToggleStateForFilters(deScreenInstance, setup, method, str(i), validateSearch)
                     popUpTooltipData = DEHelper.getUDPFiltersToolTipData(MRXConstants.DEPOPUP, setup,method)
-                    checkEqualDict(expected, popUpTooltipData,message="Verify Filters Selections On Popup (Functional)",doSortingBeforeCheck=True)
+                    checkEqualDict(expected, popUpTooltipData,message="Verify Filters Selections On Popup (Functional)",testcase_id="MKR-1964,1965,1966,1967,1968",doSortingBeforeCheck=True)
                     filterFromScreenForDV = UDHelper.mapToggleStateWithSelectedFilter(popUpTooltipData,actualtoggleState)
 
                     queryFromUI = {}
