@@ -81,6 +81,17 @@
         <method id="Global Data Service" testcase="MKR-1979"/>
     </testcaseMappingWithMethod_DE>
 
+    <testcaseMappingWithMeasure_DE>
+        <measure id = "Volume (Download)" testcase="MKR-3219" /> 
+        <measure id = "Volume (Upload)" testcase="MKR-3218" /> 
+        <measure id = "Volume" testcase="MKR-3217" />  
+        <measure id = "# Network Session" testcase="MKR-3220" />
+        <measure id = "# Web Domain Session" testcase="MKR-3220" />
+        <measure id = "# IAB Session" testcase="MKR-3220" />
+        <measure id = "# Contextual Session" testcase="MKR-3220" />
+        <measure id = "# User" testcase="MKR-3221" />
+    </testcaseMappingWithMeasure_DE>
+
     <savenewfilter>
         <filter id="save_0" filtername="savenew_0" default="1" button="Save" isOverwrite="True" deleteFlag="True"/>
         <filter id="save_1" filtername="savenew_1" default="0" button="Save" isOverwrite="True" deleteFlag="True"/>
@@ -1128,7 +1139,7 @@
       <measure id = "# Web Domain Session" backEnd_ID="sessioncount2" />
       <measure id = "# IAB Session" backEnd_ID="sessioncount3" />
       <measure id = "# Contextual Session" backEnd_ID="sessioncount4" />
-       
+      <measure id = "# User" backEnd_ID="subscriberid" />
   </measure_Mapping>
 
   <segment_Table_Mapping>

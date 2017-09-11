@@ -1,0 +1,21 @@
+from classes.Components.TableComponentClass import *
+from classes.Components.TreeComponentClass import *
+from classes.Components.TimeRangeComponentClass import *
+
+class DataExtractionScreenClass(BasePopClass):
+    def __init__(self,driver):
+        '''
+        Constructor
+        '''
+        self.driver = driver
+
+        #self.picker = MulitpleDropdownComponentClass()
+        self.dropdown = DropdownComponentClass()
+        self.multiDropdown = MulitpleDropdownComponentClass()
+        self.table = TableComponentClass()
+        self.calendar = CalendarComponentClass()
+        self.globalfilter = GlobalFiltersPopClass(driver)
+        self.tree = TreeComponentClass(driver)
+        self.timeBar = TimeRangeComponentClass()
+        # Common Components
+        BasePopClass.__init__(self,driver)
