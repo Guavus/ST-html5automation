@@ -77,7 +77,7 @@ class MulitpleDropdownComponentClass(DropdownComponentClass):
                 flag = True
                 # commenting below lines to get all selected values in dropdown (Below if is only for Global Filter Scenario)
                 if e.find_elements_by_xpath("../../div")[0].text.strip() == "Select All" or e.find_elements_by_xpath("../../div")[0].text.strip() == "All":
-                    selections.append("ALL")
+                    selections.append("All")
                     activeDropDowns[index].click()
                     return selections
                 selections.append(e.find_elements_by_xpath("../../div")[0].text)
@@ -89,7 +89,7 @@ class MulitpleDropdownComponentClass(DropdownComponentClass):
                 for e in activeDropDowns[index].find_elements_by_css_selector('[ng-reflect-model="true"],[checked="true"],[ng-reflect-ng-class="menu-item-selected"]'):
                     flag=True
                     if e.find_elements_by_xpath("..//div")[0].text.strip() == "Select All" or e.find_elements_by_xpath("..//div")[0].text.strip() == "All":
-                        selections.append("ALL")
+                        selections.append("All")
                         activeDropDowns[index].click()
                         return selections
                     selections.append(e.find_elements_by_xpath("..//div")[0].text)
