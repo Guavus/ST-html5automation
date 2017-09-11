@@ -28,6 +28,12 @@
             <component id = "table" selector="tag name" locator="gvs-grid" parent="True"/>
         </screenConfig>
 
+
+        <screenConfig id = "StackBarDummy_Screen">
+            <component id = "trend-header" selector="css selector" locator="div.trend-header-container" parent="True"/>
+            <component id = "trend-main" selector="class name" locator="component-wrapper" parent="True"/>
+        </screenConfig>
+
     </screenConfigs>
 
     <componentConfigs>
@@ -49,6 +55,13 @@
             <component id = "legendText" selector="id" locator='pieView_tooltip' locatorDimension ='id' locatorText = 'pieView_tooltip' action="getToolTipData" wait = 'skip'/>
         </componentConfig>
 
+
+         <componentConfig id = "trend-main">
+            <component id = "switcher" selector="css selector" locator="div.modeSwitcherBtnBar"/>
+            <component id = "select" selector="tag name" locator="select"/>
+            <component id = "trendchart" selector="tag name" locator="gvs-stacked-bar-chart"/>
+           <component id = "qttooltip" selector="css selector" locator="div.trend-hover-date"/>
+        </componentConfig>
 
     </componentConfigs>
 
