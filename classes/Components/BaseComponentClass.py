@@ -486,7 +486,7 @@ class BaseComponentClass:
             return ele.get_attribute("class")
         elif prop == "id":
             return ele.get_attribute("id")
-        elif prop == "bgcolor":
+        elif prop == "bgcolor" or prop == "background-color":
             return ele.value_of_css_property("background-color")
 
 
@@ -723,6 +723,38 @@ class BaseComponentClass:
                     offset=int(dstValue[k]['offset'])+1
                 return Flag,offset
 
+    def getAllTitle(self,h,parent="alltitles", child="title"):
+        title_List=[]
+        try:
+            for ele in h[parent][child]:
+                title_List.append(str(ele.text).strip())
+            logger.info("List of title on UI :: %s",str(title_List))
+            return title_List
+
+        except Exception as e:
+            logger.error("Got Exception while getting title_list = %s",str(e))
+            return e
+
+    def getAllButtonText(self,h,parent="allbuttons", child="button"):
+        availableButton=[]
+        try:
+            for ele in h[parent][child]:
+                availableButton.append(str(ele.text).strip())
+            logger.info("Available Button List :: %s",str(availableButton))
+            return availableButton
+
+        except Exception as e:
+            logger.error("Got Exception while getting title_list = %s",str(e))
+            return e
+
+    def getScreenNameFromUI(self,h,parent="alllabels",child='label'):
+        try:
+            screenName =  str(h[parent][child][0].text)
+            logger.info("Got Screen Name = %s",screenName)
+            return screenName
+        except Exception as e:
+            logger.error("Got Exception while getting Screen Name = %s",str(e))
+            return e
 
 
 
