@@ -116,6 +116,7 @@ class Constants(object):
     UM_PARENT_BULKSTATS_KPI="Bulkstats/KPI"
     REDCOLOR="#ff0000"
     WHITECOLOR="#ffffff"
+    GREENCOLOR="#00E0B8"
     BACKGROUNDCOLOR='background-color'
     BORDERCOLOR='border-color'
     ACTIVE_STATUS='Active'
