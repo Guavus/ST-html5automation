@@ -18,7 +18,7 @@
         <filter id = 'usage' locatorText="Usage Filters"/>
     </udpfilters>
 
-    <ud_measures>  
+    <ud_measures> 
         <measure id = "volumeD" locatorText="Volume (Download)" isCount="sum"/> 
         <measure id = "volumeU" locatorText="Volume (Upload)" isCount="sum" /> 
         <measure id = "volume" locatorText="Volume" isCount="sum" />  
@@ -33,6 +33,11 @@
 
     <screenConfigs>
 
+        <screenConfig id = "de_Screen">
+            <component id="allspans" selector="css selector" locator="div.menuContainer" parent="True" />
+            <component id='table' selector="id" locator="DE_Table_Container" parent="True" />
+            <component id="alllabels" selector="class name" locator="de_container" parent="True"/>
+        </screenConfig>
 
         <screenConfig id = "ud_Screen">
             <component id="switcher" selector="id" locator="UD_Legend_Container" parent="True" />
@@ -74,6 +79,25 @@
             <component id = 'globalfiltertooltip' selector="css selector" locator="[class*=tooltipBox]" parent="True"/>
 
         </screenConfig>
+
+        <screenConfig id="de_popup">
+            <!--<component id = "timeRangeDiv" selector="id" locator="ud_timeRangeDiv" parent="True"/>-->
+            <component id = "ktrs" selector="tag name" locator="kiwik-ktrs" parent="True"/>
+            <component id = "filterPopup" selector="id" locator="filterPopup" parent="True"/>
+            <component id = "icons" selector="css selector" locator="div.filterPopup" parent="True"/>
+            <component id = "allbuttons" selector="class name" locator="footerDiv" parent="True" />
+            <component id = "allspans" selector="class name" locator="headerDiv" parent="True" />
+            <component id = "allselects" selector="css selector" locator="div.filterPopup" parent="True" />
+            <component id = "alllinks" selector="class name" locator="filterTabs" parent="True" />
+            <component id = "alltrees" selector="css selector" locator="div.filterPopup" parent="True"/>
+            <component id = "allinputs" selector="css selector" locator="div.filterPopup" parent="True"/>
+            <component id ="allcheckboxes" selector="css selector" locator="div.filterPopup" parent="True"/>
+            <component id = "alltitles" selector="class name" locator="filterContainer" parent="True" />
+            <component id = "filterArea" selector="tag name" locator="kiwik-filter-layout" parent="True"/>
+            <component id = 'globalfiltertooltip' selector="css selector" locator="[class*=tooltipBox]" parent="True"/>
+
+        </screenConfig>
+
 
         <screenConfig id="availableFilterList">
             <component id ='availablefilter' selector="css selector" locator="div.filterPopup" parent="True"/>
@@ -244,26 +268,6 @@
 
         <componentConfig id="radios">
             <component id = "radio" selector="css selector" locator='[class*=radio][class*=radio-info],[type="radio"]' />
-        </componentConfig>
-
-        <componentConfig id="alllabels">
-            <component id = "label" selector="tag name" locator='label' />
-        </componentConfig>
-
-        <componentConfig id="allspans">
-            <component id = "span" selector="tag name" locator='span' />
-        </componentConfig>
-
-        <componentConfig id="allbuttons">
-            <component id = "button" selector="tag name" locator='button' />
-        </componentConfig>
-
-        <componentConfig id="allselects">
-            <component id = "select" selector="tag name" locator='select' />
-        </componentConfig>
-
-        <componentConfig id="alllinks">
-            <component id = "a" selector="tag name" locator='a' />
         </componentConfig>
 
         <componentConfig id = "wizard2">

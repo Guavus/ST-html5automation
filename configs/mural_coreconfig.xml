@@ -602,6 +602,8 @@
         </componentConfig>
         <componentConfig id="allspans">
             <component id = "span" selector="tag name" locator='span' />
+            <component id="spanText" selector="css selector" locator="span.txtClass"/>
+
         </componentConfig>
         <componentConfig id="allbuttons">
             <component id = "button" selector="tag name" locator='button' />
@@ -657,6 +659,9 @@
             <component id = "span" selector="tag name" locator='span' />
         </componentConfig>
 
+        <componentConfig id="alltitles">
+            <component id="title" selector="css selector" locator="div.titleSpan"/>
+        </componentConfig>
 
     </componentConfigs>
 

@@ -61,6 +61,25 @@
         <filter id = "Access"/>
     </segment_Filters>
 
+    <availableClassesForDE>
+        <class id="Device" method="Device Category,Device OS,Device Manufacturer,Device Model" testcase="MKR-1954"/>
+        <class id="Network" method="Radio Access Type,APN" testcase="MKR-1955"/>
+        <class id="Content" method="Application,Web Domain,Content Interest" testcase="MKR-1956"/>
+        <class id="Usage" method="Global Data Service" testcase="MKR-1957"/>
+    </availableClassesForDE>
+
+    <testcaseMappingWithMethod_DE>
+        <method id="Device Category" testcase="MKR-1970"/>
+        <method id="Device OS" testcase="MKR-1971"/>
+        <method id="Device Manufacturer" testcase="MKR-1973"/>
+        <method id="Device Model" testcase="MKR-1972"/>
+        <method id="Radio Access Type" testcase="MKR-1974"/>
+        <method id="APN" testcase="MKR-1975"/>
+        <method id="Application" testcase="MKR-1977"/>
+        <method id="Web Domain" testcase="MKR-1978"/>
+        <method id="Content Interest" testcase="MKR-1976"/>
+        <method id="Global Data Service" testcase="MKR-1979"/>
+    </testcaseMappingWithMethod_DE>
 
     <savenewfilter>
         <filter id="save_0" filtername="savenew_0" default="1" button="Save" isOverwrite="True" deleteFlag="True"/>
@@ -77,6 +96,16 @@
         <filter id="edit_1" filtername="specialTest_1" default="0" button="Save" isOverwrite="True" deleteFlag="True"/>
         <filter id="edit_2" filtername="specialTest_2" default="0" button="Save" isOverwrite="True" deleteFlag="True"/>
     </specialEditFilter>
+
+    <topRowScenario>
+        <input id="0" value="36" expectedValue="36" testcase="MKR-1962"/>
+        <input id="1" value="36.5" expectedValue="365" testcase="MKR-3216"/>
+        <input id="2" value="#23" expectedValue="23" testcase="MKR-3216"/>
+        <input id="3" value="ed" expectedValue="" testcase="MKR-3216"/>
+        <input id="4" value="-34" expectedValue="34" testcase="MKR-3216"/>
+        <input id="5" value="3645569865965986" expectedValue="1000" testcase="MKR-3242"/>
+        <input id="6" value="0" expectedValue="" testcase="MKR-3216"/>
+    </topRowScenario>
 
 
     <segmentFilter>
@@ -881,6 +910,123 @@
 
     </udpScreenFilters>
 
+
+
+    <deScreenFilters>
+        <!--For select tree put "Do_Selection_On_Tree" otherwise "No_Selection_On_Tree"-->
+        <!--For input enter value in inputfield put "Input" otherwise "No_Input" -->
+
+        <segment id ="validateCancelButton" filters = 'E,1,2'/>
+        <device id = "validateCancelButton" filters = ' ::NE,2:: :: '/>
+        <network id = "validateCancelButton" filters = ' :: ::No_Selection_On_Tree:: :: :: '/>
+        <content id = "validateCancelButton" filters = 'No_Selection_On_Tree::No_Selection_On_Tree:: :: ::No_Input' inputvalue="guavus.com,facebook.com"/>
+        <usage id ="validateCancelButton" filters = 'NE,1,2'/>
+        <quicklink id="validateCancelButton" locatorText="Last 7 days" table="daily_points"/>
+        <measure id="validateCancelButton" locatorText="Volume"/>
+        <toprows id="validateCancelButton" value=""/>
+
+
+        <segment id ="0" filters = 'NE,1,2'/>
+        <device id = "0" filters = ' :: :: :: '/>
+        <network id = "0" filters = ' :: ::No_Selection_On_Tree:: :: :: '/>
+        <content id = "0" filters = 'No_Selection_On_Tree::No_Selection_On_Tree:: :: ::No_Input' inputvalue="guavus.com,facebook.com"/>
+        <usage id ="0" filters = ' '/>
+        <quicklink id="0" locatorText="Today" table="hourly_points"/>
+        <measure id="0" locatorText="Volume"/>
+        <toprows id="0" value=""/>
+
+
+        <segment id ="1" filters = 'E,1,2'/>
+        <device id = "1" filters = ' :: :: :: '/>
+        <network id = "1" filters = ' :: ::No_Selection_On_Tree:: :: :: '/>
+        <content id = "1" filters = 'No_Selection_On_Tree::No_Selection_On_Tree:: :: ::No_Input' inputvalue="guavus.com,facebook.com"/>
+        <usage id ="1" filters = ' '/>
+        <quicklink id="1" locatorText="Today" table="hourly_points"/>
+        <measure id="1" locatorText="Volume"/>
+        <toprows id="1" value=""/>
+
+
+
+        <segment id ="2" filters = ' '/>
+        <device id = "2" filters = 'NE,1,2::E,2::NE,1,2::E,2'/>
+        <network id = "2" filters = ' :: ::No_Selection_On_Tree:: :: :: '/>
+        <content id = "2" filters = 'No_Selection_On_Tree::No_Selection_On_Tree:: :: ::No_Input' inputvalue="guavus.com,facebook.com"/>
+        <usage id ="2" filters = ' '/>
+        <quicklink id="2" locatorText="Last 30 days" table="daily_points"/>
+        <measure id="2" locatorText="Volume (Download)"/>
+        <toprows id="2" value="10"/>
+
+
+        <segment id ="3" filters = ' '/>
+        <device id = "3" filters = 'NE,1,2::E,2::NE,1,2::E,2'/>
+        <network id = "3" filters = ' :: ::No_Selection_On_Tree:: :: :: '/>
+        <content id = "3" filters = 'No_Selection_On_Tree::No_Selection_On_Tree:: :: ::No_Input' inputvalue="guavus.com,facebook.com"/>
+        <usage id ="3" filters = ' '/>
+        <quicklink id="3" locatorText="Last 30 days" table="daily_points"/>
+        <measure id="3" locatorText="Volume (Download)"/>
+        <toprows id="3" value="10"/>
+
+        <segment id ="4" filters = ' '/>
+        <device id = "4" filters = ' :: :: :: '/>
+        <network id = "4" filters = '1,2::2,3,4::No_Selection_On_Tree:: ::E,1:: '/>
+        <content id = "4" filters = 'No_Selection_On_Tree::No_Selection_On_Tree:: :: ::No_Input' inputvalue="guavus.com,facebook.com"/>
+        <usage id ="4" filters = ' '/>
+        <quicklink id="4" locatorText="Last 7 days" table="daily_points"/>
+        <measure id="4" locatorText="Volume (Upload)"/>
+        <toprows id="4" value="20"/>
+
+
+        <segment id ="5" filters = ' '/>
+        <device id = "5" filters = ' :: :: :: '/>
+        <network id = "5" filters = ' :: ::No_Selection_On_Tree:: :: :: '/>
+        <content id = "5" filters = 'No_Selection_On_Tree::No_Selection_On_Tree::E,1::NE,2::Input' inputvalue="guavus.com,facebook.com"/>
+        <usage id ="5" filters = ' '/>
+        <quicklink id="5" locatorText="Yesterday" table="hourly_points"/>
+        <measure id="5" locatorText="# IAB Session"/>
+        <toprows id="5" value="5"/>
+
+        <segment id ="6" filters = ' '/>
+        <device id = "6" filters = ' :: :: :: '/>
+        <network id = "6" filters = ' :: ::No_Selection_On_Tree:: :: :: '/>
+        <content id = "6" filters = 'No_Selection_On_Tree::No_Selection_On_Tree:: :: ::No_Input' inputvalue="guavus.com,facebook.com"/>
+        <usage id ="6" filters = 'NE,1,2'/>
+        <quicklink id="6" locatorText="Last 30 days" table="daily_points"/>
+        <measure id="6" locatorText="# Network Session"/>
+        <toprows id="6" value="12"/>
+
+        <segment id ="7" filters = ' '/>
+        <device id = "7" filters = ' :: :: :: '/>
+        <network id = "7" filters = ' :: ::No_Selection_On_Tree:: :: :: '/>
+        <content id = "7" filters = 'No_Selection_On_Tree::No_Selection_On_Tree:: :: ::No_Input' inputvalue="guavus.com,facebook.com"/>
+        <usage id ="7" filters = 'E,1,2'/>
+        <quicklink id="7" locatorText="Last 30 days" table="daily_points"/>
+        <measure id="7" locatorText="# Network Session"/>
+        <toprows id="7" value="12"/>
+
+        <segment id ="8" filters = 'E,1,2'/>
+        <device id = "8" filters = 'NE,1,2::E,2::NE,1,2::E,2'/>
+        <network id = "8" filters = '1,2::2,3,4::No_Selection_On_Tree::NE,1,2::E,1:: '/>
+        <content id = "8" filters = 'No_Selection_On_Tree::No_Selection_On_Tree::NE,1,2::E,2::Input' inputvalue="guavus.com,facebook.com"/>
+        <usage id ="8" filters = 'NE,1,2'/>
+        <quicklink id="8" locatorText="Last 30 days" table="daily_points"/>
+        <measure id="8" locatorText="# Web Domain Session"/>
+        <toprows id="8" value="10"/>
+
+        <segment id ="9" filters = ' '/>
+        <device id = "9" filters = ' :: :: :: '/>
+        <network id = "9" filters = ' :: ::No_Selection_On_Tree:: :: :: '/>
+        <content id = "9" filters = 'No_Selection_On_Tree::No_Selection_On_Tree:: :: ::No_Input' inputvalue="guavus.com,facebook.com"/>
+        <usage id ="9" filters = ' '/>
+        <quicklink id="9" locatorText="Today" table="hourly_points"/>
+        <measure id="9" locatorText="# User"/>
+        <toprows id="9" value=""/>
+
+    </deScreenFilters>
+
+
+
+
+
     <globalScreenFilters2>
         <network id ="0" region = '1' gateway = '1'/>
         <apnrat id = "0" apn = '2,4'/>
@@ -968,7 +1114,7 @@
       <filter id="Web Domain" backEnd_ID="serviceprovider"/>
       <filter id="Device OS" backEnd_ID="deviceos"/>
       <filter id="Roaming" backEnd_ID="roamingflag"/>
-      <filter id="Segment" backEnd_ID="Segment"/>
+      <filter id="Segment" backEnd_ID="segment_name"/>
       <filter id="Radio Access Type" backEnd_ID="rat"/>
       <filter id="Location" backEnd_ID="location_layer1,location_layer2,location_layer3,location_layer4,location_layer5 "/>
   </filter_Mapping>
