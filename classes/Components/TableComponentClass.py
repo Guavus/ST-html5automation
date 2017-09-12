@@ -164,15 +164,17 @@ class TableComponentClass(BaseComponentClass):
             pass
 
     def getIterfaceHeaders(self,h):
-        if h['HEADERROW'] != "":
+        logger.info("Method Called : getIterfaceHeaders")
+        if  h['HEADERROW'] != "":
             elHandle=h['HEADERROW']
             self.colCount = len(elHandle)
             return [str(eachHandler.text).strip() for eachHandler in elHandle]
         else:
             logger.debug("header is not present in table")
 
-    def getIterfaceRows(self,colcount,h,length,selected=False):
 
+    def getIterfaceRows(self,colcount,h,length,selected=False):
+        logger.info("Method Called : getIterfaceRows")
         elHandle=h['ROWS']
 
         if len(elHandle) <1:
@@ -201,7 +203,6 @@ class TableComponentClass(BaseComponentClass):
             except:
                 logger.debug("Check manually Selected Rows= %d", j/colcount)
                 pass
-
         return rows
 
 
@@ -401,6 +402,7 @@ class TableComponentClass(BaseComponentClass):
 
 
     def getRowIndexFromTable(self,columnIndex,tableHandle,value):
+        logger.info("Method called: getRowIndexFromTable")
         data2=self.getTableData1(tableHandle,length=24)
         for index in range(len(data2['rows'])):
             if str(data2['rows'][index][columnIndex]).strip()==str(value):
@@ -484,6 +486,7 @@ class TableComponentClass(BaseComponentClass):
 
 
     def setSelectionIndex(self,index,colCount,rowCount='',h='',driver=""):
+        logger.info("Method Called : setSelectionIndex")
         elHandle=h['ROWS']
         newIndex = (colCount)*(index-1)+1
 
@@ -535,6 +538,7 @@ class TableComponentClass(BaseComponentClass):
         return self.convertDataToDict(self.getTableData1(h),columnName)
 
     def getTableData1(self,h,parent="table",length=15,child="",selected=False):
+        logger.info("Method Called : getTableData1")
         # handlers = self.compHandlers('table', h)
         try:
             data = {}

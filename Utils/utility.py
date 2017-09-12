@@ -52,6 +52,7 @@ def setupTestcase(self):
     return True
 
 def checkEqualDict(f1,f2,time="",measure="",message="",testcase_id="",doSortingBeforeCheck=False):
+    logger.info("Method Called :checkEqualDict")
     tc_id = "<font color='blue'>" + str(testcase_id) + "</font> "
     msg = tc_id + time + " " + measure + " " + message
 
@@ -88,6 +89,7 @@ def checkEqualDict(f1,f2,time="",measure="",message="",testcase_id="",doSortingB
             logger.info(msg1+"  :: " +k+" ::  "+" Expected: "+str(f1[k])+" Actual: key not present :"+str(k)+tcFail)
 
 def checkEqualAssert(expected, actual, time="", measure="", message="",testcase_id=""):
+    logger.info("Method Called :checkEqualAssert")
     tc_id = "<font color='blue'>" + str(testcase_id) + "</font> "
     msg = tc_id + time + " " + measure + " " + message
 
@@ -133,7 +135,7 @@ def get_str(x):
     return str(''.join(ele for ele in x if not (ele.isdigit() or ele == '.')))
 
 def checkEqualValueAssert(expected, actual, time="", measure="", message="",testcase_id=""):
-
+    logger.info("Method Called :checkEqualValueAssert")
     tc_id = "<font color='blue'>" + str(testcase_id) + "</font> "
     msg = tc_id + time + " " + measure + " " + message
 

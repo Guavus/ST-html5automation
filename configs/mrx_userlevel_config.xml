@@ -69,6 +69,7 @@
     </availableClassesForDE>
 
     <testcaseMappingWithMethod_DE>
+        <!--TestCase Mapping for cover testcase related to method only -->
         <method id="Device Category" testcase="MKR-1970"/>
         <method id="Device OS" testcase="MKR-1971"/>
         <method id="Device Manufacturer" testcase="MKR-1973"/>
@@ -82,6 +83,7 @@
     </testcaseMappingWithMethod_DE>
 
     <testcaseMappingWithMeasure_DE>
+        <!--TestCase Mapping for cover testcase related to measure only -->
         <measure id = "Volume (Download)" testcase="MKR-3219" /> 
         <measure id = "Volume (Upload)" testcase="MKR-3218" /> 
         <measure id = "Volume" testcase="MKR-3217" />  

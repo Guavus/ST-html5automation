@@ -9,6 +9,7 @@ Delimiter=' , '
 DictContainingTree={}
 
 def getDEPopupHeaderText(setup,screenName,index=0,parent='allspans',child='span'):
+    logger.info("Method Called : getDEPopupHeaderText")
     handle = getHandle(setup,screenName,parent)
     if len(handle[parent][child])>0:
         return str(handle[parent][child][index].text)
@@ -319,7 +320,7 @@ def setFilters(setup,udpScreenInstance,tab_name,method_Index,selectedMethod,meth
         return filterSelected
 
 
-def getUDPFiltersToolTipData(screenName,setup,selectedMethod):
+def getUDPFiltersToolTipData(screenName,setup,selectedMethod,parent="filterArea"):
     segment_Keys =setup.cM.getAllNodeElements("segmenntFilters","filter")
     device_Keys  = setup.cM.getAllNodeElements("deviceFilters","filter")
     network_Keys = setup.cM.getAllNodeElements("networkFilters","filter")
@@ -332,7 +333,8 @@ def getUDPFiltersToolTipData(screenName,setup,selectedMethod):
     contentKeys, methodIndexForContent = del_Key_ForSelectedMethod(content_Keys, selectedMethod)
     usageKeys, methodIndexForUsage = del_Key_ForSelectedMethod(usage_Keys, selectedMethod)
 
-    actualFilters = insertKeys(getToolTipData(setup,getHandle(setup,screenName)),segmentKeys+deviceKeys+networkKeys+contentKeys+usageKeys)
+    handle=getHandle(setup,screenName,parent)
+    actualFilters = insertKeys(getToolTipData(setup,handle),segmentKeys+deviceKeys+networkKeys+contentKeys+usageKeys)
     return actualFilters
 
 
@@ -349,11 +351,15 @@ def insertKeys(dictionary,keys):
 def getToolTipData(setup, h, parent="filterArea", tooltip_parent = "globalfiltertooltip", child="filterText", screenName=MRXConstants.DEPOPUP, flag=True):
     try:
         logger.info("Performing Hover action on Filter text Area")
-        ActionChains(setup.d).move_to_element(h[parent][child][0]).perform()
-        tooltipHandle = getHandle(setup,screenName,tooltip_parent)
-        filters = getAllSelectedFilters(tooltipHandle,tooltip_parent,child,flag=flag)
-        logger.info("Got Tooltip data = %s",str(filters))
-        return filters
+        if len(h[parent][child])>0:
+            ActionChains(setup.d).move_to_element(h[parent][child][0]).perform()
+            tooltipHandle = getHandle(setup,screenName,tooltip_parent)
+            filters = getAllSelectedFilters(tooltipHandle,tooltip_parent,child,flag=flag)
+            logger.info("Got Tooltip data = %s",str(filters))
+            return filters
+        else:
+            logger.debug("No any Text Found For Hover")
+            return {}
     except Exception as e:
         logger.error("Got Exception while getting tooltip data for Global Filters = %s",str(e))
         return e

@@ -724,6 +724,7 @@ class BaseComponentClass:
                 return Flag,offset
 
     def getAllTitle(self,h,parent="alltitles", child="title"):
+        logger.info("Method Called : getAllTitle")
         title_List=[]
         try:
             for ele in h[parent][child]:
@@ -736,6 +737,7 @@ class BaseComponentClass:
             return e
 
     def getAllButtonText(self,h,parent="allbuttons", child="button"):
+        logger.info("Method Called : getAllButtonText")
         availableButton=[]
         try:
             for ele in h[parent][child]:
@@ -748,6 +750,7 @@ class BaseComponentClass:
             return e
 
     def getScreenNameFromUI(self,h,parent="alllabels",child='label'):
+        logger.info("Method Called : getScreenNameFromUI")
         try:
             screenName =  str(h[parent][child][0].text)
             logger.info("Got Screen Name = %s",screenName)

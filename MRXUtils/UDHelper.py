@@ -834,6 +834,7 @@ def confirmDelete(setup,screenInstance,filterDetail):
 
 
 def availableQuickLink(setup,screenName,parent='ktrs',child='a',childForCustomClick='datepicker'):
+    logger.info("Method Called : availableQuickLink")
     availableQuickLinkList = []
     h=getHandle(setup, screenName, parent)
     for ele in h[parent][child]:
@@ -846,6 +847,7 @@ def availableQuickLink(setup,screenName,parent='ktrs',child='a',childForCustomCl
 
 
 def availableMeasure(setup,screenName,index=0,parent='allselects',child='select'):
+    logger.info("Method Called : availableMeasure")
     availableMeasureList=[]
     h=getHandle(setup,screenName,parent)
     if len(h[parent][child]) > index:

@@ -38,6 +38,7 @@ class ExploreListComponentClass(BaseComponentClass):
     #             break
 
     def launchModule(self,handlres,text):
+        logger.info("Method Called : launchModule")
         try:
             for el in handlres["appHeader"]["alllinks"]:
                 if text in el.text:

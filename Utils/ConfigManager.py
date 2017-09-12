@@ -67,6 +67,7 @@ class ConfigManager(object):
         return tempDict
 
     def getNodeElements(self,parent,children):
+        logger.info ("Method called : getNodeElements")
         parentConfigs = self.tree.getiterator(parent)
         # screenConfigDetails = []
         tempDict = {}
@@ -79,6 +80,7 @@ class ConfigManager(object):
         return tempDict
 
     def getAllNodeElements(self,parent,children,prop="id"):
+        logger.info ("Method called : getAllNodeElements")
         parentConfigs = self.tree.getiterator(parent)
         # screenConfigDetails = []
         tempDict = []

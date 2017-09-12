@@ -27,11 +27,11 @@ try:
     validateSearch=True
     for class_de,method_de in availableClasses.iteritems():
         deScreenInstance.clickSpanWithTitle(str(class_de),getHandle(setup,MRXConstants.DATAEXTRACTIONSCREEN,'allspans'))
-        tableHandle=getHandle(setup,MRXConstants.DATAEXTRACTIONSCREEN,'table')
-        tableData=deScreenInstance.table.getTableData1(tableHandle)
+        tH=getHandle(setup,MRXConstants.DATAEXTRACTIONSCREEN,'table')
+        tD=deScreenInstance.table.getTableData1(tH)
         expectedListOfMethods=str(method_de['method']).split(',')
 
-        for row in tableData['rows']:
+        for row in tD['rows']:
             if row[0] in expectedListOfMethods:
                 method=row[0]
                 flag=True
@@ -100,9 +100,9 @@ try:
                     expectedTimeEpoch = str(time.time()).split('.')[0]
                     if click_Flag:
                         tableHandle = getHandle(setup, MRXConstants.DATAEXTRACTIONSCREEN,'table')
-                        tableData = deScreenInstance.table.getTableData1(tableHandle)
-                        rowIndex = deScreenInstance.table.getRowIndexFromTable(0, tableHandle, method)
-                        actualTime=tableData['rows'][rowIndex][len(tableData['rows'][rowIndex])-1]
+                        tableData1 = deScreenInstance.table.getTableData1(tableHandle)
+                        rowIndex1 = deScreenInstance.table.getRowIndexFromTable(0, tableHandle, method)
+                        actualTime=tableData1['rows'][rowIndex1][len(tableData1['rows'][rowIndex1])-1]
                         actualTimeEpoch=getepoch(actualTime,tPattern=MRXConstants.TIMEPATTERN,tOffset=MRXConstants.TIMEZONEOFFSET)
                         checkEqualValueAssert(expectedTimeEpoch,str(actualTimeEpoch),message="Verify that the last extraction time gets updated against the method when an extraction is done :: For method ="+str(method),testcase_id="MKR-1981")
 
@@ -128,6 +128,8 @@ except Exception as e:
     isError(setup)
     r = "issue_" + str(random.randint(0, 9999999)) + ".png"
     setup.d.save_screenshot(r)
+    logger.error("Got Exception : %s", str(e))
     logger.debug("Got Exception from Script Level try catch :: Screenshot with name = %s is saved", r)
     resultlogger.debug("Got Exception from Script Level try catch :: Screenshot with name = %s is saved", r)
     setup.d.close()
+    # raise e

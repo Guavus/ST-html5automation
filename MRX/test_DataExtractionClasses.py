@@ -62,6 +62,7 @@ except Exception as e:
     isError(setup)
     r = "issue_" + str(random.randint(0, 9999999)) + ".png"
     setup.d.save_screenshot(r)
+    logger.error("Got Exception : %s", str(e))
     logger.debug("Got Exception from Script Level try catch :: Screenshot with name = %s is saved", r)
     resultlogger.debug("Got Exception from Script Level try catch :: Screenshot with name = %s is saved", r)
     setup.d.close()
