@@ -52,7 +52,10 @@ class TimeRangeComponentClass(QuicklinkTimeRangeComponentClass):
             endtimeEpoch=getepoch(endtime)
             endtimeEpoch=endtimeEpoch-3600
             endtime=getDateString(endtimeEpoch)
-            return starttime.split(" ")[0] + " " + starttime.split(" ")[1] + " " + starttime.split(" ")[2] + " "+Constants.TimeRangeSpliter+" " + endtime.split(" ")[0] + " " + endtime.split(" ")[1] + " " + endtime.split(" ")[2]
+            if starttime.split(" ")[0] + " " + starttime.split(" ")[1] + " " + starttime.split(" ")[2] == endtime.split(" ")[0] + " " + endtime.split(" ")[1] + " " + endtime.split(" ")[2]:
+                return starttime.split(" ")[0] + " " + starttime.split(" ")[1] + " " + starttime.split(" ")[2]
+            else:
+                return starttime.split(" ")[0] + " " + starttime.split(" ")[1] + " " + starttime.split(" ")[2] + " "+Constants.TimeRangeSpliter+" " + endtime.split(" ")[0] + " " + endtime.split(" ")[1] + " " + endtime.split(" ")[2]
         else:
             return starttime+" "+Constants.TimeRangeSpliter+" "+endtime
 
