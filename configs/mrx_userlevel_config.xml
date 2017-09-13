@@ -8,8 +8,8 @@
 
         <!--<starttime id="0" year="2017" month ="05" day="07" hour="00" min="00"/>-->
 
-        <starttime id="0" year="2017" month ="06" day="01" hour="00" min="00"/>
-        <endtime id ="0" year="2017" month ="08" day="17" hour="10" min="00"/>
+        <starttime id="0" year="2017" month ="07" day="01" hour="00" min="00"/>
+        <endtime id ="0" year="2017" month ="09" day="06" hour="00" min="00"/>
 
 
         <starttime id="1" year="2017" month ="02" day="10" hour="19" min="00"/>
@@ -971,7 +971,7 @@
 
 
         <segment id ="3" filters = ' '/>
-        <device id = "3" filters = 'NE,1,2::E,2::NE,1,2::E,2'/>
+        <device id = "3" filters = 'E,1,2::NE,2::E,1,2::NE,2'/>
         <network id = "3" filters = ' :: ::No_Selection_On_Tree:: :: :: '/>
         <content id = "3" filters = 'No_Selection_On_Tree::No_Selection_On_Tree:: :: ::No_Input' inputvalue="guavus.com,facebook.com"/>
         <usage id ="3" filters = ' '/>
