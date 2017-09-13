@@ -155,10 +155,10 @@ def getToggleStateForFilters(udpScreenInstance,setup,selectedMethod,k='0',valida
     usageKeys,methodIndexForUsage = del_Key_ForSelectedMethod(usage_Keys, selectedMethod)
 
     segmentFilters = UDHelper.createFilterMap(getToggleState(setup,udpScreenInstance,"segment",methodIndexForSegment,k=k,validateSearch=validateSearch),segmentKeys)
-    deviceFilters = UDHelper.createFilterMap(getToggleState(setup,udpScreenInstance,"device",methodIndexForSegment,k=k,validateSearch=validateSearch),deviceKeys)
-    networkFilters = UDHelper.createFilterMap(getToggleState(setup,udpScreenInstance,"network",methodIndexForSegment,k=k,validateSearch=validateSearch),networkKeys)
-    contentFilters = UDHelper.createFilterMap(getToggleState(setup,udpScreenInstance,"content",methodIndexForSegment,k=k,validateSearch=validateSearch),contentKeys)
-    usageFilters = UDHelper.createFilterMap(getToggleState(setup,udpScreenInstance,"usage",methodIndexForSegment,k=k,validateSearch=validateSearch),usageKeys)
+    deviceFilters = UDHelper.createFilterMap(getToggleState(setup,udpScreenInstance,"device",methodIndexForDevice,k=k,validateSearch=validateSearch),deviceKeys)
+    networkFilters = UDHelper.createFilterMap(getToggleState(setup,udpScreenInstance,"network",methodIndexForNetwork,k=k,validateSearch=validateSearch),networkKeys)
+    contentFilters = UDHelper.createFilterMap(getToggleState(setup,udpScreenInstance,"content",methodIndexForContent,k=k,validateSearch=validateSearch),contentKeys)
+    usageFilters = UDHelper.createFilterMap(getToggleState(setup,udpScreenInstance,"usage",methodIndexForUsage,k=k,validateSearch=validateSearch),usageKeys)
 
     toggleStateForFilters = merge_dictionaries(merge_dictionaries(merge_dictionaries(merge_dictionaries(segmentFilters,deviceFilters),networkFilters),contentFilters),usageFilters)
     return toggleStateForFilters

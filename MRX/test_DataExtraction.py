@@ -98,25 +98,24 @@ try:
 
                     click_Flag=deScreenInstance.clickButton("Extract Data Set",getHandle(setup, MRXConstants.DEPOPUP, MRXConstants.ALLBUTTONS))
                     expectedTimeEpoch = str(time.time()).split('.')[0]
+                    isError(setup)
                     if click_Flag:
+                        header, data = DEHelper.getCSVData(method,availableMethodMappingWithTestCase[method]['testcase'])
                         tableHandle = getHandle(setup, MRXConstants.DATAEXTRACTIONSCREEN,'table')
                         tableData1 = deScreenInstance.table.getTableData1(tableHandle)
                         rowIndex1 = deScreenInstance.table.getRowIndexFromTable(0, tableHandle, method)
                         actualTime=tableData1['rows'][rowIndex1][len(tableData1['rows'][rowIndex1])-1]
                         actualTimeEpoch=getepoch(actualTime,tPattern=MRXConstants.TIMEPATTERN,tOffset=MRXConstants.TIMEZONEOFFSET)
                         checkEqualValueAssert(expectedTimeEpoch,str(actualTimeEpoch),message="Verify that the last extraction time gets updated against the method when an extraction is done :: For method ="+str(method),testcase_id="MKR-1981")
+                        checkEqualAssert([str(method),str(measureFromPopup)],header,message="Verify csv header for measure ="+str(measureFromPopup) +" Method ="+str(method),testcase_id=availableMeasureMappingWithTestCase[str(measureFromPopup).strip()]['testcase'])
+                        checkEqualValueAssert(True,int(toprowsFromPopup)>=len(data),message="Validate the CSV from the Top Rows button :: TopRow Value ="+str(toprowsFromPopup),testcase_id="MKR-3215")
 
-                    header,data=DEHelper.getCSVData(method,availableMethodMappingWithTestCase[method]['testcase'])
-                    isError(setup)
+                        #deScreenInstance.clickIcon(getHandle(setup, MRXConstants.DEPOPUP,'icons'), child='closePopupIcon')
 
-                    checkEqualAssert([str(method),str(measureFromPopup)],header,message="Verify csv header for measure ="+str(measureFromPopup) +" Method ="+str(method),testcase_id=availableMeasureMappingWithTestCase[str(measureFromPopup).strip()]['testcase'])
-                    checkEqualValueAssert(True,int(toprowsFromPopup)>=len(data),message="Validate the CSV from the Top Rows button :: TopRow Value ="+str(toprowsFromPopup),testcase_id="MKR-3215")
+                        DEHelper.fireBV(queryFromUI, AvailableMethod.Top_Row, quicklink[str(i)]['table'], header,data,testcase=availableMethodMappingWithTestCase[method]['testcase'])
 
-                    #deScreenInstance.clickIcon(getHandle(setup, MRXConstants.DEPOPUP,'icons'), child='closePopupIcon')
-
-                    DEHelper.fireBV(queryFromUI, AvailableMethod.Top_Row, quicklink[str(i)]['table'], header,data,testcase=availableMethodMappingWithTestCase[method]['testcase'])
                     flag = False
-                    validateSearch=False
+                validateSearch=False
 
             else:
                 logger.error("Following Method Not Expected, Check Manually :: %s",str(row[0]))
