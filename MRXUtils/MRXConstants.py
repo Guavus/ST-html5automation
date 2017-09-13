@@ -35,6 +35,7 @@ class MRXConstants(Constants):
     NUMBEROFFILTERSCENARIO = 6
     NUMBEROFFILTERSCENARIOFORDE=2
     SEGMENT_TABLE_AT_BACKEND='campaign'
+    DE_PGSQL_TABLE="de_last_extraction"
     DATAEXTRACTIONSCREENLABLE='Data Extraction'
     AvailableClassesOnDE=['Device','Network','Content','Usage']
 

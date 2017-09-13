@@ -1154,5 +1154,20 @@
       <dimension id = "Access" backEnd_ID="visibility" />   
   </segment_Table_Mapping>
 
+  <DE_Table_Pgsql_Mapping>
+      <header id="Method" backEnd_ID="method_name"/>
+      <header id="Last Extraction Date" backEnd_ID="last_extracted"/>
+      <method id="Device Category" backEnd_ID="deviceCategory"/>
+      <method id="Device OS" backEnd_ID="deviceOS"/>
+      <method id="Device Manufacturer" backEnd_ID="deviceManufacturer"/>
+      <method id="Device Model" backEnd_ID="deviceModel"/>
+      <method id="Radio Access Type" backEnd_ID="radioAccessType"/>
+      <method id="APN" backEnd_ID="APN"/>
+      <method id="Application" backEnd_ID="application"/>
+      <method id="Web Domain" backEnd_ID="webDomain"/>
+      <method id="Content Interest" backEnd_ID="contentInterest"/>
+      <method id="Global Data Service" backEnd_ID="globalDataService"/>
+  </DE_Table_Pgsql_Mapping>
+
 
 </data>
