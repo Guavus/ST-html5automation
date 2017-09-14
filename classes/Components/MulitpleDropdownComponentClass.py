@@ -274,6 +274,7 @@ class MulitpleDropdownComponentClass(DropdownComponentClass):
                 valueList=self.getOptionsAvailable_MRX(h,index,parent=parent)
                 activeDropDowns[index].click()
                 return valueList
+        return []
 
     def getHeader(self,h,index,parent="picker",child="multiselect-dropdown"):
         return h[parent][child][index].find_elements_by_css_selector("[class*=PickerHeaderClass]")[0].text.strip().strip('\n').strip()

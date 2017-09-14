@@ -108,7 +108,7 @@ try:
                         actualTimeEpoch=getepoch(actualTime,tPattern=MRXConstants.TIMEPATTERN,tOffset=MRXConstants.TIMEZONEOFFSET)
                         checkEqualValueAssert(expectedTimeEpoch,str(actualTimeEpoch),message="Verify that the last extraction time gets updated against the method when an extraction is done :: For method ="+str(method),testcase_id="MKR-1981")
                         checkEqualAssert([str(method),str(measureFromPopup)],header,message="Verify csv header for measure ="+str(measureFromPopup) +" Method ="+str(method),testcase_id=availableMeasureMappingWithTestCase[str(measureFromPopup).strip()]['testcase'])
-                        checkEqualValueAssert(True,int(toprowsFromPopup)>=len(data),message="Validate the CSV from the Top Rows button :: TopRow Value ="+str(toprowsFromPopup),testcase_id="MKR-3215")
+                        checkEqualAssert(True,int(toprowsFromPopup)>=len(data),message="Validate the CSV from the Top Rows button :: TopRow Value ="+str(toprowsFromPopup),testcase_id="MKR-3215")
 
                         #deScreenInstance.clickIcon(getHandle(setup, MRXConstants.DEPOPUP,'icons'), child='closePopupIcon')
 
