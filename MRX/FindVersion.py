@@ -14,7 +14,7 @@ try:
     login(setup,Constants.USERNAME,Constants.PASSWORD)
     exploreScreenInstance = ExplorePageClass(setup.d)
     exploreHandle = getHandle(setup, "explore_Screen")
-    if exploreScreenInstance.exploreList.clickOnHelpIcon(exploreHandle,parent='appHeader',child='helpIcon'):
+    if exploreScreenInstance.exploreList.clickOnIcon(exploreHandle):
         if exploreScreenInstance.exploreList.launchModule(getHandle(setup, "explore_Screen"),'About'):
             version=find_VersionFromUI("AboutUs_Screen")
 

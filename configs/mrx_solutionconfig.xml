@@ -33,6 +33,10 @@
 
     <screenConfigs>
 
+        <screenConfig id = "workflowstart_Screen">
+            <component id ="screenbody" selector="tag name" locator="kiwik-workflow" parent="True"/>
+        </screenConfig>
+
         <screenConfig id = "de_Screen">
             <component id="allspans" selector="css selector" locator="div.menuContainer" parent="True" />
             <component id='table' selector="id" locator="DE_Table_Container" parent="True" />
@@ -52,7 +56,8 @@
             <!--<component id ="selectionchartcontainer" selector="css selector" locator="div.selectionChartContainer" parent="True"/>-->
             <!--<component id ="screenheader" selector="css selector" locator='[class="crud_header"]' parent="True" />-->
             <component id = 'globalfiltertooltip' selector="css selector" locator="[class*=tooltipBox]" parent="True"/>
-
+            <component id = "ktrs" selector="tag name" locator="kiwik-ktrs" parent="True"/>
+            <component id = "allselects" selector="css selector" locator="div.ud-container" parent="True" />
         </screenConfig>
 
         <screenConfig id ="createsegment_popup">
@@ -64,12 +69,12 @@
 
         <screenConfig id="udp_popup">
             <!--<component id = "timeRangeDiv" selector="id" locator="ud_timeRangeDiv" parent="True"/>-->
-            <component id = "ktrs" selector="tag name" locator="kiwik-ktrs" parent="True"/>
+            <!--<component id = "ktrs" selector="tag name" locator="kiwik-ktrs" parent="True"/>-->
             <component id = "filterPopup" selector="id" locator="filterPopup" parent="True"/>
             <component id = "icons" selector="css selector" locator="div.filterPopup" parent="True"/>
             <component id = "allbuttons" selector="class name" locator="footerDiv" parent="True" />
             <component id = "allspans" selector="class name" locator="headerDiv" parent="True" />
-            <component id = "allselects" selector="css selector" locator="div.filterPopup" parent="True" />
+            <!--<component id = "allselects" selector="css selector" locator="div.filterPopup" parent="True" />-->
             <component id = "alllinks" selector="class name" locator="filterTabs" parent="True" />
             <component id = "alltrees" selector="css selector" locator="div.filterPopup" parent="True"/>
             <component id = "allinputs" selector="css selector" locator="div.filterPopup" parent="True"/>
@@ -100,7 +105,7 @@
 
 
         <screenConfig id="availableFilterList">
-            <component id ='availablefilter' selector="css selector" locator="div.filterPopup" parent="True"/>
+            <!--<component id ='availablefilter' selector="css selector" locator="div.filterPopup" parent="True"/>-->
             <component id ='filterTab' selector="css selector" locator="div.filterTabs" parent="True"/>
         </screenConfig>
 
@@ -282,6 +287,9 @@
             <component id="slider" selector="css selector" locator="div.slider.round"/>
         </componentConfig>
 
+        <componentConfig id ="screenbody">
+            <component id = "workflowstart" selector="tag name" locator="mural-workflow-start"/>
+        </componentConfig>
 
         <componentConfig id="filterArea">
             <component id="nofilterIcon" selector="css selector" locator="div.nofilterSelectedIcon"/>

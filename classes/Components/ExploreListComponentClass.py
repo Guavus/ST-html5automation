@@ -10,21 +10,21 @@ class ExploreListComponentClass(BaseComponentClass):
                 return elHandler
         return False
 
-    def clickOnHelpIcon(self,handlres,parent,child):
+    def clickOnIcon(self,handlres,parent='appHeader',child='helpIcon',icon="help"):
+        #Child help icon means not only help icon but all icons on app heder
+        logger.info("Method Called : clickOnIcon")
         try:
             for handle in handlres[parent][child]:
                 if len(handle.find_elements_by_tag_name('img'))>0:
-                    if 'help' in handle.find_elements_by_tag_name('img')[0].get_attribute('src'):
+                    if icon in str(handle.find_elements_by_tag_name('img')[0].get_attribute('src')).lower():
                         handle.click()
                         return True
         except Exception as e:
-            logger.error("Exception found while clicking on HelpIcon")
+            logger.error("Exception found while clicking on %s Icon",icon)
             return e
 
-        logger.debug("HelpIcon Not Found")
+        logger.debug("%s Icon Not Found",icon)
         return False
-
-
 
     def launchScreen(self,handlres,parent,child):
         # h = self.compHandlers(parent,handlres)

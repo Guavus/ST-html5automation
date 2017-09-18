@@ -7,12 +7,14 @@ import datetime
 Delimiter=' , '
 
 def button_Status(condition,request,screenInstance,setup,screen=MRXConstants.POPUPSCREEN,button_label="Create",testcase_id=''):
+    logger.info("Method Called :button_Status ")
     button_status=screenInstance.cm.isButtonEnabled(button_label,getHandle(setup, screen,"allbuttons"))
     checkEqualAssert(condition,button_status,message="Checking State of "+button_label+ " button ::" +request,testcase_id=testcase_id)
     return button_status
 
 
 def setUDPFilters(udpScreenInstance, setup, k='0',toggleStateFlag=False):
+    logger.info("Method Called : setUDPFilters")
     segmentKeys=setup.cM.getAllNodeElements("segmenntFilters","filter")
     deviceKeys = setup.cM.getAllNodeElements("deviceFilters","filter")
     networkKeys = setup.cM.getAllNodeElements("networkFilters","filter")
@@ -39,6 +41,7 @@ def setUDPFilters(udpScreenInstance, setup, k='0',toggleStateFlag=False):
 
 
 def getToggleStateForFilters(udpScreenInstance,setup,k='0',validateSearch=False):
+    logger.info("Method Called : getToggleStateForFilters")
     segmentKeys=setup.cM.getAllNodeElements("segmenntFilters","filter")
     deviceKeys = setup.cM.getAllNodeElements("deviceFilters","filter")
     networkKeys = setup.cM.getAllNodeElements("networkFilters","filter")
@@ -58,6 +61,7 @@ def getToggleStateForFilters(udpScreenInstance,setup,k='0',validateSearch=False)
 
 
 def getToggleState(setup,udpScreenInstance,tab_name,k ="0",validateSearch=False):
+    logger.info("Method Called : getToggleState")
     udp_filter= parseFilters(setup.cM.getNodeElements("udpScreenFilters",tab_name))
     udpfilters= setup.cM.getNodeElements("udpfilters","filter")
     udpScreenInstance.clickLink(udpfilters[tab_name]['locatorText'],getHandle(setup,MRXConstants.UDPPOPUP,MRXConstants.ALLLINKS))
@@ -118,7 +122,7 @@ def setQuickLink_Measure(setup,udScreenInstance,i='0'):
     measure = setup.cM.getNodeElements("udpScreenFilters", 'measure')
     if quicklink[str(i)]['locatorText'] == 'CustomClick':
         selectedQuicklink=quicklink[str(i)]['locatorText']
-        calHandler = getHandle(setup, MRXConstants.UDPPOPUP, "ktrs")
+        calHandler = getHandle(setup, MRXConstants.UDSCREEN, "ktrs")
         logger.info("Launching Calendar from UDP Popup")
         calHandler['ktrs']['datepicker'][0].click()
         logger.info("Calendar picker is clicked")
@@ -165,22 +169,19 @@ def setQuickLink_Measure(setup,udScreenInstance,i='0'):
         # Closing Calendar Pop Up
         udScreenInstance.clickButton("Apply",getHandle(setup, Constants.CALENDERPOPUP, Constants.ALLBUTTONS))
         logger.info("Calendar Selection done at Filter Popup = %s ", valueFromCalender)
-        t1 = udScreenInstance.timeBar.getLabel(getHandle(setup, MRXConstants.UDPPOPUP, "ktrs"))
+        t1 = udScreenInstance.timeBar.getLabel(getHandle(setup, MRXConstants.UDSCREEN, "ktrs"))
         checkEqualAssert(valueFromCalender, t1, selectedQuicklink, "", "verify quicklink label")
 
     else:
-        udScreenInstance.timeBar.setQuickLink(quicklink[str(i)]['locatorText'], getHandle(setup, MRXConstants.UDPPOPUP, "ktrs"))
+        udScreenInstance.timeBar.setQuickLink(quicklink[str(i)]['locatorText'], getHandle(setup, MRXConstants.UDSCREEN, "ktrs"))
         isError(setup)
-        selectedQuicklink = udScreenInstance.timeBar.getSelectedQuickLink(getHandle(setup, MRXConstants.UDPPOPUP, "ktrs"))
+        selectedQuicklink = udScreenInstance.timeBar.getSelectedQuickLink(getHandle(setup, MRXConstants.UDSCREEN, "ktrs"))
         t = TimeRangeComponentClass().get_Label(str(quicklink[str(i)]['locatorText']).replace(' ','').lower())
-        t1 = udScreenInstance.timeBar.getLabel(getHandle(setup, MRXConstants.UDPPOPUP, "ktrs"))
-        checkEqualAssert(t[1], t1, selectedQuicklink, "", "verify quicklink label")
+        t1 = udScreenInstance.timeBar.getLabel(getHandle(setup, MRXConstants.UDSCREEN, "ktrs"))
+        checkEqualAssert(t[1], t1, selectedQuicklink,message="verify quicklink label")
 
-    selectedMeasure = udScreenInstance.dropdown.doSelectionOnVisibleDropDown(getHandle(setup, MRXConstants.UDPPOPUP, "allselects"), str(measure[str(i)]['locatorText']), index=0, parent="allselects")
-    if quicklink[str(i)]['locatorText']!='CustomClick':
-        timeRangeFromPopup=str(t1+" ("+selectedQuicklink.strip()+")").strip()
-    else:
-        timeRangeFromPopup = str(t1)
+    selectedMeasure = udScreenInstance.dropdown.doSelectionOnVisibleDropDown(getHandle(setup, MRXConstants.UDSCREEN, "allselects"), str(measure[str(i)]['locatorText']), index=0, parent="allselects")
+    timeRangeFromPopup = str(t1)
     measureFromPopup=str(selectedMeasure).strip()
 
     return timeRangeFromPopup,measureFromPopup
@@ -356,15 +357,15 @@ def setFilters(setup,udpScreenInstance,tab_name,k ="0",toggleStateFlag=False):
         return filterSelected
 
 
-def getUDPFiltersToolTipData(screenName,setup):
+def getUDPFiltersToolTipData(screenName,setup,parent="filterArea"):
     segmentKeys = setup.cM.getAllNodeElements("segmenntFilters", "filter")
     deviceKeys = setup.cM.getAllNodeElements("deviceFilters", "filter")
     networkKeys = setup.cM.getAllNodeElements("networkFilters", "filter")
     contentKeys = setup.cM.getAllNodeElements("contentFilters", "filter")
     usageKeys = setup.cM.getAllNodeElements("usageFilters", "filter")
 
-
-    actualFilters = insertKeys(getToolTipData(setup,getHandle(setup,screenName)),segmentKeys+deviceKeys+networkKeys+contentKeys+usageKeys)
+    handle = getHandle(setup, screenName,parent)
+    actualFilters = insertKeys(getToolTipData(setup,handle),segmentKeys+deviceKeys+networkKeys+contentKeys+usageKeys)
     return actualFilters
 
 
@@ -381,7 +382,7 @@ def insertKeys(dictionary,keys):
 def getToolTipData(setup,h,parent="filterArea",tooltip_parent = "globalfiltertooltip",child="filterText",screenName=MRXConstants.UDPPOPUP,flag=True):
     try:
         logger.info("Performing Hover action on UDP Filter text Area")
-        setup.dH.action.move_to_element(h[parent][child][0]).perform()
+        ActionChains(setup.d).move_to_element(h[parent][child][0]).perform()
         tooltipHandle = getHandle(setup,screenName,tooltip_parent)
         filters = getAllSelectedFilters(tooltipHandle,tooltip_parent,child,flag=flag)
         logger.info("Got Tooltip data = %s",str(filters))
@@ -504,6 +505,13 @@ def verifySummaryWithTable(setup,screenName,screenInstance,data,parent='summary_
     return textFromSummary
 
 
+def isSameSegmentPresent(h,screenInstance,parent="allspans",child="span",key_Class='titleSpan'):
+    logger.info("Method Called : isSameSegmentPresent")
+    for span in h[parent][child]:
+        if span.get_attribute('class') == key_Class and screenInstance.rgb_to_hex(span.value_of_css_property('color'))==Constants.REDCOLOR:
+            return True,str(span.text).strip()
+    return False,""
+
 def createSegmentFromUD(setup,screenInstance,segment_Input):
     popUpDetails=[]
     key_Class='titleSpan'
@@ -514,16 +522,16 @@ def createSegmentFromUD(setup,screenInstance,segment_Input):
     ##############################################################################
     key_list=[]
     value_list=[]
+    detailFromUI_Dict = {}
     for span in popUpHandle['allspans']['span']:
         if span.get_attribute('class') == key_Class and len(key_list)<5:
-            key_list.append(str(span.text))
+            key_list.append(str(span.text).strip())
         elif span.get_attribute('class') == value_Class and len(value_list)<5:
-            value_list.append(str(span.text))
+            value_list.append(str(span.text).strip())
         if len(key_list)==4 and len(value_list)==4:
             break
 
     if len(key_list)==len(value_list):
-        detailFromUI_Dict={}
         for i in range(len(key_list)):
             detailFromUI_Dict[key_list[i]]=value_list[i]
 
@@ -549,7 +557,7 @@ def createSegmentFromUD(setup,screenInstance,segment_Input):
         popUpDetails.append(segment_Input['status'])
 
     popUpDetails.append(MRXConstants.Source_User_Distribution)
-    popUpDetails.append('admin')
+    popUpDetails.append(Constants.USERNAME)
 
     logger.info('Going to Enter Access = %s', segment_Input['access'])
     resultlogger.info('Going to Enter Access = %s', segment_Input['access'])
@@ -565,10 +573,19 @@ def createSegmentFromUD(setup,screenInstance,segment_Input):
 
     if segment_Input['button'] == 'Create' and button_status:
         logger.info('Going to Click on %s Button ', segment_Input['button'])
-        click_status = screenInstance.cm.clickButton(str(segment_Input['button']), popUpHandle)
-        checkEqualAssert(True, click_status, "", "","Verify whether " + segment_Input['button'] + " button clicked or not")
-        logger.info("********Folowing Updated Data added into table =%s ************", popUpDetails)
-        return popUpDetails,detailFromUI_Dict,textFromPopUp
+        flag,msg=isSameSegmentPresent(getHandle(setup,MRXConstants.POPUPSCREEN,'allspans'),screenInstance)
+        if not flag:
+            click_status = screenInstance.cm.clickButton(str(segment_Input['button']),getHandle(setup, MRXConstants.POPUPSCREEN, 'allbuttons'))
+            checkEqualAssert(True, click_status, "", "","Verify whether " + segment_Input['button'] + " button clicked or not")
+            logger.info("********Folowing Updated Data added into table =%s ************", popUpDetails)
+            return popUpDetails,detailFromUI_Dict,textFromPopUp
+        else:
+            logger.info("************Same Segment Name Exist***********")
+            button_Status(False, "After Entering Same Segment Name", screenInstance, setup)
+            checkEqualAssert(MRXConstants.MSGFORSAMESEGMENT,msg,message="Validating Error msg for Same Segement")
+            screenInstance.cm.clickButton('Cancel', getHandle(setup,MRXConstants.POPUPSCREEN,'allbuttons'))
+            return [], detailFromUI_Dict, textFromPopUp
+
 
     elif segment_Input['button'] == 'Cancel' and cancel_button_status:
         logger.info('Going to Click on %s Button ', segment_Input['button'])
@@ -688,23 +705,27 @@ def loadFilterFormSaveFilter(setup,screenName,filterDetail):
         return False
 
 
-def checkDefaultFilter(setup,screenInstance,screenName,exploreScreen,filterDetail,expected_filter,timeRangeFromPopup,measureFromPopup):
+def checkDefaultFilter(setup,screenInstance,exploreScreen,filterDetail,expected_filter):
     if filterDetail['default']=='1':
         exploreHandle = getHandle(setup,exploreScreen)
         if len(exploreHandle['appHeader']['alllinks']) > 0:
-            screenInstance.explore.exploreList.clickOnLinkByValue(exploreHandle, Constants.USERNAME)
+            screenInstance.explore.exploreList.clickOnIcon(exploreHandle, icon='profile')
             exploreHandle = getHandle(setup, exploreScreen)
             screenInstance.explore.exploreList.clickOnLinkByValue(exploreHandle, MRXConstants.Logout)
             time.sleep(5)
             login(setup, Constants.USERNAME, Constants.PASSWORD)
             exploreHandle = getHandle(setup, exploreScreen)
-            screenInstance.explore.exploreList.launchModule(exploreHandle, "USER DISTRIBUTION")
-            screenHandle = getHandle(setup, screenName, 'time_measure')
-            timeRangeFromScreen = str(screenHandle['time_measure']['span'][0].text).strip()
-            measureFromScreen = str(screenHandle['time_measure']['span'][1].text).strip()
+
+            screenInstance.explore.exploreList.launchModule(exploreHandle, "WORKFLOWS")
+            screenInstance.wfstart.launchScreen("Distribution", getHandle(setup, MRXConstants.WFSCREEN))
+            time.sleep(5)
+
+            # screenHandle = getHandle(setup, screenName, 'time_measure')
+            # timeRangeFromScreen = str(screenHandle['time_measure']['span'][0].text).strip()
+            # measureFromScreen = screenInstance.dropdown.getSelectionOnVisibleDropDown(getHandle(setup, MRXConstants.UDSCREEN, "allselects"))
             udpFilterFromScreen = getUDPFiltersFromScreen(MRXConstants.UDSCREEN, setup)
-            checkEqualAssert(timeRangeFromPopup,timeRangeFromScreen,message='Verify timeRange For default loaded filter (Part of mention TC)',testcase_id='MKR-1802')
-            checkEqualAssert(measureFromPopup,measureFromScreen,message='Verify measuer For default loaded filter (Part of mention TC)',testcase_id='MKR-1802')
+            # checkEqualAssert(timeRangeFromPopup,timeRangeFromScreen,message='Verify timeRange For default loaded filter (Part of mention TC)',testcase_id='MKR-1802')
+            # checkEqualAssert(measureFromPopup,measureFromScreen,message='Verify measuer For default loaded filter (Part of mention TC)',testcase_id='MKR-1802')
             checkEqualDict(expected_filter,udpFilterFromScreen, message="Verify that default filter gets applied automatically on re-logins for this user", doSortingBeforeCheck=True,testcase_id='MKR-1802')
 
 
@@ -721,13 +742,17 @@ def removeAndVerifyDefaultFilter(setup,screenInstance,screenName,exploreScreen,f
             screenInstance.clickButton("Cancel", getHandle(setup, MRXConstants.LFPOPUP, Constants.ALLBUTTONS))
             exploreHandle = getHandle(setup, exploreScreen)
             if len(exploreHandle['appHeader']['alllinks']) > 0:
-                screenInstance.explore.exploreList.clickOnLinkByValue(exploreHandle, Constants.USERNAME)
+                screenInstance.explore.exploreList.clickOnIcon(exploreHandle, icon='profile')
                 exploreHandle = getHandle(setup, exploreScreen)
                 screenInstance.explore.exploreList.clickOnLinkByValue(exploreHandle, MRXConstants.Logout)
                 time.sleep(5)
                 login(setup, Constants.USERNAME, Constants.PASSWORD)
                 exploreHandle = getHandle(setup, exploreScreen)
-                screenInstance.explore.exploreList.launchModule(exploreHandle, "USER DISTRIBUTION")
+
+                screenInstance.explore.exploreList.launchModule(exploreHandle, "WORKFLOWS")
+                screenInstance.wfstart.launchScreen("Distribution", getHandle(setup, MRXConstants.WFSCREEN))
+                time.sleep(5)
+
                 udpFilterFromScreen = getUDPFiltersFromScreen(MRXConstants.UDSCREEN, setup)
                 checkEqualAssert(MRXConstants.NO_FILTER, udpFilterFromScreen,message="Verify that a user can remove a filter from being a default filter",testcase_id='MKR-1803')
 
@@ -765,7 +790,7 @@ def deleteSaveFilter(setup,screenName,screenInstance,filterDetail,parent='loadfi
         h=getHandle(setup,screenName,parent)
         for ele in h[parent][child]:
             if filterDetail['filtername'] in str(ele.text).split('\n'):
-                setup.dH.action.move_to_element(ele).perform()
+                ActionChains(setup.d).move_to_element(ele).perform()
                 time.sleep(2)
                 ele.find_element_by_class_name('deleteBtn').click()
                 flag=confirmDelete(setup,screenInstance,filterDetail)
@@ -774,7 +799,10 @@ def deleteSaveFilter(setup,screenName,screenInstance,filterDetail,parent='loadfi
                     checkEqualAssert(False,filter_dict.has_key(filterDetail['filtername']),message='Verify filter delete successfully',testcase_id='MKR-1804')
                 else:
                     checkEqualAssert(True, filter_dict.has_key(filterDetail['filtername']),message='Verify filter not deleted if press Cancel')
+
+                screenInstance.clickButton("Cancel", getHandle(setup, screenName, Constants.ALLBUTTONS))
                 return
+        screenInstance.clickButton("Cancel", getHandle(setup,screenName,Constants.ALLBUTTONS))
     except:
         logger.error('Not able click on delete button')
         return
@@ -785,7 +813,7 @@ def editSaveFilter(setup,screenName,screenInstance,filterDetail,parent='loadfilt
         h=getHandle(setup,screenName,parent)
         for ele in h[parent][child]:
             if filterDetail['filtername'] in str(ele.text).split('\n'):
-                setup.dH.action.move_to_element(ele).perform()
+                ActionChains(setup.d).move_to_element(ele).perform()
                 time.sleep(2)
                 ele.find_element_by_class_name('renameBtn').click()
 
@@ -981,7 +1009,7 @@ def hoverOverTicksGetMainChartText(setup, h1, parent="body", child="lineChartCom
         tooltipText={}
         for el in pointHandle:
             logger.info("Going to perform Hover Action")
-            setup.dH.action.move_to_element(el).click().perform()    #### Start and End point Hover pending ##########
+            ActionChains(setup.d).move_to_element(el).click().perform()    #### Start and End point Hover pending ##########
             if type(el.get_attribute('aria-describedby'))==unicode:
                 logger.info("Hover Action Performed")
                 # transformValue="translate("+str(el.get_attribute('cx'))+",0)"

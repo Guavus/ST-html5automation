@@ -46,7 +46,7 @@ try:
     tableHandle = getHandle(setup, MRXConstants.SEGMENTSCREEN, 'table')
     tableMap = segmentScreenInstance.table.getTableDataMap(tableHandle, driver=setup)
     for value_1 in column_0_ValueFromTable:
-        if 'auto' in value:
+        if 'auto' in value_1:
             checkEqualAssert(False, tableMap['rows'].has_key(str(value_1)),message='Verify Segment ='+ str(value_1)+" Deleted Successfully",testcase_id='MKR-1701')
 
     setup.d.close()

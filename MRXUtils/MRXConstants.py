@@ -28,20 +28,21 @@ class MRXConstants(Constants):
     ExploreScreen="explore_Screen"
     AvailableFilterList='availableFilterList'
     Logout='Logout'
-    NO_FILTER='No filters'
+    NO_FILTER='Filters'
     SearchValue='h'
 
     TimeRangeSpliter='-'
-    NUMBEROFFILTERSCENARIO = 6
+    NUMBEROFFILTERSCENARIO = 3
     NUMBEROFFILTERSCENARIOFORDE=2
     SEGMENT_TABLE_AT_BACKEND='campaign'
     DE_PGSQL_TABLE="de_last_extraction"
     DATAEXTRACTIONSCREENLABLE='Data Extraction'
+    WFSCREEN="workflowstart_Screen"
     AvailableClassesOnDE=['Device','Network','Content','Usage']
 
     MinimumUserConfig=15
     Source_User_Distribution='User Distribution'
-    ExpectedFilterOption = ['Time Range','Measure','Segmentation Filters','Device Filters','Network Filters','Content Filters','Usage Filters']
+    ExpectedFilterOption = ['Segmentation Filters','Device Filters','Network Filters','Content Filters','Usage Filters']
     ExpectedFilterOptionForDE = ['Time Range', 'Measure', 'Top Rows (leave blank for All)', 'Segmentation Filters', 'Device Filters', 'Network Filters','Content Filters', 'Usage Filters']
     ExpectedQuickLinkList= ['Last 30 days','Last 7 days','Yesterday','Last 24 hours','Last 4 hours','Today','Calender']
     #ExpectedMeasure=['Volume (Upload)','Volume (Download)','Volume','# Session']

@@ -5,6 +5,7 @@ from classes.Components.TableComponentClass import *
 from classes.Pages.GlobalFiltersPopClass import *
 from classes.Components.TreeComponentClass import *
 from classes.Components.TimeRangeComponentClass import *
+from classes.Components.WorkflowStartComponent import *
 
 class UDScreenClass(BasePopClass):
     def __init__(self,driver):
@@ -22,5 +23,6 @@ class UDScreenClass(BasePopClass):
         self.tree = TreeComponentClass(driver)
         self.timeBar = TimeRangeComponentClass()
         self.explore=ExplorePageClass(driver)
+        self.wfstart=WorkflowStartComponentClass()
         # Common Components
         BasePopClass.__init__(self,driver)

@@ -17,12 +17,11 @@ try:
     login(setup, Constants.USERNAME, Constants.PASSWORD)
     udScreenInstance = UDScreenClass(setup.d)
     exploreHandle = getHandle(setup, MRXConstants.ExploreScreen)
-    udScreenInstance.explore.exploreList.launchModule(exploreHandle, "USER DISTRIBUTION")
+    udScreenInstance.explore.exploreList.launchModule(exploreHandle, "WORKFLOWS")
+    udScreenInstance.wfstart.launchScreen("Distribution", getHandle(setup, MRXConstants.WFSCREEN))
+    time.sleep(5)
 
-    UDHelper.clearFilter(setup, MRXConstants.UDSCREEN)
-    SegmentHelper.clickOnfilterIcon(setup, MRXConstants.UDSCREEN, 'nofilterIcon')
-
-    launchCalendar(setup,MRXConstants.UDPPOPUP)
+    launchCalendar(setup, MRXConstants.UDSCREEN)
 
     st = ConfigManager().getNodeElements("availabletimerange", "starttime")[str(0)]
     et = ConfigManager().getNodeElements("availabletimerange", "endtime")[str(0)]
@@ -33,23 +32,15 @@ try:
     stepoch = getepoch(stime.datestring, MRXConstants.TIMEZONEOFFSET, "%Y-%m-%d %H:%M")
     etepoch = getepoch(etime.datestring, MRXConstants.TIMEZONEOFFSET, "%Y-%m-%d %H:%M")
 
-    valueFromCalenderBeforeSelectingPastDate = str(getHandle(setup, Constants.CALENDERPOPUP, 'allspans')['allspans']['span'][0].text).strip()
-
     dateStringStart = getDateString(stepoch-86400, tOffset=MRXConstants.TIMEZONEOFFSET,tPattern='%Y %B %d %H %M').split(' ')
-    setCalendar(dateStringStart[0], dateStringStart[1], dateStringStart[2], dateStringStart[3], dateStringStart[4],udScreenInstance, setup, page=Constants.CALENDERPOPUP, parent="leftcalendar")
+    Flag=isDateDisabled(dateStringStart[0], dateStringStart[1], dateStringStart[2], dateStringStart[3], dateStringStart[4],udScreenInstance, setup, page=Constants.CALENDERPOPUP, parent="leftcalendar")
 
+    checkEqualAssert(True,Flag,message='Verify Past date disable on Calendar',testcase_id='MKR-3190')
 
-    valueFromCalenderAfterSelectingPastDate = str(getHandle(setup, Constants.CALENDERPOPUP, 'allspans')['allspans']['span'][0].text).strip()
-    checkEqualAssert(True,str(valueFromCalenderBeforeSelectingPastDate).strip()==str(valueFromCalenderAfterSelectingPastDate).strip(),message='Verify Past date disable on Calendar',testcase_id='MKR-3190')
-    udScreenInstance.clickButton("Cancel", getHandle(setup, Constants.CALENDERPOPUP, Constants.ALLBUTTONS))
-
-    launchCalendar(setup, MRXConstants.UDPPOPUP)
-    valueFromCalenderBeforeSelectingFutureDate = str(getHandle(setup, Constants.CALENDERPOPUP, 'allspans')['allspans']['span'][0].text).strip()
     dateStringStart = getDateString(etepoch + 86400, tOffset=MRXConstants.TIMEZONEOFFSET,tPattern='%Y %B %d %H %M').split(' ')
-    setCalendar(dateStringStart[0], dateStringStart[1], dateStringStart[2], dateStringStart[3], dateStringStart[4],udScreenInstance, setup, page=Constants.CALENDERPOPUP, parent="leftcalendar")
+    Flag_1=isDateDisabled(dateStringStart[0], dateStringStart[1], dateStringStart[2], dateStringStart[3], dateStringStart[4],udScreenInstance, setup, page=Constants.CALENDERPOPUP, parent="rightcalendar")
 
-    valueFromCalenderAfterSelectingFutureDate = str(getHandle(setup, Constants.CALENDERPOPUP, 'allspans')['allspans']['span'][0].text).strip()
-    checkEqualAssert(True, str(valueFromCalenderBeforeSelectingFutureDate).strip() == str(valueFromCalenderAfterSelectingFutureDate).strip(), message='Verify Past date disable on Calendar',testcase_id='MKR-3190')
+    checkEqualAssert(True,Flag_1, message='Verify Future date disable on Calendar',testcase_id='MKR-3190')
 
     setup.d.close()
 

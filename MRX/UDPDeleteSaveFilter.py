@@ -12,48 +12,41 @@ import os
 
 try:
     newFilterDetails = ConfigManager().getNodeElements("savenewfilter", "filter")
+    setup = SetUp()
+    login(setup, Constants.USERNAME, Constants.PASSWORD)
+    udScreenInstance = UDScreenClass(setup.d)
+    exploreHandle = getHandle(setup, MRXConstants.ExploreScreen)
+
+    udScreenInstance.explore.exploreList.launchModule(exploreHandle, "WORKFLOWS")
+    udScreenInstance.wfstart.launchScreen("Distribution", getHandle(setup, MRXConstants.WFSCREEN))
+    time.sleep(5)
 
     for k, filterDetail in newFilterDetails.iteritems():
         if 'edit' in filterDetail['filtername'] and filterDetail['button']=='Save':
-            setup = SetUp()
-            login(setup, Constants.USERNAME, Constants.PASSWORD)
-            udScreenInstance = UDScreenClass(setup.d)
-            exploreHandle = getHandle(setup, MRXConstants.ExploreScreen)
-            udScreenInstance.explore.exploreList.launchModule(exploreHandle, "USER DISTRIBUTION")
             h = getHandle(setup, MRXConstants.UDSCREEN, 'filterArea')
             h['filterArea']['toggleicon'][0].click()
             udScreenInstance.multiDropdown.domultipleSelectionWithNameWithoutActiveDropDown(getHandle(setup, MRXConstants.UDSCREEN, 'filterArea'), 'Load Filter', 0, parent="filterArea",child="multiSelectDropDown")
             UDHelper.editSaveFilter(setup,MRXConstants.LFPOPUP,udScreenInstance,filterDetail)
-            setup.d.close()
-
+            udScreenInstance.clickButton("Cancel", getHandle(setup, MRXConstants.LFPOPUP, Constants.ALLBUTTONS))
 
     for k, filterDetail in newFilterDetails.iteritems():
         if filterDetail['button']=='Save' and filterDetail['isOverwrite']=='True':
-            setup = SetUp()
-            login(setup, Constants.USERNAME, Constants.PASSWORD)
-            udScreenInstance = UDScreenClass(setup.d)
-            exploreHandle = getHandle(setup, MRXConstants.ExploreScreen)
-            udScreenInstance.explore.exploreList.launchModule(exploreHandle, "USER DISTRIBUTION")
             h = getHandle(setup, MRXConstants.UDSCREEN, 'filterArea')
             h['filterArea']['toggleicon'][0].click()
             udScreenInstance.multiDropdown.domultipleSelectionWithNameWithoutActiveDropDown(getHandle(setup, MRXConstants.UDSCREEN, 'filterArea'), 'Load Filter', 0, parent="filterArea",child="multiSelectDropDown")
             UDHelper.deleteSaveFilter(setup,MRXConstants.LFPOPUP,udScreenInstance,filterDetail)
-            setup.d.close()
+
 
     newFilterDetails = ConfigManager().getNodeElements("savenewfilter", "filter")
     for k, filterDetail in newFilterDetails.iteritems():
         if filterDetail['button']=='Save' and filterDetail['isOverwrite']=='False':
             filterDetail['filtername']=filterDetail['filtername']+"_new"
-            setup = SetUp()
-            login(setup, Constants.USERNAME, Constants.PASSWORD)
-            udScreenInstance = UDScreenClass(setup.d)
-            exploreHandle = getHandle(setup, MRXConstants.ExploreScreen)
-            udScreenInstance.explore.exploreList.launchModule(exploreHandle, "USER DISTRIBUTION")
             h = getHandle(setup, MRXConstants.UDSCREEN, 'filterArea')
             h['filterArea']['toggleicon'][0].click()
             udScreenInstance.multiDropdown.domultipleSelectionWithNameWithoutActiveDropDown(getHandle(setup, MRXConstants.UDSCREEN, 'filterArea'), 'Load Filter', 0, parent="filterArea",child="multiSelectDropDown")
             UDHelper.deleteSaveFilter(setup, MRXConstants.LFPOPUP, udScreenInstance, filterDetail)
-            setup.d.close()
+
+    setup.d.close()
 
 except Exception as e:
     isError(setup)

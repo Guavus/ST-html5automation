@@ -9,17 +9,18 @@ from classes.Components.TimeRangeComponentClass import *
 from classes.Pages.MRXScreens.UDScreenClass import *
 from MRXUtils.MRXConstants import *
 from classes.Pages.ExplorePageClass import *
+from classes.Components.WorkflowStartComponent import *
 from MRXUtils import UDHelper
 from MRXUtils import SegmentHelper
 import os
 
-def detailFromScreen(setup,screenName,parent='time_measure',child='span'):
+def detailFromScreen(setup,screenName,measureFromScreen,parent='time_measure',child='span'):
     detailFromScreen_Dict={}
     h=getHandle(setup,screenName,parent)
     detailFromScreen_Dict['Source:']='User Distribution'
     detailFromScreen_Dict['Created on:']='-'
-    detailFromScreen_Dict['Time range:']=str(h[parent][child][0].text).strip().split('(')[0].strip()
-    detailFromScreen_Dict['Metric:'] =str(h[parent][child][1].text).strip()
+    detailFromScreen_Dict['Time range:']=str(h[parent][child][0].text).strip()
+    detailFromScreen_Dict['Metric:'] =str(measureFromScreen).strip()
     return detailFromScreen_Dict
 
 
@@ -28,8 +29,9 @@ try:
     login(setup,Constants.USERNAME,Constants.PASSWORD)
     exploreScreenInstance = ExplorePageClass(setup.d)
     exploreHandle = getHandle(setup, "explore_Screen")
-
-    UD_Flag=exploreScreenInstance.exploreList.launchModule(exploreHandle, "USER DISTRIBUTION")
+    exploreScreenInstance.exploreList.launchModule(exploreHandle, "WORKFLOWS")
+    wfstart = WorkflowStartComponentClass()
+    UD_Flag=wfstart.launchScreen("Distribution", getHandle(setup, MRXConstants.WFSCREEN))
     checkEqualAssert(True,UD_Flag,message="Verify that the User Distribution page gets rendered on clicking on its button",testcase_id='MKR-1755')
 
     udScreenInstance =UDScreenClass(setup.d)
@@ -38,7 +40,7 @@ try:
 
     handlefortimeandmeasure = getHandle(setup, MRXConstants.UDSCREEN, 'time_measure')
     timeRangeFromScreen = str(handlefortimeandmeasure['time_measure']['span'][0].text).strip()
-    measureFromScreen = str(handlefortimeandmeasure['time_measure']['span'][1].text).strip()
+    measureFromScreen = udScreenInstance.dropdown.getSelectionOnVisibleDropDown(getHandle(setup, MRXConstants.UDSCREEN, "allselects"))
     checkEqualAssert(True,'Last 7 days' in timeRangeFromScreen,message="Verify that Last 7 Days are default filters on the User Distribution page :: Actual Filter = "+timeRangeFromScreen,testcase_id='MKR-1758')
     checkEqualAssert('Volume', measureFromScreen, message="Verify that Volume are the default filters on the User Distribution page",testcase_id='MKR-1758')
 
@@ -68,7 +70,7 @@ try:
         checkEqualAssert(expectedSelection,actualSelection,message='Verify that a user is able to select different segments on the table by selecting multiple rows',testcase_id='MKR-1814')
 
         textFromSummary=UDHelper.verifySummaryWithTable(setup,MRXConstants.UDSCREEN,udScreenInstance,data)
-        detailFromScreen_Dict = detailFromScreen(setup, MRXConstants.UDSCREEN)
+        detailFromScreen_Dict = detailFromScreen(setup, MRXConstants.UDSCREEN,measureFromScreen)
 
         if checkBlankLoadFilter:
             h = getHandle(setup, MRXConstants.UDSCREEN, 'filterArea')
@@ -84,7 +86,7 @@ try:
         checkEqualDict(detailFromScreen_Dict,detailFromPopup_Dict,message='Verify Same Detail on Create Segment Popup',testcase_id='MKR-1816')
 
         exploreScreenInstance.exploreList.launchModule(getHandle(setup,'explore_Screen'), "SEGMENTS")
-        time.sleep(8)
+        time.sleep(5)
         udScreenInstance.cm.clickButton('Refresh', getHandle(setup, MRXConstants.SEGMENTSCREEN, 'allbuttons'))
 
         tableHandle = getHandle(setup, MRXConstants.SEGMENTSCREEN, 'table')
@@ -92,9 +94,9 @@ try:
 
         if segmentDetail['button'] == 'Cancel':
             checkEqualAssert(False,tableMap['rows'].has_key(segmentDetail['segmentname']),message="Verify that if cancel button is pressed then the segment does not get created",testcase_id='MKR-1871')
-            exploreScreenInstance.exploreList.launchModule(getHandle(setup, 'explore_Screen'), "USER DISTRIBUTION")
+            exploreScreenInstance.exploreList.launchModule(getHandle(setup, 'explore_Screen'), "WORKFLOWS")
 
-        if segmentDetail['button']=='Create' and len(addedSegmentDetail)>0:
+        elif segmentDetail['button']=='Create' and len(addedSegmentDetail)>0:
             checkEqualAssert(True,tableMap['rows'].has_key(segmentDetail['segmentname']),message="Verify Segment added Successfully With Detail= "+str(addedSegmentDetail),testcase_id='MKR-1815')
             tableMap['rows'][segmentDetail['segmentname']].pop()
             tableMap['rows'][segmentDetail['segmentname']].pop()
@@ -115,19 +117,21 @@ try:
                 else:
                     checkEqualAssert('Completed',str(status_from_table),message='Verify status of new added segment')
 
-            checkEqualAssert(str(createdon_from_Popup.split(":")[0]).strip(),str(createdon_from_table.split(':')[0]).strip(),'','','Verify Created on from UI..... Expected ='+createdon_from_Popup+' Actual ='+createdon_from_table)
+            checkEqualAssert(str(createdon_from_Popup.split(":")[0]).strip(),str(createdon_from_table.split(':')[0]).strip(),message='Verify Created on from UI..... Expected ='+createdon_from_Popup+' Actual ='+createdon_from_table)
             checkEqualAssert(tableMap['rows'][segmentDetail['segmentname']], addedSegmentDetail,message="Verify Segment Detail From table, Details ="+str(addedSegmentDetail))
 
-            exploreScreenInstance.exploreList.launchModule(getHandle(setup, 'explore_Screen'), "USER DISTRIBUTION")
+            exploreScreenInstance.exploreList.launchModule(getHandle(setup, 'explore_Screen'), "WORKFLOWS")
             if checkBlankLoadFilter:
                 exploreHandle = getHandle(setup, MRXConstants.ExploreScreen)
-                udScreenInstance.explore.exploreList.clickOnLinkByValue(exploreHandle, Constants.USERNAME)
+                udScreenInstance.explore.exploreList.clickOnIcon(exploreHandle,icon='profile')
                 exploreHandle = getHandle(setup, MRXConstants.ExploreScreen)
                 udScreenInstance.explore.exploreList.clickOnLinkByValue(exploreHandle, MRXConstants.Logout)
                 time.sleep(5)
                 login(setup, Constants.USERNAME, Constants.PASSWORD)
                 exploreHandle = getHandle(setup, MRXConstants.ExploreScreen)
-                udScreenInstance.explore.exploreList.launchModule(exploreHandle, "USER DISTRIBUTION")
+                udScreenInstance.explore.exploreList.launchModule(exploreHandle, "WORKFLOWS")
+                wfstart.launchScreen("Distribution", getHandle(setup, MRXConstants.WFSCREEN))
+                time.sleep(5)
                 h = getHandle(setup, MRXConstants.UDSCREEN, 'filterArea')
                 h['filterArea']['toggleicon'][0].click()
                 udScreenInstance.multiDropdown.domultipleSelectionWithNameWithoutActiveDropDown(getHandle(setup, MRXConstants.UDSCREEN, 'filterArea'), 'Load Filter', 0, parent="filterArea",child="multiSelectDropDown")
@@ -135,7 +139,8 @@ try:
                 udScreenInstance.clickButton("Cancel", getHandle(setup, MRXConstants.LFPOPUP, Constants.ALLBUTTONS))
                 checkEqualAssert(beforeCreateSegmentTotalSaveFilter,afterCreateSegmentTotalSaveFilter,message=' Validate that when user wants to create segment from the UDR screen , then no blank filters should be added in the load filters list',testcase_id='MKR-3090')
                 checkBlankLoadFilter=False
-
+        else:
+            exploreScreenInstance.exploreList.launchModule(getHandle(setup, 'explore_Screen'), "WORKFLOWS")
         time.sleep(3)
     setup.d.close()
 
@@ -143,5 +148,7 @@ except Exception as e:
     isError(setup)
     r = "issue_" + str(random.randint(0, 9999999)) + ".png"
     setup.d.save_screenshot(r)
+    logger.error("Got Exception : %s", str(e))
     logger.debug("Got Exception from Script Level try catch :: Screenshot with name = %s is saved", r)
+    resultlogger.debug("Got Exception from Script Level try catch :: Screenshot with name = %s is saved", r)
     setup.d.close()

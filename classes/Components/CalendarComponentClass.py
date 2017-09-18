@@ -49,6 +49,21 @@ class CalendarComponentClass(BaseComponentClass):
         except NoSuchElementException or StaleElementReferenceException or ElementNotVisibleException or Exception as e:
             return e
 
+    def checkDay(self,child,day,h,parent="leftcalendar"):
+        try:
+            dates = self.getAllDates(h[parent][child], "tbody", "td")
+            for i in range(len(dates)):
+                if int(day)>23 and i>7:
+                    if "disabled" in dates[i].get_attribute("class") and int(day)==int(str(dates[i].text)):
+                        return True
+                else:
+                    if "disabled" in dates[i].get_attribute("class") and int(day)==int(str(dates[i].text)):
+                        return True
+            return False
+
+        except NoSuchElementException or StaleElementReferenceException or ElementNotVisibleException or Exception as e:
+            return e
+
 
     def getAvailableDates(self,h):
         dates = self.getAllDates(h, "tbody", "td")

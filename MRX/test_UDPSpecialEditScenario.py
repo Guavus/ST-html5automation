@@ -11,20 +11,29 @@ try:
     login(setup, Constants.USERNAME, Constants.PASSWORD)
     udScreenInstance = UDScreenClass(setup.d)
     exploreHandle = getHandle(setup, MRXConstants.ExploreScreen)
-    udScreenInstance.explore.exploreList.launchModule(exploreHandle, "USER DISTRIBUTION")
+    udScreenInstance.explore.exploreList.launchModule(exploreHandle, "WORKFLOWS")
+    udScreenInstance.wfstart.launchScreen("Distribution", getHandle(setup, MRXConstants.WFSCREEN))
+    time.sleep(5)
 
     newFilterDetails=setup.cM.getNodeElements("specialEditFilter","filter")
+
+    #timeRangeFromPopupFortest_2 = ''
+    #measureFromPopupFortest_2 = ''
+    udpFilterFromScreenFortest_2 = {}
+
 
     for k, filterDetail in newFilterDetails.iteritems():
         timeRangeFromPopup=''
         measureFromPopup=''
+
         overWriteFlag=True
         UDHelper.clearFilter(setup,MRXConstants.UDSCREEN)
 
         ########################################## Apply Filter ########################################################
+        timeRangeFromScreen, measureBeforeApplyFilter = UDHelper.setQuickLink_Measure(setup, udScreenInstance, str(k))
 
         SegmentHelper.clickOnfilterIcon(setup,MRXConstants.UDSCREEN,'nofilterIcon')
-        timeRangeFromPopup, measureFromPopup = UDHelper.setQuickLink_Measure(setup, udScreenInstance, k)
+#        timeRangeFromPopup, measureFromPopup = UDHelper.setQuickLink_Measure(setup, udScreenInstance, k)
         expected_filter = {}
         expected_filter = UDHelper.setUDPFilters(udScreenInstance, setup, k)
         udScreenInstance.clickButton("Apply", getHandle(setup, MRXConstants.UDPPOPUP, MuralConstants.ALLBUTTONS))
@@ -35,8 +44,8 @@ try:
 
 
         if filterDetail['filtername'] == 'specialTest_2':
-            timeRangeFromPopupFortest_2 = timeRangeFromPopup
-            measureFromPopupFortest_2 = measureFromPopup
+            #timeRangeFromPopupFortest_2 = timeRangeFromScreen
+            #measureFromPopupFortest_2 = measureBeforeApplyFilter
             udpFilterFromScreenFortest_2=udpFilterFromScreen
 
 
@@ -62,6 +71,7 @@ try:
     h['filterArea']['toggleicon'][0].click()
     udScreenInstance.multiDropdown.domultipleSelectionWithNameWithoutActiveDropDown(getHandle(setup, MRXConstants.UDSCREEN, 'filterArea'), 'Load Filter', 0, parent="filterArea",child="multiSelectDropDown")
     dict=UDHelper.getLoadFilterList(getHandle(setup,MRXConstants.LFPOPUP))
+    udScreenInstance.clickButton("Cancel", getHandle(setup,MRXConstants.LFPOPUP,Constants.ALLBUTTONS))
 
     flag=True
     for k, filterDetail in newFilterDetails.iteritems():
@@ -69,18 +79,10 @@ try:
             flag=False
             break
 
-
-    setup.d.close()
-
-
     if flag:
+        UDHelper.clearFilter(setup, MRXConstants.UDSCREEN)
         for k, filterDetail in newFilterDetails.iteritems():
             if str(filterDetail['filtername']).strip()=='specialTest_2' and filterDetail['button']=='Save':
-                setup = SetUp()
-                login(setup, Constants.USERNAME, Constants.PASSWORD)
-                udScreenInstance = UDScreenClass(setup.d)
-                exploreHandle = getHandle(setup, MRXConstants.ExploreScreen)
-                udScreenInstance.explore.exploreList.launchModule(exploreHandle, "USER DISTRIBUTION")
                 h = getHandle(setup, MRXConstants.UDSCREEN, 'filterArea')
                 h['filterArea']['toggleicon'][0].click()
                 udScreenInstance.multiDropdown.domultipleSelectionWithNameWithoutActiveDropDown(getHandle(setup, MRXConstants.UDSCREEN, 'filterArea'), 'Load Filter', 0, parent="filterArea",child="multiSelectDropDown")
@@ -95,29 +97,24 @@ try:
                 udScreenInstance.multiDropdown.domultipleSelectionWithNameWithoutActiveDropDown(getHandle(setup, MRXConstants.UDSCREEN, 'filterArea'), 'Load Filter', 0, parent="filterArea",child="multiSelectDropDown")
                 UDHelper.loadFilterFormSaveFilter(setup,MRXConstants.LFPOPUP, filterDetail)
 
-                screenHandle=getHandle(setup, MRXConstants.UDSCREEN, 'time_measure')
-                timeRangeFromScreen = str(screenHandle['time_measure']['span'][0].text).strip()
-                measureFromScreen = str(screenHandle['time_measure']['span'][1].text).strip()
+                #screenHandle=getHandle(setup, MRXConstants.UDSCREEN, 'time_measure')
+                #timeRangeFromScreen = str(screenHandle['time_measure']['span'][0].text).strip()
+                #measureFromScreen = udScreenInstance.dropdown.getSelectionOnVisibleDropDown(getHandle(setup, MRXConstants.UDSCREEN, "allselects"))
 
-                checkEqualAssert(timeRangeFromPopupFortest_2, timeRangeFromScreen,message='After load filter verify timerange value on screen '+msg+' (Rename filter scenario-2)',testcase_id='MKR-1805')
-                checkEqualAssert(measureFromPopupFortest_2, measureFromScreen,message='After load filter verify measure value on screen '+msg+' (Rename filter scenario-2)',testcase_id='MKR-1805')
+                #checkEqualAssert(timeRangeFromPopupFortest_2, timeRangeFromScreen,message='After load filter verify timerange value on screen '+msg+' (Rename filter scenario-2)',testcase_id='MKR-1805')
+                #checkEqualAssert(measureFromPopupFortest_2, measureFromScreen,message='After load filter verify measure value on screen '+msg+' (Rename filter scenario-2)',testcase_id='MKR-1805')
                 udpFilterFromScreen_2 = UDHelper.getUDPFiltersFromScreen(MRXConstants.UDSCREEN, setup)
                 checkEqualDict(udpFilterFromScreenFortest_2, udpFilterFromScreen_2, message="Verify that a user can re-apply any saved filter (Rename filter scenario-2) "+msg,doSortingBeforeCheck=True,testcase_id='MKR-1805')
-                setup.d.close()
 
     newFilterDetails = setup.cM.getNodeElements("specialEditFilter", "filter")
     for k, filterDetail in newFilterDetails.iteritems():
         if filterDetail['button'] == 'Save' and filterDetail['isOverwrite'] == 'True':
-            setup = SetUp()
-            login(setup, Constants.USERNAME, Constants.PASSWORD)
-            udScreenInstance = UDScreenClass(setup.d)
-            exploreHandle = getHandle(setup, MRXConstants.ExploreScreen)
-            udScreenInstance.explore.exploreList.launchModule(exploreHandle, "USER DISTRIBUTION")
             h = getHandle(setup, MRXConstants.UDSCREEN, 'filterArea')
             h['filterArea']['toggleicon'][0].click()
             udScreenInstance.multiDropdown.domultipleSelectionWithNameWithoutActiveDropDown(getHandle(setup, MRXConstants.UDSCREEN, 'filterArea'), 'Load Filter', 0, parent="filterArea",child="multiSelectDropDown")
             UDHelper.deleteSaveFilter(setup, MRXConstants.LFPOPUP, udScreenInstance, filterDetail)
-            setup.d.close()
+
+    setup.d.close()
 
 
 except Exception as e:

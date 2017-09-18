@@ -971,6 +971,19 @@ def validatesearchtable(data,columnname,searchtext):
         return False
 
 
+def isDateDisabled(y,m,d,h,min,instance,setup,page="routers_popup",parent="leftcalendar"):
+    try:
+        logger.info('Going to check mentioned date:'+str(d)+"-"+str(m)+"-"+str(y)+" "+str(h)+":"+str(min))
+        resultlogger.info('Going to check mentioned date :'+str(d)+"-"+str(m)+"-"+str(y)+" "+str(h)+":"+str(min))
+        instance.calendar.set("year",y,getHandle(setup,page,parent),parent)
+        instance.calendar.set("month",m,getHandle(setup,page,parent),parent)
+        Flag= instance.calendar.checkDay("day",d,getHandle(setup,page,parent),parent)
+        return Flag
+
+    except ElementNotSelectableException or ElementNotVisibleException or Exception as e:
+        return e
+
+
 def setCalendar(y,m,d,h,min,intance,setup,page="routers_popup",parent="leftcalendar"):
     try:
         logger.info('Going to Select :'+str(d)+"-"+str(m)+"-"+str(y)+" "+str(h)+":"+str(min))
