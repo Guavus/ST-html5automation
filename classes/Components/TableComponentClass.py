@@ -207,20 +207,21 @@ class TableComponentClass(BaseComponentClass):
 
 
 
-    def scrollUpTable(self,h,driver):
-        driver.d.execute_script("return arguments[0].scrollIntoView();", h['table']['ROWS'][0])
-        sleep(4)
-        while True:
-            handle = self.utility.utility.getHandle(driver, "TableDummy_Screen", "table")
-            if str(h['table']['ROWS'][0].text)==str(handle['table']['ROWS'][0].text):
-                return
-            else:
-                import copy
-                h=copy.deepcopy(handle)
-                driver.d.execute_script("return arguments[0].scrollIntoView();", h['table']['ROWS'][0])
-                # handle = self.utility.utility.getHandle(driver, "TableDummy_Screen", "table")["table"]
-
-
+    def scrollUpTable(self,setup):
+        for ele in setup.d.find_elements_by_class_name('ag-body-viewport'):
+            setup.d.execute_script("return arguments[0].scrollTop =0",ele)
+        sleep(2)
+        # driver.d.execute_script("return arguments[0].scrollIntoView();", h['table']['ROWS'][0])
+        # old_value=str(h['table']['ROWS'][0].text).strip()
+        # while True:
+        #     handle = self.utility.utility.getHandle(driver, "TableDummy_Screen", "table")
+        #     if old_value==str(handle['table']['ROWS'][0].text):
+        #         return
+        #     else:
+        #         import copy
+        #         h=copy.deepcopy(handle)
+        #         driver.d.execute_script("return arguments[0].scrollIntoView();", h['table']['ROWS'][0])
+        #         # handle = self.utility.utility.getHandle(driver, "TableDummy_Screen", "table")["table"]
 
 
     def getRows1(self,colcount,h,length,driver,colIndex=0,scroll=False,ForTableData=False):
@@ -333,6 +334,30 @@ class TableComponentClass(BaseComponentClass):
                 return rows
 
 
+    def addSelectedRows(self,h,setup,child="SELECTED_ROWS"):
+        rowsList = []
+        while True:
+            flag = True
+            if not rowsList:
+                t = self.getSelectedRows(h,setup,child)
+                if t==[]:
+                    return t
+                rowsList = t[0]
+                h = t[1]
+                flag=False
+            else:
+                flag=True
+                t = self.getSelectedRows(h,setup,child,True)
+                newrowsList = t[0]
+                h = t[1]
+
+                for newrow in newrowsList:
+                    if newrow not in rowsList:
+                        flag = False
+                        rowsList.append(newrow)
+            if flag:
+                return rowsList
+
 
     def addrowsFormTableData(self,colcount,h,driver,length,colIndex,ForTableData=True):
         rowsList = []
@@ -391,6 +416,9 @@ class TableComponentClass(BaseComponentClass):
 
     def getAllRowsAfterScrollForTableData(self, colcount, h, parent, driver, length, colIndex):
         return self.addrowsFormTableData(colcount, h[parent], driver, length, colIndex)
+
+    def getAllSeletedRowsAfterScroll(self,h, parent,setup,child="SELECTED_ROWS"):
+        return self.addSelectedRows(h[parent],setup,child)
 
 
     ######################### By following method we tried to get table row with scroll#################################
@@ -506,8 +534,23 @@ class TableComponentClass(BaseComponentClass):
             data['header'] = self.getIterfaceHeaders(h[parent])
             data['rows'] = self.getRows(h,parent,child)
             return data
+
         except Exception as e:
             return e
+
+    def getSelectedRowWithScroll(self,setup,screen,parent='table',child="SELECTED_ROWS"):
+        try:
+            self.scrollUpTable(setup)
+            h=self.utility.utility.getHandle(setup,screen,parent)
+            data = {}
+            data['header'] = self.getIterfaceHeaders(h[parent])
+            #data['rows'] = self.getRows(h,parent,child)
+            data['rows'] = self.getAllSeletedRowsAfterScroll(h,parent,setup,child)
+
+            return data
+        except Exception as e:
+            return e
+
 
     def getRows(self,h,parent='table',child='SELECTED_ROWS'):
         elHandle=h[parent][child]
@@ -531,6 +574,33 @@ class TableComponentClass(BaseComponentClass):
                 pass
 
         return rows
+
+
+    def getSelectedRows(self,h,driver,child='SELECTED_ROWS',scroll=False):
+        if scroll:
+            if len(h['SELECTED_ROWS']) > 1:
+                driver.d.execute_script("return arguments[0].scrollIntoView();",h['SELECTED_ROWS'][len(h['SELECTED_ROWS']) - 1])
+
+            sleep(4)
+            h = self.utility.utility.getHandle(driver, "TableDummy_Screen", "table")["table"]
+
+        elHandle = h[child]
+
+        if len(elHandle) <1:
+            logger.info("No Row Selected on Table")
+            return []
+
+        rowCount = len(elHandle)
+        rows = []
+
+        for i in range(rowCount):
+            rowValue=[]
+            cellHandle=elHandle[i].find_elements_by_xpath('./div')
+            for cell in cellHandle:
+                rowValue.append(str(cell.text).strip())
+            rows.append(rowValue)
+
+        return [rows, h]
 
 
     def scrollVertical(self):

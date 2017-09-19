@@ -263,7 +263,7 @@ try:
 
             tableHandle = getHandle(setup, MRXConstants.UDSCREEN, "table")
             udScreenInstance.table.setSpecialSelection(setup.d, [1, 20], Keys.SHIFT, tableHandle)
-            data = udScreenInstance.table.getSelectedRow(getHandle(setup, MRXConstants.UDSCREEN, "table"))
+            data = udScreenInstance.table.getSelectedRowWithScroll(setup,MRXConstants.UDSCREEN)
 
             if data['rows'] ==[]:
                 h=getHandle(setup, MRXConstants.UDSCREEN, "table")['table']['no_data_msg']

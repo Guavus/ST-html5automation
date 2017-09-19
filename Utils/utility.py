@@ -58,35 +58,40 @@ def checkEqualDict(f1,f2,time="",measure="",message="",testcase_id="",doSortingB
 
     tcPass = "<b><font color='green'> PASS</font></b><br>"
     tcFail = "<b><font color='red'> FAIL</font></b><br>"
-    for k,v in f1.iteritems():
-        msg1 = ''
-        msg1 = msg
-        try:
-            if type(f1[k])==list and type(f2[k])==list and doSortingBeforeCheck:
-                f1[k].sort()
-                f2[k].sort()
 
-            assert f1[k] == f2[k]
-            # msg = msg+" : "+k+" "+tcPass
-            resultlogger.info(msg1+"  :: " +k+" ::  "+tcPass)
-            logger.info(msg1+"  :: " +k+" ::  "+tcPass)
+    if not (type(f1)==dict and type(f2)==dict):
+        checkEqualAssert(f1,f2,time,measure,message,testcase_id)
+
+    else:
+        for k,v in f1.iteritems():
+            msg1 = ''
+            msg1 = msg
             try:
-                testcases.append({'title': msg1+"  :: " +k, 'expected': f1[k], 'actual': f2[k], 'status':'PASS'})
-            except:
-                pass
+                if type(f1[k])==list and type(f2[k])==list and doSortingBeforeCheck:
+                    f1[k].sort()
+                    f2[k].sort()
 
-        except AssertionError :
+                assert f1[k] == f2[k]
+                # msg = msg+" : "+k+" "+tcPass
+                resultlogger.info(msg1+"  :: " +k+" ::  "+tcPass)
+                logger.info(msg1+"  :: " +k+" ::  "+tcPass)
+                try:
+                    testcases.append({'title': msg1+"  :: " +k, 'expected': f1[k], 'actual': f2[k], 'status':'PASS'})
+                except:
+                    pass
 
-            # msg = msg+" Expected: "+str(f1[k])+" Actual: "+str(f2[k])+tcFail
-            resultlogger.info(msg1+"  :: " +k+" ::  "+" Expected: "+str(f1[k])+" Actual: "+str(f2[k])+tcFail)
-            logger.info(msg1+"  :: " +k+" ::  "+" Expected: "+str(f1[k])+" Actual: "+str(f2[k])+tcFail)
-            try:
-                testcases.append({'title': msg1+"  :: " +k, 'expected': f1[k], 'actual': f2[k], 'status':'FAIL'})
-            except:
-                pass
-        except KeyError:
-            # resultlogger.info(msg1+"  :: " +k+" ::  "+" Expected: "+str(f1[k])+" Actual: key not present :"+str(k)+tcFail)
-            logger.info(msg1+"  :: " +k+" ::  "+" Expected: "+str(f1[k])+" Actual: key not present :"+str(k)+tcFail)
+            except AssertionError :
+
+                # msg = msg+" Expected: "+str(f1[k])+" Actual: "+str(f2[k])+tcFail
+                resultlogger.info(msg1+"  :: " +k+" ::  "+" Expected: "+str(f1[k])+" Actual: "+str(f2[k])+tcFail)
+                logger.info(msg1+"  :: " +k+" ::  "+" Expected: "+str(f1[k])+" Actual: "+str(f2[k])+tcFail)
+                try:
+                    testcases.append({'title': msg1+"  :: " +k, 'expected': f1[k], 'actual': f2[k], 'status':'FAIL'})
+                except:
+                    pass
+            except KeyError:
+                # resultlogger.info(msg1+"  :: " +k+" ::  "+" Expected: "+str(f1[k])+" Actual: key not present :"+str(k)+tcFail)
+                logger.info(msg1+"  :: " +k+" ::  "+" Expected: "+str(f1[k])+" Actual: key not present :"+str(k)+tcFail)
 
 def checkEqualAssert(expected, actual, time="", measure="", message="",testcase_id=""):
     logger.info("Method Called :checkEqualAssert")

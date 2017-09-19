@@ -64,7 +64,7 @@ try:
     for k, segmentDetail in createSegmentDetails.iteritems():
         udScreenInstance.switcher.measureChangeSwitcher_UD(1,getHandle(setup, MRXConstants.UDSCREEN, "switcher"))
         udScreenInstance.table.setSpecialSelection(setup.d,[int(segmentDetail['select_row_from']),int(segmentDetail['select_row_to'])], Keys.SHIFT,getHandle(setup, MRXConstants.UDSCREEN, 'table'))
-        data =udScreenInstance.table.getSelectedRow(getHandle(setup,MRXConstants.UDSCREEN,'table'))
+        data =udScreenInstance.table.getSelectedRowWithScroll(setup,MRXConstants.UDSCREEN)
 
         expectedSelection=[int(segmentDetail['select_row_from'])*5,int(segmentDetail['select_row_to'])*5]
         actualSelection=[int(data['rows'][0][0].split('-')[1].rstrip(']%')),int(data['rows'][len(data['rows'])-1][0].split('-')[1].rstrip(']%'))]
