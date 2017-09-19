@@ -68,7 +68,7 @@ try:
                 time.sleep(5)
                 expectedHeader=['Range','Users','% of '+selectedMeasure,selectedMeasure,'Average '+selectedMeasure]
                 tableHandle = getHandle(setup, MRXConstants.UDSCREEN, "table")
-                data = udScreenInstance.table.getTableData1(tableHandle, "table", length=20)
+                data = udScreenInstance.table.getTableDataWithScroll(tableHandle, driver=setup)
                 checkEqualAssert(expectedHeader,data['header'],selectedQuicklink,selectedMeasure,message="Verify that on selecting " +str(selectedMeasure)+" metric for "+ selectedQuicklink+" time range the user distribution Grid gets plotted And also Verify that no unit is assign to any variable (Table-View)",testcase_id=testidForGrid+' ,MKR-2765')
 
                 checkEqualAssert(20, len(data['rows']), selectedQuicklink, selectedMeasure,message='Verify Number of rows in Table')

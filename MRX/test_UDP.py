@@ -38,10 +38,12 @@ try:
     selectedView=udScreenInstance.switcher.getMeasureChangeSelectedSwitcher_UD(getHandle(setup, MRXConstants.UDSCREEN, "switcher"))
     checkEqualAssert([0],selectedView,message="Verify that by default chart view is shown on User Distribution page",testcase_id='MKR-1757')
 
-    handlefortimeandmeasure = getHandle(setup, MRXConstants.UDSCREEN, 'time_measure')
-    timeRangeFromScreen = str(handlefortimeandmeasure['time_measure']['span'][0].text).strip()
+    #handlefortimeandmeasure = getHandle(setup, MRXConstants.UDSCREEN, 'time_measure')
+    #timeRangeFromScreen = str(handlefortimeandmeasure['time_measure']['span'][0].text).strip()
+    selectedQuicklink = udScreenInstance.timeBar.getSelectedQuickLink(getHandle(setup, MRXConstants.UDSCREEN, "ktrs"))
     measureFromScreen = udScreenInstance.dropdown.getSelectionOnVisibleDropDown(getHandle(setup, MRXConstants.UDSCREEN, "allselects"))
-    checkEqualAssert(True,'Last 7 days' in timeRangeFromScreen,message="Verify that Last 7 Days are default filters on the User Distribution page :: Actual Filter = "+timeRangeFromScreen,testcase_id='MKR-1758')
+
+    checkEqualAssert('Last 7 days',str(selectedQuicklink).strip(),message="Verify that Last 7 Days are default filters on the User Distribution page",testcase_id='MKR-1758')
     checkEqualAssert('Volume', measureFromScreen, message="Verify that Volume are the default filters on the User Distribution page",testcase_id='MKR-1758')
 
     udScreenInstance.switcher.measureChangeSwitcher_UD(0, getHandle(setup, MRXConstants.UDSCREEN, "switcher"))

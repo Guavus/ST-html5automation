@@ -495,7 +495,9 @@ class TableComponentClass(BaseComponentClass):
                 if driver != "":
                     driver.execute_script("return arguments[0].scrollIntoView();", elHandle[i])
                 elHandle[i].click()
+                logger.debug("clicked on table")
                 return True
+        logger.debug("no row clicked on table")
         return False
 
     def getSelectedRow(self,h,parent='table',child='SELECTED_ROWS'):
@@ -577,6 +579,8 @@ class TableComponentClass(BaseComponentClass):
         return h[parent]['count'][0].text
 
     def setSpecialSelection(self,driver,indices,key,h,parent="table",child=""):
+        logger.info('Going to select row [from,to] = %s',str(indices))
+        driver.execute_script("return arguments[0].scrollIntoView();", h['table']['ROWS'][0])
         data = self.getTableData1(h,parent)
         colCount = len(data['header'])
         rowCount = len(data['rows'])
