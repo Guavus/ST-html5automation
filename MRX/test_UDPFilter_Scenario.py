@@ -262,10 +262,8 @@ try:
             queryFromUI = measureAndDimensionAfterMapping(timeRangeFromScreen, measureBeforeApplyFilter, filterFromScreenForDV)
 
             tableHandle = getHandle(setup, MRXConstants.UDSCREEN, "table")
-            udScreenInstance.table.setSpecialSelection(setup.d, [1, 20], Keys.SHIFT, tableHandle)
-            data = udScreenInstance.table.getSelectedRowWithScroll(setup,MRXConstants.UDSCREEN)
 
-            if data['rows'] ==[]:
+            if tableHandle['table']['ROWS'] ==[]:
                 h=getHandle(setup, MRXConstants.UDSCREEN, "table")['table']['no_data_msg']
                 if len(h)>0:
                     msg=str(h[0].text)
@@ -278,6 +276,8 @@ try:
                 resultlogger.info("No Table Data for globalfilter=%s :: Screenshot with name = %s is saved",screenTooltipData, r)
 
             else:
+                udScreenInstance.table.setSpecialSelection(setup.d, [1, 20], Keys.SHIFT, tableHandle)
+                data = udScreenInstance.table.getSelectedRowWithScroll(setup, MRXConstants.UDSCREEN)
                 columnIndex = udScreenInstance.table.getIndexForValueInArray(data['header'],str(measureBeforeApplyFilter).strip())
                 if columnIndex !=-1:
                     listOfValueForSelectedMeasure = []
