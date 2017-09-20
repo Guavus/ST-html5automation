@@ -295,7 +295,7 @@ def verifyEntryEditSuccessfully(setup,screenInstance,inputDetail,segmentDetailFr
         createdon_from_table=tableMap['rows'][addedValue].pop()
         createdon_from_UI=segmentDetailFromUIPopup.pop()
         checkEqualAssert(createdon_from_UI.split(":")[0],createdon_from_table.split(':')[0],'','','Verify Created on from UI..... Expected ='+createdon_from_UI+' Actual ='+createdon_from_table)
-        checkEqualAssert(tableMap['rows'][addedValue], segmentDetailFromUIPopup,message="Verify Segment Detail From table= "+str(segmentDetailFromUIPopup),testcase_id=testCaseId+',1668')
+        checkEqualAssert(segmentDetailFromUIPopup,tableMap['rows'][addedValue],message="Verify Segment Detail From table= "+str(segmentDetailFromUIPopup),testcase_id=testCaseId+',1668')
 
 
 
