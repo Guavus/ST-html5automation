@@ -25,7 +25,7 @@ try:
     checkEqualAssert(True,click_status,message='Verify that "Filter" button just above the Segment table is clickable',testcase_id='MKR-1675')
 ########################################################################################################################
     filterScreenHandle=getHandle(setup,MRXConstants.SEGMENTFILTERSCREEN)
-    checkEqualAssert("Filters",str(filterScreenHandle['allspans']['span'][0].text),'','',"Verify Filter Header Text on Filter Popup")
+    checkEqualAssert("Segment Filters",str(filterScreenHandle['allspans']['span'][0].text),message="Verify Filter Header Text on Filter Popup")
     allSpanList = []
     for ele in filterScreenHandle['allspans']['span']:
         allSpanList.append(ele.text)
@@ -44,13 +44,13 @@ try:
     segmentScreenInstance.cm.clickButton("Apply Filters", getHandle(setup, MRXConstants.FILTERSCREEN, 'allbuttons'))
     isError(setup)
     popUpTooltipData = SegmentHelper.getGlobalFiltersToolTipData(MRXConstants.SEGMENTSCREEN, segmentScreenInstance, setup,flag=False)
-    checkEqualDict(popUpTooltipData, expected, "", "", "Verify Filters Selections from Tooltip on Segment Screen",testcase_id='MKR-1676,1681')
+    checkEqualDict(expected,popUpTooltipData,message="Verify Filters Selections from Tooltip on Segment Screen",testcase_id='MKR-1676,1681')
 ########################################################################################################################
 
     filterFromScreen=SegmentHelper.getGlobalFiltersFromScreen(MRXConstants.SEGMENTSCREEN, segmentScreenInstance, setup,flag=False)
     SegmentHelper.clickOnfilterIcon(setup, MRXConstants.SEGMENTSCREEN,'filterIcon')
     expectedFromFilterPopUp = SegmentHelper.getSegmentFilter(setup, segmentScreenInstance)
-    checkEqualDict(filterFromScreen, expectedFromFilterPopUp, "", "", "Verify Filters Selections from Segment Screen")
+    checkEqualDict(filterFromScreen, expectedFromFilterPopUp,message="Verify Filters Selections from Segment Screen")
     segmentScreenInstance.cm.clickButton("Clear All", getHandle(setup, MRXConstants.FILTERSCREEN, 'allbuttons'))
     expectedFromFilterPopUpAfterClear = SegmentHelper.getSegmentFilter(setup, segmentScreenInstance)
 
@@ -75,7 +75,7 @@ try:
     if click_status:
         checkEqualAssert(0,len(getHandle(setup,MRXConstants.FILTERSCREEN,'icons')['icons']['closePopupIcon']),message='On pressing the "X", the filter window dissappears',testcase_id='MKR-1679')
         filterFromScreenAfterClear=SegmentHelper.getGlobalFiltersFromScreen(MRXConstants.SEGMENTSCREEN, segmentScreenInstance, setup,flag=False)
-        checkEqualAssert('Filters', str(filterFromScreenAfterClear),message='After press cross (X) no filter should be on Segment Screen',testcase_id='MKR-1679')
+        checkEqualAssert(MRXConstants.NO_FILTER, str(filterFromScreenAfterClear),message='After press cross (X) no filter should be on Segment Screen',testcase_id='MKR-1679')
 
     click_status = SegmentHelper.clickOnfilterIcon(setup, MRXConstants.SEGMENTSCREEN, 'nofilterIcon')
     segmentScreenInstance.cm.clickButton("Cancel", getHandle(setup, MRXConstants.FILTERSCREEN, 'allbuttons'))

@@ -218,7 +218,7 @@ try:
     flag_owner = True
 
     for i in range(len(column_4_ValueFromTable)):
-        if not str(column_4_ValueFromTable[i]).strip() in expected_Owner['Owner']:
+        if not expected_Owner['Owner'] in str(column_4_ValueFromTable[i]).strip():
             flag_owner=False
             break
 

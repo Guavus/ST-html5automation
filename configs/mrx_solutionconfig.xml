@@ -267,7 +267,7 @@
         </componentConfig>
 
         <componentConfig id = "icons">
-            <component id="closePopupIcon" selector="css selector" locator='[class="closePopupIconWithPadding"]'/>
+            <component id="closePopupIcon" selector="css selector" locator='[class*=close][class*=Icon],[class*=Close][class*=Icon],[class*=close][class*=icon]'/>
             <component id="datePickerIcon" selector="css selector" locator='[class*=datePickerIcon]'/>
         </componentConfig>
 

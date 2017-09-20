@@ -29,6 +29,7 @@ class MRXConstants(Constants):
     AvailableFilterList='availableFilterList'
     Logout='Logout'
     NO_FILTER='Filters'
+    NO_FILTER_ON_POPUP='No filters'
     SearchValue='h'
 
     TimeRangeSpliter='-'

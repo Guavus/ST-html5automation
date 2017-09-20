@@ -92,7 +92,7 @@ try:
     expected = UDHelper.setUDPFilters(udScreenInstance, setup, 'selectDeselectScenario')
     isError(setup)
     udpFilterFromPopup = UDHelper.getUDPFiltersFromScreen(MRXConstants.UDPPOPUP, setup)
-    checkEqualAssert(MRXConstants.NO_FILTER, str(udpFilterFromPopup),message="Verify filter text after Deselect Selected filter value")
+    checkEqualAssert(MRXConstants.NO_FILTER_ON_POPUP, str(udpFilterFromPopup),message="Verify filter text after Deselect Selected filter value")
     udScreenInstance.clickButton("Cancel", getHandle(setup, MRXConstants.UDPPOPUP, MuralConstants.ALLBUTTONS))
 
 
@@ -141,7 +141,7 @@ try:
     expected = {}
     expected = UDHelper.setUDPFilters(udScreenInstance, setup, str('web_domain2'))
     udpFilterFromPopup = UDHelper.getUDPFiltersFromScreen(MRXConstants.UDPPOPUP, setup)
-    checkEqualAssert(MRXConstants.NO_FILTER, str(udpFilterFromPopup),message="Verify filter text without filter on Popup")
+    checkEqualAssert(MRXConstants.NO_FILTER_ON_POPUP, str(udpFilterFromPopup),message="Verify filter text without filter on Popup")
     udScreenInstance.clickButton("Cancel", getHandle(setup, MRXConstants.UDPPOPUP, MuralConstants.ALLBUTTONS))
 
     ############################################# For Toggle State ########################################################

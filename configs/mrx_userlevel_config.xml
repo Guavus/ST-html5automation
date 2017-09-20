@@ -62,7 +62,7 @@
     </segment_Filters>
 
     <availableClassesForDE>
-        <class id="Device" method="Device Category,Device OS,Device Manufacturer,Device Model" testcase="MKR-1954"/>
+        <class id="Device" method="Device Category,Device OS,Device Model,Device Manufacturer" testcase="MKR-1954"/>
         <class id="Network" method="Radio Access Type,APN" testcase="MKR-1955"/>
         <class id="Content" method="Application,Web Domain,Content Interest" testcase="MKR-1956"/>
         <class id="Usage" method="Global Data Service" testcase="MKR-1957"/>
