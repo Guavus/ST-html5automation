@@ -105,7 +105,7 @@
 
 
         <screenConfig id="availableFilterList">
-            <!--<component id ='availablefilter' selector="css selector" locator="div.filterPopup" parent="True"/>-->
+            <component id ='availablefilter' selector="css selector" locator="div.filterPopup" parent="True"/>
             <component id ='filterTab' selector="css selector" locator="div.filterTabs" parent="True"/>
         </screenConfig>
 
