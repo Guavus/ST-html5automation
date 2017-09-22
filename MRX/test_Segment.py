@@ -104,17 +104,17 @@ try:
         tableHandle = getHandle(setup, MRXConstants.SEGMENTSCREEN,'table')
         tableMap = segmentScreenInstance.table.getTableDataMap(tableHandle, driver=setup)
         if segmentDetail['button'] == 'Cancel':
-            checkEqualAssert(False,tableMap['rows'].has_key(segmentDetail['segmentname']),"","","Verify that if cancel button is pressed then the segment does not get created",testcase_id='MKR-1704')
+            checkEqualAssert(False,tableMap['rows'].has_key(segmentDetail['segmentname']),message="Verify that if cancel button is pressed then the segment does not get created",testcase_id='MKR-1704')
         if segmentDetail['button']=='Import' and len(segmentDetailFromUIPopup)>0:
-            checkEqualAssert(True,tableMap['rows'].has_key(segmentDetail['segmentname']),"","","Verify Segment added Successfully With Detail= "+str(segmentDetailFromUIPopup),testcase_id='MKR-1703')
+            checkEqualAssert(True,tableMap['rows'].has_key(segmentDetail['segmentname']),message="Verify Segment added Successfully With Detail= "+str(segmentDetailFromUIPopup),testcase_id='MKR-1703')
             tableMap['rows'][segmentDetail['segmentname']].pop()
             tableMap['rows'][segmentDetail['segmentname']].pop()
 
             createdon_from_table=tableMap['rows'][segmentDetail['segmentname']].pop()
             createdon_from_UI=segmentDetailFromUIPopup.pop()
-            checkEqualAssert(str(createdon_from_UI.split(":")[0]).strip(),str(createdon_from_table.split(':')[0]).strip(),'','','Verify Created on from UI..... Expected ='+createdon_from_UI+' Actual ='+createdon_from_table,testcase_id='MKR-1703')
+            checkEqualAssert(str(createdon_from_UI.split(":")[0]).strip(),str(createdon_from_table.split(':')[0]).strip(),message='Verify Created on from UI..... Expected ='+createdon_from_UI+' Actual ='+createdon_from_table,testcase_id='MKR-1703')
 
-            checkEqualAssert(tableMap['rows'][segmentDetail['segmentname']], segmentDetailFromUIPopup, "", "","Verify Segment Detail From table (if Status is Running, check manually (We already wait for 10 sec)), Details ="+str(segmentDetailFromUIPopup),testcase_id='MKR-1661,1663,1671')
+            checkEqualAssert(segmentDetailFromUIPopup,tableMap['rows'][segmentDetail['segmentname']],message="Verify Segment Detail From table (if Status is Running, check manually (We already wait for 10 sec)), Details ="+str(segmentDetailFromUIPopup),testcase_id='MKR-1661,1663,1671')
 
     # Basic Table Functionality
 
