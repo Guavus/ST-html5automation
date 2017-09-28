@@ -64,39 +64,63 @@ class MulitpleDropdownComponentClass(DropdownComponentClass):
         time.sleep(1)
         return selections
 
+    # def getSelection_MRX(self,h,index,parent="filterPopup",child="multiselect-dropdown"):
+    #     activeDropDowns = self.getAllActiveElements(h[parent][child])
+    #     time.sleep(1)
+    #     activeDropDowns[index].click()
+    #     selections = []
+    #
+    #     flag = False
+    #     try:
+    #         for e in activeDropDowns[index].find_elements_by_css_selector('[ng-reflect-model="true"],[ng-reflect-checked="true"],[ng-reflect-ng-class="menu-item-selected"]'):
+    #             flag = True
+    #             # commenting below lines to get all selected values in dropdown (Below if is only for Global Filter Scenario)
+    #             if e.find_elements_by_xpath("../../div")[0].text.strip() == "Select All" or e.find_elements_by_xpath("../../div")[0].text.strip() == "All":
+    #                 selections.append("All")
+    #                 activeDropDowns[index].click()
+    #                 return selections
+    #             selections.append(e.find_elements_by_xpath("../../div")[0].text)
+    #             # selections.append(e.find_elements_by_xpath("..//div")[0].text)
+    #         if not flag:
+    #             selections.append("")
+    #     except Exception as e:
+    #         try:
+    #             for e in activeDropDowns[index].find_elements_by_css_selector('[ng-reflect-model="true"],[checked="true"],[ng-reflect-ng-class="menu-item-selected"]'):
+    #                 flag=True
+    #                 if e.find_elements_by_xpath("..//div")[0].text.strip() == "Select All" or e.find_elements_by_xpath("..//div")[0].text.strip() == "All":
+    #                     selections.append("All")
+    #                     activeDropDowns[index].click()
+    #                     return selections
+    #                 selections.append(e.find_elements_by_xpath("..//div")[0].text)
+    #             if not flag:
+    #                 selections.append("")
+    #         except Exception as e:
+    #             logger.error("Exception %s found while getting current selection, Component: MulitpleDropdownComponentClass",e)
+    #
+    #     activeDropDowns[index].click()
+    #     time.sleep(1)
+    #     return selections
 
     def getSelection_MRX(self,h,index,parent="filterPopup",child="multiselect-dropdown"):
+        # This is updated method for getting  selection on multi Dropdown (issue related to production flag off)
         activeDropDowns = self.getAllActiveElements(h[parent][child])
         time.sleep(1)
         activeDropDowns[index].click()
         selections = []
-
         flag = False
         try:
-            for e in activeDropDowns[index].find_elements_by_css_selector('[ng-reflect-model="true"],[ng-reflect-checked="true"],[ng-reflect-ng-class="menu-item-selected"]'):
+            for e in activeDropDowns[index].find_elements_by_css_selector('input[type*=checkbox]'):
                 flag = True
-                # commenting below lines to get all selected values in dropdown (Below if is only for Global Filter Scenario)
-                if e.find_elements_by_xpath("../../div")[0].text.strip() == "Select All" or e.find_elements_by_xpath("../../div")[0].text.strip() == "All":
-                    selections.append("All")
-                    activeDropDowns[index].click()
-                    return selections
-                selections.append(e.find_elements_by_xpath("../../div")[0].text)
-                # selections.append(e.find_elements_by_xpath("..//div")[0].text)
-            if not flag:
-                selections.append("")
-        except Exception as e:
-            try:
-                for e in activeDropDowns[index].find_elements_by_css_selector('[ng-reflect-model="true"],[checked="true"],[ng-reflect-ng-class="menu-item-selected"]'):
-                    flag=True
-                    if e.find_elements_by_xpath("..//div")[0].text.strip() == "Select All" or e.find_elements_by_xpath("..//div")[0].text.strip() == "All":
+                if e.is_selected():
+                    if e.find_elements_by_xpath("../../div")[0].text.strip() == "Select All" or e.find_elements_by_xpath("../../div")[0].text.strip() == "All":
                         selections.append("All")
                         activeDropDowns[index].click()
                         return selections
-                    selections.append(e.find_elements_by_xpath("..//div")[0].text)
-                if not flag:
-                    selections.append("")
-            except Exception as e:
-                logger.error("Exception %s found while getting current selection, Component: MulitpleDropdownComponentClass",e)
+                    selections.append(e.find_elements_by_xpath("../../div")[0].text)
+            if not flag:
+                selections.append("")
+        except Exception as e:
+            logger.error("Exception %s found while getting current selection, Component: MulitpleDropdownComponentClass",e)
 
         activeDropDowns[index].click()
         time.sleep(1)
