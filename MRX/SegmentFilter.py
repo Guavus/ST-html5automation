@@ -10,14 +10,18 @@ from classes.Components.TimeRangeComponentClass import *
 from classes.Pages.MRXScreens.SegmentScreenClass import *
 from MRXUtils.MRXConstants import *
 from MRXUtils import SegmentHelper
-
+from classes.Pages.ExplorePageClass import *
 
 try:
 
     setup = SetUp()
     login(setup,Constants.USERNAME,Constants.PASSWORD)
+    exploreScreenInstance = ExplorePageClass(setup.d)
+    exploreHandle = getHandle(setup, "explore_Screen")
+    exploreScreenInstance.exploreList.launchModule(exploreHandle, "SEGMENTS")
+
     segmentScreenInstance = SegmentScreenClass(setup.d)
-    segmentScreenHandle = getHandle(setup,MRXConstants.SEGMENTSCREEN)
+    #segmentScreenHandle = getHandle(setup,MRXConstants.SEGMENTSCREEN)
     tableHandle = getHandle(setup, MRXConstants.SEGMENTSCREEN, 'table')
     data2 = segmentScreenInstance.table.getTableData1(tableHandle,length=20)
 

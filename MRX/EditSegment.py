@@ -10,6 +10,7 @@ from classes.Components.TimeRangeComponentClass import *
 from classes.Pages.MRXScreens.SegmentScreenClass import *
 from MRXUtils.MRXConstants import *
 from MRXUtils import SegmentHelper
+from classes.Pages.ExplorePageClass import *
 
 def verifyEditDetailWithTable(DataFromTable,DataFromUI,edit_info='',testCaseid=''):
     DataFromTable.pop()
@@ -27,8 +28,11 @@ def verifyEditDetailWithTable(DataFromTable,DataFromUI,edit_info='',testCaseid='
 
 try:
     setup = SetUp()
-
     login(setup,Constants.USERNAME,Constants.PASSWORD)
+    exploreScreenInstance = ExplorePageClass(setup.d)
+    exploreHandle = getHandle(setup, "explore_Screen")
+    exploreScreenInstance.exploreList.launchModule(exploreHandle, "SEGMENTS")
+
     segmentScreenInstance = SegmentScreenClass(setup.d)
     segmentScreenHandle = getHandle(setup,MRXConstants.SEGMENTSCREEN,'allbuttons')
 

@@ -2,6 +2,7 @@ from Utils.SetUp import *
 from classes.Components.TimeRangeComponentClass import *
 from classes.Pages.MRXScreens.SegmentScreenClass import *
 from MRXUtils.MRXConstants import *
+from classes.Pages.ExplorePageClass import *
 
 NumberofWindow=2
 
@@ -11,6 +12,10 @@ try:
     handle_list.append(setup)
     login(setup, Constants.USERNAME, Constants.PASSWORD)
     segmentScreenInstance = SegmentScreenClass(setup.d)
+    exploreScreenInstance = ExplorePageClass(setup.d)
+    exploreHandle = getHandle(setup, "explore_Screen")
+    exploreScreenInstance.exploreList.launchModule(exploreHandle, "SEGMENTS")
+
     tableHandle = getHandle(setup, MRXConstants.SEGMENTSCREEN, 'table')
     data2 = segmentScreenInstance.table.getTableData1(tableHandle)
 
@@ -19,6 +24,10 @@ try:
         setup = SetUp()
         handle_list.append(setup)
         login(setup, Constants.USERNAME, Constants.PASSWORD)
+        exploreScreenInstance = ExplorePageClass(setup.d)
+        exploreHandle = getHandle(setup, "explore_Screen")
+        exploreScreenInstance.exploreList.launchModule(exploreHandle, "SEGMENTS")
+
         tableHandle = getHandle(setup, MRXConstants.SEGMENTSCREEN, 'table')
         data3 = segmentScreenInstance.table.getTableData1(tableHandle)
         checkEqualAssert(data2,data3,message='Verify the behaviour when same user opens the UI in two tabs and perform some action on it',testcase_id='MKR-1741')

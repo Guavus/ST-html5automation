@@ -5,6 +5,7 @@ from MRXUtils.MRXConstants import *
 from MRXUtils import SegmentHelper
 from MRXUtils import UDHelper
 from Utils.AvailableMethod import *
+from classes.Pages.ExplorePageClass import *
 import json
 
 
@@ -69,7 +70,7 @@ try:
 
     exploreHandle = getHandle(setup, MRXConstants.ExploreScreen)
     segmentScreenInstance.explore.exploreList.launchModule(exploreHandle,"SEGMENTS")
-    segmentScreenHandle = getHandle(setup, MRXConstants.SEGMENTSCREEN)
+    #segmentScreenHandle = getHandle(setup, MRXConstants.SEGMENTSCREEN)
     global_filter = setup.cM.getNodeElements("segmentFilter", "filter")
     filtericonlocation_y = getHandle(setup, MRXConstants.SEGMENTSCREEN, 'filterArea')['filterArea']['nofilterIcon'][0].location['y']
 

@@ -10,11 +10,16 @@ from classes.Components.TimeRangeComponentClass import *
 from classes.Pages.MRXScreens.SegmentScreenClass import *
 from MRXUtils.MRXConstants import *
 from MRXUtils import SegmentHelper
+from classes.Pages.ExplorePageClass import *
 import os
 
 try:
     setup = SetUp()
     login(setup,Constants.USERNAME,Constants.PASSWORD)
+    exploreScreenInstance = ExplorePageClass(setup.d)
+    exploreHandle = getHandle(setup, "explore_Screen")
+    exploreScreenInstance.exploreList.launchModule(exploreHandle, "SEGMENTS")
+
     segmentScreenInstance = SegmentScreenClass(setup.d)
     segmentScreenHandle = getHandle(setup,MRXConstants.SEGMENTSCREEN,'allbuttons')
     segmentDetails=setup.cM.getNodeElements("segmentDetails","segment")
@@ -77,13 +82,14 @@ try:
 
     setup = SetUp()
     login(setup,Constants.USERNAME,Constants.PASSWORD)
-    segmentScreenInstance = SegmentScreenClass(setup.d)
-    segmentScreenHandle = getHandle(setup,MRXConstants.SEGMENTSCREEN,'allbuttons')
+    exploreScreenInstance = ExplorePageClass(setup.d)
+    exploreHandle = getHandle(setup, "explore_Screen")
+    exploreScreenInstance.exploreList.launchModule(exploreHandle, "SEGMENTS")
     segmentDetails=setup.cM.getNodeElements("segmentDetails","segment")
 
     flag_Top_segment=True
     for k, segmentDetail in segmentDetails.iteritems():
-        segmentScreenInstance.cm.clickButton("Import", segmentScreenHandle)
+        segmentScreenInstance.cm.clickButton("Import", getHandle(setup,MRXConstants.SEGMENTSCREEN,'allbuttons'))
         try:
             segmentDetailFromUIPopup=SegmentHelper.importSegment(setup,segmentScreenInstance,segmentDetail)
             SegmentHelper.refreshSegmentScreen(segmentScreenInstance,setup)
