@@ -137,7 +137,7 @@
 
 
         <screenConfig id = "TableDummy_Screen">
-            <component id = "table" selector="tag name" locator="kiwik-grid-view" parent="True"/>
+            <component id = "table" selector="tag name" locator="kiwik-grid-view,gvs-grid" parent="True"/>
         </screenConfig>
 
         <screenConfig id = "AboutUs_Screen">

@@ -60,6 +60,24 @@
             <component id = "allselects" selector="css selector" locator="div.ud-container" parent="True" />
         </screenConfig>
 
+
+        <screenConfig id = "comparative_Screen">
+            <component id='table' selector="tag name" locator="gvs-grid" parent="True" />
+            <component id="editFilters" selector="tag name" locator="kiwik-edit-parameter-dropdown" parent="True"/>
+            <component id="time_measure" selector="css selector" locator="div.timeRangeValue" parent="True"/>
+            <component id ="filterArea" selector="css selector" locator="div.filterContainerBox" parent="True"/>
+            <component id = 'globalfiltertooltip' selector="css selector" locator="[class*=tooltipBox]" parent="True"/>
+            <component id = "ktrs" selector="tag name" locator="kiwik-ktrs" parent="True"/>
+            <component id = "allselects" selector="css selector" locator="div.ud-container" parent="True" />
+            <component id ="trend-main" selector="css selector" locator="div[class*=chart][class*=section]" parent="True"/>
+            <component id = "qttooltip" selector="css selector" locator="div.divtooltipdefault" parent="True"/>
+            <component id="cb_no_data_msg" selector="css selector" locator="div.cb-container" parent="True"/>
+            <component id="cb_chart_header" selector="css selector" locator="div[class*=chart][class*=section]" parent="Tue"/>
+            <component id="cb_legend_header" selector="css selector" locator="div[class*=legend][class*=section]" parent="Tue"/>
+            <component id = "breadcrumb" selector="css selector" locator="nav.BreadcrumbsArea" parent="True"/>
+            <component id="expand_more" selector="css selector" locator="div.cb-container" parent="True"/>
+        </screenConfig>
+
         <screenConfig id ="createsegment_popup">
             <component id="popup" selector="class" locator="basePopupView" parent="True" />
             <component id = "radios" parent="False"/>
@@ -374,6 +392,49 @@
             <component id = "checkbox" selector="class name" locator="ag-selection-checkbox" wait="skip"/>
             <component id = "no_data_msg" selector="id" locator="overlay"/>
         </componentConfig>
+
+
+        <componentConfig id = "trend-main">
+            <component id = "trendchart" selector="tag name" locator="gvs-cb-chart"/>
+            <!--<component id ="header" selector="css selector" locator="[class*=chart-header]"/>-->
+            <component id ='yaxis' selector="css selector" locator="g[class*=y-axis]"/>
+            <component id ='xaxis' selector="css selector" locator="g[class*=x-axis]"/>
+        </componentConfig>
+
+        <componentConfig id="qttooltip">
+            <component id ="dim_name" selector="xpath" locator="./../div[1]" parent="True"/>
+            <!--<component id ="span" selector="tag name" locator="span"/>-->
+            <component id ="color_Box" selector="css selector" locator="div[class*=ColorBox]"/>
+        </componentConfig>
+
+        <componentConfig id="cb_no_data_msg">
+            <component id="msgOnChart" selector="css selector" locator="label[class*=cb][class*=chart][class*=state][class*=label]"/>
+            <component id="msgOnLegend" selector="css selector" locator="label[class*=cb][class*=legend][class*=state][class*=label]"/>
+        </componentConfig>
+
+
+        <componentConfig id="cb_chart_header">
+            <component id="text" selector="css selector" locator="label[class*=cb][class*=chart][class*=header]"/>
+        </componentConfig>
+
+        <componentConfig id="cb_legend_header">
+            <component id="text" selector="css selector" locator="label[class*=cb][class*=chart][class*=header]"/>
+        </componentConfig>
+
+        <componentConfig id ="breadcrumb">
+            <component id = "workflow" selector="xpath" locator="./div[1]"/>
+            <!--<component id = "bar" selector="xpath" locator="//kiwik-breadcrumb-bar/div"/>-->
+        </componentConfig>
+
+        <componentConfig id="expand_more">
+            <component id = "load_more" selector="css selector" locator="div[class*=load][class*=more]"/>
+            <component id = "show_other" selector="css selector" locator="div[class*=show][class*=others]"/>
+        </componentConfig>
+
+        <componentConfig id="allspans">
+            <component id = "span" selector="css selector" locator='span:not([title*=Help])' />
+        </componentConfig>
+
 
         <!--<componentConfig id ='browsebuttons'>-->
             <!--<component id="browsebutton" selector="css selector" locator='input[type=file]'/>-->
