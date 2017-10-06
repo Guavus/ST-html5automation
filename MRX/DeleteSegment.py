@@ -24,28 +24,54 @@ try:
     tableHandle = getHandle(setup, MRXConstants.SEGMENTSCREEN, 'table')
     column_0_ValueFromTable = segmentScreenInstance.table.getColumnValueFromTable(0, tableHandle)
     Flag=True
-    for value in column_0_ValueFromTable:
-        if 'auto' in value:
-            handle = getHandle(setup, MRXConstants.SEGMENTSCREEN, 'table')
-            index = segmentScreenInstance.table.getRowIndexFromTable(0, handle, str(value))
-            if index!=-1:
-                data2 = segmentScreenInstance.table.getTableData1(handle)
-                segmentDetailFromTable = []
-                for rowvalue in data2['rows'][index]:
-                    segmentDetailFromTable.append(rowvalue)
+    checkFlag=True
+    while checkFlag:
+        unDeletedSegmentList=[]
+        autoSegmentList=[]
+        for value in column_0_ValueFromTable:
+            if 'auto' in value:
+                autoSegmentList.append(value)
+                handle = getHandle(setup, MRXConstants.SEGMENTSCREEN, 'table')
+                index = segmentScreenInstance.table.getRowIndexFromTable(0, handle, str(value))
+                if index!=-1:
+                    data2 = segmentScreenInstance.table.getTableData1(handle)
+                    segmentDetailFromTable = []
+                    for rowvalue in data2['rows'][index]:
+                        segmentDetailFromTable.append(rowvalue)
 
-                try:
-                    handle['table']['delete'][index].click()
-                    confirmPopup=confirm_Popup(setup,str(value),testCaseId='MKR-1700,1701')
-                    logger.info('Deleted Segment Details= %s',str(segmentDetailFromTable))
-                    resultlogger.info('Deleted Segment Details= %s',str(segmentDetailFromTable))
-                except Exception as e:
-                    logger.debug("Not able to click on delete for segment = %s ", str(value))
-                    resultlogger.debug("Not able to click on delete for segment = %s ", str(value))
-                    continue
-                if Flag:
-                    checkEqualAssert(Constants.USERNAME,segmentDetailFromTable[4],message='only Owned Segments Can be Deleted by a User',testcase_id='MKR-1699')
-                    Flag=False
+                    try:
+                        handle['table']['delete'][index].click()
+                        confirmPopup=confirm_Popup(setup,str(value),testCaseId='MKR-1700,1701')
+                        logger.info('Deleted Segment Details= %s',str(segmentDetailFromTable))
+                        resultlogger.info('Deleted Segment Details= %s',str(segmentDetailFromTable))
+                    except Exception as e:
+                        isError(setup)
+                        logger.debug("Not able to click on delete for segment = %s ", str(value))
+                        resultlogger.debug("Not able to click on delete for segment = %s ", str(value))
+                        continue
+                    if Flag:
+                        checkEqualAssert(Constants.USERNAME,segmentDetailFromTable[4],message='only Owned Segments Can be Deleted by a User',testcase_id='MKR-1699')
+                        Flag=False
+
+        tableHandle = getHandle(setup, MRXConstants.SEGMENTSCREEN, 'table')
+        column_0_ValueFromTableAfterDelete = segmentScreenInstance.table.getColumnValueFromTable(0, tableHandle)
+
+        for value in column_0_ValueFromTableAfterDelete:
+            if 'auto' in value:
+                unDeletedSegmentList.append(value)
+
+
+        if len(unDeletedSegmentList)==0:
+            checkFlag=False
+
+        elif autoSegmentList==unDeletedSegmentList and len(autoSegmentList)!=0:
+            checkFlag=False
+            logger.info("Not able to Delete Segment hence Segment suite can't run :: check manually")
+            resultlogger.info("Not able to Delete Segment hence Segment suite can't run :: check manually <br>")
+            raise
+
+        
+        column_0_ValueFromTable=deepcopy(unDeletedSegmentList)
 
     tableHandle = getHandle(setup, MRXConstants.SEGMENTSCREEN, 'table')
     tableMap = segmentScreenInstance.table.getTableDataMap(tableHandle, driver=setup)
@@ -62,3 +88,4 @@ except Exception as e:
     logger.debug("Got Exception from Script Level try catch :: Screenshot with name = %s is saved", r)
     resultlogger.debug("Got Exception from Script Level try catch :: Screenshot with name = %s is saved and Exception = %s", r, str(e))
     setup.d.close()
+    raise e
