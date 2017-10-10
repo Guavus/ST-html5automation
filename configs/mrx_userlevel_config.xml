@@ -928,14 +928,14 @@
         <measure id="31" locatorText="# Contextual Session"/>
         <testcase id="31" value=""/>
 
-        <segment id ="32" filters = 'E,0,1'/>
-        <device id = "32" filters = 'E,0,1::E,0,1::E,0,1::E,0,1'/>
-        <network id = "32" filters = '0,1::0,1::No_Selection_On_Tree::E,0,1::E,0,1::E,0,1'/>
-        <content id = "32" filters = 'No_Selection_On_Tree::No_Selection_On_Tree::E,0,1::E,0,1::No_Input' inputvalue="guavus.com,facebook.com"/>
-        <usage id ="32" filters = 'E,0,1'/>
-        <quicklink id="32" locatorText="Last 7 days"/>
-        <measure id="32" locatorText="Volume"/>
-        <testcase id="32" value=""/>
+        <segment id ="performanceScenario" filters = 'E,0,1'/>
+        <device id = "performanceScenario" filters = 'E,0,1::E,0,1::E,0,1::E,0,1'/>
+        <network id = "performanceScenario" filters = '0,1::0,1::No_Selection_On_Tree::E,0,1::E,0,1::E,0,1'/>
+        <content id = "performanceScenario" filters = 'No_Selection_On_Tree::No_Selection_On_Tree::E,0,1::E,0,1::No_Input' inputvalue="guavus.com,facebook.com"/>
+        <usage id ="performanceScenario" filters = 'E,0,1'/>
+        <quicklink id="performanceScenario" locatorText="Last 7 days" table="daily_points"/>
+        <measure id="performanceScenario" locatorText="Volume"/>
+        <testcase id="performanceScenario" value=""/>
 
     </udpScreenFilters>
 
