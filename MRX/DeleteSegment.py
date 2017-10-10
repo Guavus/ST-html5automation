@@ -34,24 +34,24 @@ try:
                 handle = getHandle(setup, MRXConstants.SEGMENTSCREEN, 'table')
                 index = segmentScreenInstance.table.getRowIndexFromTable(0, handle, str(value))
                 if index!=-1:
-                    data2 = segmentScreenInstance.table.getTableData1(handle)
+                    data2 = segmentScreenInstance.table.getTableData1(handle,length=20)
                     segmentDetailFromTable = []
                     for rowvalue in data2['rows'][index]:
                         segmentDetailFromTable.append(rowvalue)
-
                     try:
-                        handle['table']['delete'][index].click()
-                        confirmPopup=confirm_Popup(setup,str(value),testCaseId='MKR-1700,1701')
-                        logger.info('Deleted Segment Details= %s',str(segmentDetailFromTable))
-                        resultlogger.info('Deleted Segment Details= %s',str(segmentDetailFromTable))
+                        deleteFlag=segmentScreenInstance.table.clickIconOnTableThroughTableHandle(handle,setup.d,str(value))
+                        if deleteFlag:
+                            confirmPopup=confirm_Popup(setup,str(value),testCaseId='MKR-1700,1701')
+                            logger.info('Deleted Segment Details= %s',str(segmentDetailFromTable))
+                            resultlogger.info('Deleted Segment Details= %s',str(segmentDetailFromTable))
+                            if Flag:
+                                checkEqualAssert(Constants.USERNAME, segmentDetailFromTable[4],message='only Owned Segments Can be Deleted by a User',testcase_id='MKR-1699')
+                                Flag = False
                     except Exception as e:
                         isError(setup)
                         logger.debug("Not able to click on delete for segment = %s ", str(value))
                         resultlogger.debug("Not able to click on delete for segment = %s ", str(value))
                         continue
-                    if Flag:
-                        checkEqualAssert(Constants.USERNAME,segmentDetailFromTable[4],message='only Owned Segments Can be Deleted by a User',testcase_id='MKR-1699')
-                        Flag=False
 
         tableHandle = getHandle(setup, MRXConstants.SEGMENTSCREEN, 'table')
         column_0_ValueFromTableAfterDelete = segmentScreenInstance.table.getColumnValueFromTable(0, tableHandle)

@@ -34,7 +34,7 @@ def VerifyBasicTableFuncationality(setup,screenInstance,parent='table'):
 
     tableHandle = getHandle(setup, MRXConstants.SEGMENTSCREEN, parent)
     tableMap = screenInstance.table.getTableDataMap(tableHandle,driver=setup,colIndex=-1)
-    checkEqualAssert(MRXConstants.SegmentScreenTableHeaderList,tableMap['header'],'','','Verify Table Header on Segment Screen',testcase_id='MKR-1658')
+    checkEqualAssert(MRXConstants.SegmentScreenTableHeaderList,tableMap['header'],message='Verify Table Header on Segment Screen',testcase_id='MKR-1658')
 
     if tableMap['rows'] == Constants.NODATA:
         logger.info("*********Table Data Not Present************")
@@ -46,7 +46,7 @@ def VerifyBasicTableFuncationality(setup,screenInstance,parent='table'):
 
         for k, v in sortedData.iteritems():
             if tableMap['rows'].has_key(k):
-                checkEqualAssert(tableMap['rows'][k], sortedData[k],"", "","verify sorted Table rows present in table with key : " + k)
+                checkEqualAssert(tableMap['rows'][k], sortedData[k],message="Verify sorted Table rows present in table with key : " + k)
             else:
                 logger.info("********table not contain row with key********* : " + k)
 
@@ -64,7 +64,7 @@ def sortTable(setup,insatnce,columnName="Name"):
     for i in range(len(data2['rows'])):
         col.append(data2['rows'][i][columnIndex])
 
-    checkEqualAssert(sorted(col, reverse=True), col, "", "", "Verify Sorting For ColumnName ="+columnName,testcase_id='MKR-1691')
+    checkEqualAssert(sorted(col,key=lambda s: s.lower(),reverse=True), col,message="Verify Sorting For ColumnName ="+columnName,testcase_id='MKR-1691')
     logger.info("Sorted")
     cdata2 = insatnce.table.convertDataToDictWithKeyAsRow(data2)
     return cdata2
@@ -75,34 +75,34 @@ def set_GetDetailFromEdit(setup,screenInstance,isSetEdit,segment_Input):
 
     popUpHandle = getHandle(setup, MRXConstants.POPUPSCREEN)
     if segment_Input['edit_info']=='edit':
-        checkEqualAssert(MRXConstants.EDITHEADERINEDITPOPUP,str(popUpHandle['allspans']['span'][0].text),'','','Verify Edit Header in Popup')
+        checkEqualAssert(MRXConstants.EDITHEADERINEDITPOPUP,str(popUpHandle['allspans']['span'][0].text),message='Verify Edit Header in Popup')
     elif segment_Input['edit_info']=='info':
-        checkEqualAssert(MRXConstants.INFOHEADERINPOPUP, str(popUpHandle['allspans']['span'][0].text), '', '','Verify Info Header in Popup')
-        checkEqualAssert('Segment creation failed as there were less then '+str(MRXConstants.MinimumUserConfig)+' subscribers',str(popUpHandle['allspans']['span'][9].text),message='Verify message on Info in case of Status=Rejected')
+        checkEqualAssert(MRXConstants.INFOHEADERINPOPUP, str(popUpHandle['allspans']['span'][0].text),message='Verify Info Header in Popup')
+        checkEqualAssert('Segment creation failed as there were less then '+str(MRXConstants.MinimumUserConfig)+' subscribers',str(popUpHandle['allspans']['span'][9].text).strip(),message='Verify message on Info in case of Status=Rejected')
     import re
 
     if isSetEdit and segment_Input['edit_info']=='edit':
         popUpDetails.append(screenInstance.cm.sendkeys_input(segment_Input['newsegmentname'], popUpHandle, 0))
         popUpDetails.append(re.findall('[0-9]*',str(popUpHandle['allspans']['span'][5].text))[0])
-        popUpDetails.append(str(popUpHandle['allspans']['span'][2].text))
+        popUpDetails.append(str(popUpHandle['allspans']['span'][2].text).strip())
 
         if screenInstance.cm.selectRadioButton(segment_Input['access'],popUpHandle,childDiv="label"):
-            popUpDetails.append(str(screenInstance.cm.getSelectedRadioButtonText(popUpHandle, childDiv="input")))
+            popUpDetails.append(str(screenInstance.cm.getSelectedRadioButtonText(popUpHandle, childDiv="input")).strip())
         else:
             popUpDetails.append('Not able to Click Radio Button')
 
     elif segment_Input['edit_info']=='info':
-        popUpDetails.append(str(popUpHandle['allspans']['span'][6].text))
+        popUpDetails.append(str(popUpHandle['allspans']['span'][6].text).strip())
         popUpDetails.append('0')
-        popUpDetails.append(str(popUpHandle['allspans']['span'][2].text))
-        popUpDetails.append(str(popUpHandle['allspans']['span'][8].text))
+        popUpDetails.append(str(popUpHandle['allspans']['span'][2].text).strip())
+        popUpDetails.append(str(popUpHandle['allspans']['span'][8].text).strip())
     else:
-        popUpDetails.append(str(screenInstance.cm.getValue_input(popUpHandle, 0)))
+        popUpDetails.append(str(screenInstance.cm.getValue_input(popUpHandle, 0)).strip())
         popUpDetails.append(re.findall('[0-9]*', str(popUpHandle['allspans']['span'][5].text))[0])
-        popUpDetails.append(str(popUpHandle['allspans']['span'][2].text))
-        popUpDetails.append(str(screenInstance.cm.getSelectedRadioButtonText(popUpHandle, childDiv="input")))
+        popUpDetails.append(str(popUpHandle['allspans']['span'][2].text).strip())
+        popUpDetails.append(str(screenInstance.cm.getSelectedRadioButtonText(popUpHandle, childDiv="input")).strip())
 
-    popUpDetails.append(str(popUpHandle['allspans']['span'][4].text))
+    popUpDetails.append(str(popUpHandle['allspans']['span'][4].text).strip())
 
     if segment_Input['edit_info']=='edit' and str(segment_Input['button']) == "Cancel":
         logger.info('Going to Click on Cancel Button')
@@ -138,7 +138,7 @@ def importSegment(setup,screenInstance,segment_Input,source='Import'):
     logger.info('Going to Enter Segment Name = %s',segment_Input['segmentname'])
     resultlogger.info('Going to Enter Segment Name = %s',segment_Input['segmentname'])
     #segmentDetailFromUI['Segment Name'] = str(screenInstance.cm.sendkeys_input(segment_Input['segmentname'],popUpHandle,0))
-    segmentDetailFromUI.append(str(screenInstance.cm.sendkeys_input(segment_Input['segmentname'],popUpHandle,0)))
+    segmentDetailFromUI.append(str(screenInstance.cm.sendkeys_input(segment_Input['segmentname'],popUpHandle,0)).strip())
 
     # if not isColorValid(screenInstance, popUpHandle,property=Constants.BORDERCOLOR, index=0):
     #     raise
@@ -160,7 +160,7 @@ def importSegment(setup,screenInstance,segment_Input,source='Import'):
 
     if screenInstance.cm.selectRadioButton(segment_Input['access'],popUpHandle,childDiv="label"):
         #segmentDetailFromUI['Access'] =str(screenInstance.cm.getSelectedRadioButtonText(popUpHandle, childDiv="input"))
-        segmentDetailFromUI.append(str(screenInstance.cm.getSelectedRadioButtonText(popUpHandle, childDiv="input")))
+        segmentDetailFromUI.append(str(screenInstance.cm.getSelectedRadioButtonText(popUpHandle, childDiv="input")).strip())
     else:
         #segmentDetailFromUI['Access'] = 'Not able to Click Radio Button'
         segmentDetailFromUI.append('Not able to Click Radio Button')
@@ -178,7 +178,7 @@ def importSegment(setup,screenInstance,segment_Input,source='Import'):
     utc = datetime.datetime.utcnow()
     dateString=utc.strftime(MRXConstants.TIMEPATTERN)
 
-    segmentDetailFromUI.append(str(dateString))
+    segmentDetailFromUI.append(str(dateString).strip())
 
 
     if not button_status:

@@ -19,7 +19,7 @@ def verifyEditDetailWithTable(DataFromTable,DataFromUI,edit_info='',testCaseid='
     createdon_from_table = DataFromTable.pop()
     createdon_from_UI = DataFromUI.pop()
 
-    checkEqualAssert(createdon_from_UI.split(":")[0], createdon_from_table.split(':')[0], '', '','Verify Creted on from UI..... Expected =' + createdon_from_UI + ' Actual =' + createdon_from_table)
+    checkEqualAssert(str(createdon_from_UI.split(":")[0]).strip(), str(createdon_from_table.split(':')[0]).strip(),message='Verify Created on from UI..... Expected =' + createdon_from_UI + ' Actual =' + createdon_from_table)
     del DataFromTable[4]
     del DataFromTable[2]
 

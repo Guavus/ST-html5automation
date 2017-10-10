@@ -763,3 +763,54 @@ class TableComponentClass(BaseComponentClass):
             return " "
             # if iscount=="sum":
             #   return value
+
+    def clickIconOnTable(self,h,driver,parent="table",child="edit",index=0):
+        if len(h[parent][child]) != 0 and index!=-1:
+            try:
+                logger.info("Performing Hover action on Table for click icon")
+                ActionChains(driver).move_to_element(h[parent][child][index]).perform()
+                h[parent][child][index].click()
+                time.sleep(2)
+                return True
+
+            except ElementNotVisibleException or Exception as e:
+                return e
+        else:
+            return False
+
+    def clickIconOnTableThroughTableHandle(self,h,driver,value,colIndexForKey=0,length=20,parent="table",child='ROWS',columnName='Delete',className='delete_GridIcon'):
+        headerList=self.getIterfaceHeaders(h[parent])
+        columnIndexForDelete=self.getIndexForValueInArray(headerList,columnName)
+        if len(h[parent][child]) != 0 and columnIndexForDelete != -1:
+            try:
+                elHandle = h[parent][child]
+                colcount=len(headerList)
+                rowCount = len(elHandle) / colcount
+
+                if rowCount < length:
+                    l = len(elHandle)
+                else:
+                    l = length * colcount
+
+                for i in range(0, l, colcount):
+                    j = i
+                    if str(elHandle[j+colIndexForKey].text).strip()==str(value).strip():
+                        deleteIconHandle=elHandle[j+columnIndexForDelete].find_elements_by_css_selector('[class*='+className+']')
+                        if len(deleteIconHandle)>0:
+                            logger.info("Performing Hover action on Table for click %s icon", columnName)
+                            ActionChains(driver).move_to_element(deleteIconHandle[0]).perform()
+                            deleteIconHandle[0].click()
+                            return True
+                        else:
+                            logger.info("Delete icon not found for %s",str(elHandle[j+colIndexForKey].text))
+                            return False
+
+                logger.info("%s not found in table, so can't delete",str(value))
+                return False
+
+            except ElementNotVisibleException or Exception as e:
+                logger.error("Exception found during hover or click delete icon on table")
+                return e
+        else:
+            logger.info("Column for Delete Icon not Found :: Hence can't delete")
+            return False
