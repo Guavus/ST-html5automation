@@ -975,6 +975,23 @@ def validatesearchtable(data,columnname,searchtext):
     except:
         return False
 
+def validateSearchForTable(data,searchtext,columnIndex=0):
+    flag = True
+    searchList=[]
+    try:
+        for i in range(len(data['rows'])):
+            searchList.append(data['rows'][i][columnIndex])
+
+        for value in searchList:
+            if not searchtext in value:
+                flag=False
+                break
+        logger.info("Search Result For %s is %s",str(searchtext),str(searchList))
+        return flag,searchList
+
+    except Exception as e:
+        return e,[]
+
 
 def isDateDisabled(y,m,d,h,min,instance,setup,page="routers_popup",parent="leftcalendar"):
     try:
