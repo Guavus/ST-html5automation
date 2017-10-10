@@ -60,7 +60,13 @@ try:
 
                         for dim in deHandle['filterTab']['dimension']:
                             availableFilter.append(str(dim.text))
-                        checkEqualAssert(MRXConstants.ExpectedFilterOptionForDE, availableFilter,message="Verify that in the Data extraction window which opens on clicking a method a user can set the time range, choose a Measure, select Top Rows and also apply different filters.",testcase_id='MKR-1959')
+
+                        if class_de=="Usage Filters":
+                            ExpectedFilterForUsage=deepcopy(MRXConstants.ExpectedFilterOptionForDE)
+                            ExpectedFilterForUsage.pop()
+                            checkEqualAssert(ExpectedFilterForUsage,availableFilter,message="Verify that in the Data extraction window which opens on clicking a method a user can set the time range, choose a Measure, select Top Rows and also apply different filters.",testcase_id='MKR-1959')
+                        else:
+                            checkEqualAssert(MRXConstants.ExpectedFilterOptionForDE, availableFilter,message="Verify that in the Data extraction window which opens on clicking a method a user can set the time range, choose a Measure, select Top Rows and also apply different filters.",testcase_id='MKR-1959')
 
                         availableButton=deScreenInstance.getAllButtonText(getHandle(setup,MRXConstants.DEPOPUP,'allbuttons'))
                         checkEqualAssert(MRXConstants.Button_On_DEPOPUP,availableButton,message="Verify Cancel and Extract Data Set buttons on Data Extraction Popup",testcase_id='MKR-1959')

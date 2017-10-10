@@ -231,7 +231,9 @@ def setFilters(setup,udpScreenInstance,tab_name,method_Index,selectedMethod,meth
     udpScreenInstance.clickLink(udpfilters[tab_name]['locatorText'], getHandle(setup, MRXConstants.DEPOPUP, MRXConstants.ALLLINKS))
 
     if validateAvailableMethod:
-        availableMethodOnUI=udpScreenInstance.getAllTitle(getHandle(setup, MRXConstants.DEPOPUP,MRXConstants.ALLTITLES))
+        availableMethodOnUI = udpScreenInstance.getAllTitle(getHandle(setup, MRXConstants.DEPOPUP, MRXConstants.ALLTITLES))
+        if str(selectedMethod).strip()=='Global Data Service' and 'Content Interest' in availableMethodOnUI:
+            availableMethodOnUI=[]
         checkEqualAssert(methodNeeded,availableMethodOnUI,message="Verify that for a selected method, in the corresponding data extraction window, user gets an option to apply filter on every other method except the selected method :: Selected Method = "+str(selectedMethod),testcase_id='MKR-1963')
 
     toggleStateList = []
