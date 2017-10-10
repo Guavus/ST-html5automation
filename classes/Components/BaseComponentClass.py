@@ -417,10 +417,11 @@ class BaseComponentClass:
                 return e
         return False
 
-    def clickIcon(self,h,parent="icons",child="closePopupIcon"):
+    def clickIcon(self,h,driver,parent="icons",child="closePopupIcon"):
         if len(h[parent][child])!=0:
             try:
-                h[parent][child][0].click()
+                driver.execute_script("return arguments[0].click();",h[parent][child][0])
+                #h[parent][child][0].click()
                 time.sleep(2)
                 return True
 

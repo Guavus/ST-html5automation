@@ -127,6 +127,67 @@ class MulitpleDropdownComponentClass(DropdownComponentClass):
         return selections
 
 
+    def getSelectionWithScroll_MRX(self,h,setup,index,parent="filterPopup",child="multiselect-dropdown"):
+        # This is updated method for getting  selection on multi Dropdown (issue related to production flag off)
+        activeDropDowns = self.getAllActiveElements(h[parent][child])
+        time.sleep(1)
+        activeDropDowns[index].click()
+        selections = []
+        availableCheckBoxForSelection=[]
+        while True:
+            flag = True
+            if not availableCheckBoxForSelection:
+                selections,availableCheckBoxForSelection,allFlag = self.getSelectionAfterScroll(setup, activeDropDowns, index,False)
+                if allFlag:
+                    activeDropDowns[index].click()
+                    time.sleep(1)
+                    return selections
+                flag=False
+            else:
+                flag=True
+                newSelection,newAvailableCheckBoxForSelection,allFlag = self.getSelectionAfterScroll(setup, activeDropDowns, index,True)
+
+                for k in newAvailableCheckBoxForSelection:
+                    if k not in availableCheckBoxForSelection:
+                        flag = False
+                        availableCheckBoxForSelection.append(k)
+
+                for k in newSelection:
+                    if k not in selections:
+                        selections.append(k)
+
+            if flag:
+                activeDropDowns[index].click()
+                time.sleep(1)
+                return selections
+
+
+    def getSelectionAfterScroll(self,setup,activeDropDowns,index,scroll=False):
+        if scroll:
+            availableCheckBox=activeDropDowns[index].find_elements_by_css_selector('input[type*=checkbox]')
+            if len(availableCheckBox) > 8:
+                setup.d.execute_script("return arguments[0].scrollIntoView();", availableCheckBox[8])
+                time.sleep(4)
+        selections = []
+        availableCheckBoxForSelection=[]
+        flag = False
+        try:
+            for e in activeDropDowns[index].find_elements_by_css_selector('input[type*=checkbox]'):
+                availableCheckBoxForSelection.append(e.find_elements_by_xpath("../../div")[0].text)
+                flag = True
+                if e.is_selected():
+                    if e.find_elements_by_xpath("../../div")[0].text.strip() == "Select All" or e.find_elements_by_xpath("../../div")[0].text.strip() == "All":
+                        selections.append("All")
+                        activeDropDowns[index].click()
+                        return selections,True
+                    selections.append(e.find_elements_by_xpath("../../div")[0].text)
+            if not flag:
+                selections.append("")
+        except Exception as e:
+            logger.error("Exception %s found while getting current selection, Component: MulitpleDropdownComponentClass",e)
+        return selections,availableCheckBoxForSelection,False
+
+
     def getSelectionWithIndex(self,h,index,parent="filterPopup",child="multiselect-dropdown"):
         activeDropDowns = self.getAllActiveElements(h[parent][child])
         activeDropDowns[index].click()
@@ -276,7 +337,11 @@ class MulitpleDropdownComponentClass(DropdownComponentClass):
                     elements[i].click()
 
             activeDropDowns[index].click()
-            return self.getSelection(h,index,parent,child)
+            if setup==False:
+                return self.getSelection(h,index,parent,child)
+            else:
+                return self.getSelectionWithScroll_MRX(h,setup,index,parent,child)
+
         except Exception as e:
             if setup != False:
                 self.utility.utility.isError(setup)

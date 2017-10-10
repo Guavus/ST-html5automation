@@ -341,7 +341,11 @@ def setFilters(setup,udpScreenInstance,tab_name,k ="0",toggleStateFlag=False):
             elif 'NE' in udp_filter[k][i]:
                 checkEqualAssert('Not Equal', str(equalOrNotEqual),message='Verify selection For equalSign')
 
-            selected  = udpScreenInstance.multiDropdown.domultipleSelectionWithIndex(getHandle(setup,MRXConstants.UDPPOPUP,"filterPopup"),udp_filter[k][i],(i-treeindex-inputFieldIndex))
+            if k=='performanceScenario':
+                selected  = udpScreenInstance.multiDropdown.domultipleSelectionWithIndex(getHandle(setup,MRXConstants.UDPPOPUP,"filterPopup"),udp_filter[k][i],(i-treeindex-inputFieldIndex),setup=setup)
+            else:
+                selected  = udpScreenInstance.multiDropdown.domultipleSelectionWithIndex(getHandle(setup,MRXConstants.UDPPOPUP,"filterPopup"),udp_filter[k][i],(i-treeindex-inputFieldIndex))
+
 
             if toggleStateFlag:
                 toggleStateList.append(equalOrNotEqual)

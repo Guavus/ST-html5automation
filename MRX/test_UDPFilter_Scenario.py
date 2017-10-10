@@ -55,7 +55,7 @@ def fireBV(query,method,table_name,data,testcase=''):
     query['id']=str(time.time()).split('.')[0]
 
     logger.info("Going to dump info from UI for Backend Data validation ::" + str(query))
-    with open("DumpFile.txt",mode='a') as fs:
+    with open("UDRDumpFile.txt",mode='a') as fs:
         fs.write(json.dumps(query))
         fs.write(" __DONE__" + "\n")
 
@@ -116,7 +116,7 @@ try:
     expected = {}
     expected = UDHelper.setUDPFilters(udScreenInstance, setup, str(0))
     isError(setup)
-    udScreenInstance.clickIcon(getHandle(setup, MRXConstants.UDPPOPUP,'icons'),child='closePopupIcon')
+    udScreenInstance.clickIcon(getHandle(setup, MRXConstants.UDPPOPUP,'icons'),setup.d,child='closePopupIcon')
     udpFilterFromScreen = UDHelper.getUDPFiltersFromScreen(MRXConstants.UDSCREEN, setup)
     checkEqualAssert(MRXConstants.NO_FILTER, udpFilterFromScreen,message="Verify that on pressing X button the selections made on User Distribution Parameters, selected filters do not get applied and the page",testcase_id='MKR-1761')
 
