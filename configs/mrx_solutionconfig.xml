@@ -182,8 +182,8 @@
             <component id = "allbuttons" selector="css selector" locator='[class="basePopupView"]' parent="True"/>
             <component id = "allinputs" selector="css selector" locator='[class="basePopupView"]' parent="True"/>
             <component id ="allsliders" selector="css selector" locator='[class="basePopupView"]' parent="True"/>
-            <component id = "allselects" selector="tag name" locator='[class="basePopupView"]' parent="True" />
-            <component id = "allDropDown" selector="id" locator='[class="basePopupView"]' parent="True"/>
+            <component id = "allselects" selector="css selector" locator='[class="basePopupView"]' parent="True" />
+            <component id = "allDropDown" selector="css selector" locator='[class="basePopupView"]' parent="True"/>
 
         </screenConfig>
 
