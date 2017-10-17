@@ -34,6 +34,7 @@ class Constants(object):
         #URL="http://192.168.174.71:9080"
         #URL="http://192.168.113.191:9080/app/user-distribution"
         URL="http://192.168.195.144:9080"
+        MRX_UM_URL = "http://192.168.104.190/um/"
         #URL="https://funupgrade.guavus.com:6443"
         #URL="http://192.168.192.204:28080/"
         #URL="http://192.168.195.57:28080/"
