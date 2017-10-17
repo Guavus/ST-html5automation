@@ -227,7 +227,7 @@ class TableComponentClass(BaseComponentClass):
     def getRows1(self,colcount,h,length,driver,colIndex=0,scroll=False,ForTableData=False):
 
         if scroll:
-            if len(h['ROWS']) > 7:
+            if len(h['ROWS']) > 7*colcount:
                 driver.d.execute_script("return arguments[0].scrollIntoView();", h['ROWS'][len(h['ROWS'])-6*colcount])
             else:
                 driver.d.execute_script("return arguments[0].scrollIntoView();", h['ROWS'][len(h['ROWS']) - 1 * colcount])
@@ -454,6 +454,10 @@ class TableComponentClass(BaseComponentClass):
     def getColumnValueFromTable(self,columnIndex,tableHandle):
         columnValue=[]
         data2=self.getTableData1(tableHandle,length=20)
+
+        if data2['rows'] == Constants.NODATA:
+            return columnValue
+
         for index in range(len(data2['rows'])):
             columnValue.append(str(data2['rows'][index][columnIndex]).strip())
         return columnValue

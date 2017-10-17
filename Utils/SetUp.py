@@ -37,7 +37,16 @@ class SetUp:
                 # self.d = webdriver.Firefox()
                 self.d = webdriver.Chrome(Constants.chromedriverpath, chrome_options=chromeOptions)
             elif "ff" == Constants.BROWSER:
-                self.d = webdriver.Firefox()
+                os.system("mkdir "+Constants.firefoxdownloadpath)
+                removeFileAtGivenPath(Constants.firefoxdownloadpath)
+                fp = webdriver.FirefoxProfile()
+                fp.set_preference("browser.download.folderList", 2)
+                fp.set_preference("browser.download.manager.showWhenStarting", False)
+                fp.set_preference("browser.download.dir",Constants.firefoxdownloadpath)
+                fp.set_preference("browser.helperApps.alwaysAsk.force", False)
+                #fp.set_preference("browser.helperApps.neverAsk.saveToDisk", "text/csv")
+
+                self.d = webdriver.Firefox(executable_path=Constants.firefoxdriverpath,firefox_profile=fp)
             elif "safari" == Constants.BROWSER:
                 self.d = webdriver.Safari()
 

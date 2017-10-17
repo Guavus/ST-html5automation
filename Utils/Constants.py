@@ -91,7 +91,8 @@ class Constants(object):
     # chromedriverpath = "C:\Users\Administrator\Downloads\chromedriver_win32\chromedriver.exe"
     chromdownloadpath= "C:\Users\Administrator\csvdownload"
     #chromedriverpath = "/Users/mayank.mahajan/PycharmProjects/html5automation/chromedriver/chromedriver228"
-    #firefoxdriverpath = "/Users/mayank.mahajan/Downloads/geckodriver"
+    firefoxdriverpath = "/Users/praveen.garg1/Downloads/geckodriver"
+    firefoxdownloadpath = "/Users/praveen.garg1/html5automation/download"
 
     # common components
     ALLBUTTONS = "allbuttons"

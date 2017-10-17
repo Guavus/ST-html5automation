@@ -383,7 +383,7 @@
             <component id = "HEADERROW" selector="class name" locator='ag-header-cell-text' locatorDimension ='class' locatorText = 'ag-header-cell-text' action="getData" />
             <component id = "SELECTED_ROWS" selector="css selector" locator="[class*=row-selected]" wait="skip"/>
             <component id = "ROWS" selector="class name" locator='ag-cell-value' locatorDimension ='class' locatorText = 'ag-cell-value' action="getData" />
-            <component id = "download" selector="css selector" locator='[class*=download][class*=Icon]' wait = 'skip'/>
+            <component id = "download" selector="css selector" locator='[class*=download][class*=Icon],[class*=export][class*=gridIcon]' wait = 'skip'/>
             <component id = "info" selector="css selector" locator='[class*=info][class*=Icon]' wait = 'skip'/>
             <component id = "delete" selector="css selector" locator='[class*=delete][class*=Icon],div[title*=Delete][title*=User]' wait = 'skip'/>
             <component id = "edit" selector="css selector" locator='[class*=edit][class*=Icon],div[class*=edit][class*=Div]' wait = 'skip'/>

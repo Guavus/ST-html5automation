@@ -126,6 +126,18 @@ class MulitpleDropdownComponentClass(DropdownComponentClass):
         time.sleep(1)
         return selections
 
+    def getSingleSelectionFromMultiDropDown(self,h,index,parent="filterPopup",child="multiselect-dropdown"):
+        selections = ''
+        try:
+            if len(h[parent][child])>0:
+                headerhandle=h[parent][child][index].find_elements_by_tag_name('header')
+                if len(headerhandle)>0:
+                    return str(headerhandle[0].get_attribute('title')).strip()
+        except Exception as e:
+            logger.error("Exception %s found while getting current selection, Component: MulitpleDropdownComponentClass",e)
+
+        return selections
+
 
     def getSelectionWithScroll_MRX(self,h,setup,index,parent="filterPopup",child="multiselect-dropdown"):
         # This is updated method for getting  selection on multi Dropdown (issue related to production flag off)
