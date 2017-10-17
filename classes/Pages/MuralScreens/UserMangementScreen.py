@@ -1,9 +1,10 @@
 from classes.Pages.BasePageClass import *
+from classes.Pages.BasePopClass import *
 from classes.Components.MulitpleDropdownComponentClass import *
 from classes.Components.DropdownComponentClass import *
 from classes.Components.TableComponentClass import *
 
-class UserManagementScreenClass(BasePageClass):
+class UserManagementScreenClass(BasePopClass):
     def __init__(self,driver):
         '''
         Constructor
@@ -14,4 +15,4 @@ class UserManagementScreenClass(BasePageClass):
         self.dropdown = DropdownComponentClass()
         self.table = TableComponentClass()
         # Common Components
-        BasePageClass.__init__(self,driver)
+        BasePopClass.__init__(self,driver)

@@ -101,3 +101,25 @@ class ExploreListComponentClass(BaseComponentClass):
             logger.error("Got Exception <method> %s", str(e))
             resultlogger.error("Not able to click on %s", value)
             return False
+
+    def getUserNameFromHeader(self,handlres, parent='appHeader', child='helpIcon',icon="profile"):
+        # Child help icon means not only help icon but all icons on app heder
+        logger.info("Method Called : getLoginUserName")
+        try:
+            for handle in handlres[parent][child]:
+                if len(handle.find_elements_by_tag_name('img')) > 0:
+                    if icon in str(handle.find_elements_by_tag_name('img')[0].get_attribute('src')).lower():
+                        return str(handle.text).strip()
+
+        except Exception as e:
+            logger.error("Exception found while getting User Name = %s",str(e))
+            return e
+
+        logger.debug("%s Icon Not Found", icon)
+        return False
+
+    def getAvailableModule(self,exploreHandle,parent='centerHeader',child='alllinks'):
+        availableScreenList = []
+        for ele in exploreHandle[parent][child]:
+            availableScreenList.append(str(ele.text).strip())
+        return availableScreenList

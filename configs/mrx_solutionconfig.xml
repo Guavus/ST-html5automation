@@ -20,6 +20,15 @@
         <column id="delete" locatorText="Delete"/>
     </reportsorttablecolumn>
 
+    <umsorttablecolumn>
+        <column id="username" locatorText="Username"/>
+        <column id="name" locatorText="Name"/>
+        <column id="email" locatorText="Email"/>
+        <column id="applicationrole" locatorText="Application Role"/>
+        <column id="lastmodified" locatorText="Last Modified"/>
+        m<column id="status" locatorText="Status"/>
+    </umsorttablecolumn>
+
     <udpfilters>
         <filter id = 'segment' locatorText="Segmentation Filters"/>
         <filter id = 'device' locatorText="Device Filters"/>
@@ -160,6 +169,10 @@
             <component id= "invalidboxwrapper" selector="css selector" locator="div.invalid-box-wrapper" parent="True"/>
         </screenConfig>
 
+        <screenConfig id = 'confirmation_popup'>
+            <component id ='confirm_popup' selector="css selector" locator="div.confirmationContainer" parent="True"/>
+        </screenConfig>
+
 
         <screenConfig id = "segment_Screen">
              <!--<component id = "primaryMeasure" selector="css selector" locator='[ng-model="vm.primaryMeasure"]' action="click"/>-->
@@ -253,6 +266,44 @@
             <!--<component id = 'leftcalendar' selector="class name" locator="calendar left" parent="True" />-->
             <component id = "allbuttons" selector="class name" locator="footerDiv" parent="True" />
         </screenConfig>
+
+
+        <screenConfig id = "mrxUserManagement_Screen">
+            <component id = "allspans" selector="css selector" locator="div.search-bar" parent="True"/>
+            <component id = "newUserIcon" selector="css selector" locator="div.search-bar" parent="True"/>
+            <component id = "allinputs" selector="css selector" locator="div.search-bar" parent="True"/>
+            <component id ="alllabels" selector="css selector" locator="div.search-bar" parent="True"/>
+            <component id = "table" selector="tag name" locator="div.grid-container" parent="True"/>
+            <component id = 'umalert' selector="class name" locator="confirmationContainer" parent="True"/>
+        </screenConfig>
+
+        <screenConfig id = "mrxUserPopUp_Screen">
+            <component id = "allinputs" selector="css selector" locator="div.modal-content" parent="True"/>
+            <component id = "allcheckboxes" selector="css selector" locator="div.modal-content" parent="True"/>
+            <component id ="allbuttons" selector="css selector" locator="div.modal-content" parent="True"/>
+            <component id ="allselects" selector="css selector" locator="div.modal-content" parent="True"/>
+            <component id ="icons" selector="css selector" locator="div.modal-content" parent="True"/>
+            <component id ="allsliders" selector="css selector" locator="div.modal-content" parent="True"/>
+            <component id="errorMsgContainer" selector="css selector" locator="div.modal-content" parent="True"/>
+            <component id="alllabels" selector="css selector" locator="div[class*=add][class*=User],div[class*=add][class*=Edit]" parent="True"/>
+        </screenConfig>
+
+        <screenConfig id = "changepassword_screen">
+            <component id = "allinputs" selector="css selector" locator="div.modal-content" parent="True"/>
+            <component id ="allbuttons" selector="css selector" locator="div.modal-content" parent="True"/>
+            <component id ="icons" selector="css selector" locator="div.modal-content" parent="True"/>
+            <component id ="errormsg" selector="css selector" locator="div.modal-content" parent="True"/>
+            <component id="validatePasswordMsg" selector="css selector" locator="div.modal-content" parent="True"/>
+        </screenConfig>
+
+        <screenConfig id = "explore_Screen">
+            <component id = "appHeader" selector="tag name" locator="kiwik-header" parent="True"/>
+        </screenConfig>
+
+        <screenConfig id ="breadCrumb_Screen">
+            <component id = "breadcrumb" selector="css selector" locator="nav.BreadcrumbsArea" parent="True"/>
+        </screenConfig>
+
 
     </screenConfigs>
 
@@ -449,6 +500,36 @@
 
         <componentConfig id="allspans">
             <component id = "span" selector="css selector" locator='span:not([title*=Help])' />
+        </componentConfig>
+
+        <componentConfig id="newUserIcon">
+            <component id="icon" selector="css selector" locator="span[class*=new][class*=user][class*=icon]"/>
+        </componentConfig>
+
+        <componentConfig id="allinputs">
+            <component id = "password" selector="css selector" locator='input[type="password"]' />
+            <component id = "email" selector="css selector" locator='input[type="email"]'/>
+            <!--<component id="editUserLabel" selector="css selector" locator='label.editUserLabel'/>-->
+            <component id ='updatePwd' selector="css selector" locator='label.updatePwd'/>
+        </componentConfig>
+
+        <componentConfig id="errorMsgContainer">
+            <component id="msg" selector="css selector" locator="label.errorLabel"/>
+        </componentConfig>
+
+        <componentConfig id ='errormsg'>
+            <component id="msg" selector="css selector" locator="div.errorMessage"/>
+        </componentConfig>
+
+        <componentConfig id="validatePasswordMsg">
+            <component id="msg" selector="css selector" locator="div.changepasswordPrompt"/>
+        </componentConfig>
+
+        <componentConfig id ="umalert">
+            <component id="filters" selector="class name" locator="confirmText"/>
+            <component id="close" selector="css selector" locator='[class*=close][class*=Icon],[class*=Close][class*=Icon],[class*=close][class*=icon]'/>
+            <component id = "button" selector="tag name" locator='button' />-->
+            <component id ='header' selector="css selector" locator="span.wizardTitle"/>
         </componentConfig>
 
 

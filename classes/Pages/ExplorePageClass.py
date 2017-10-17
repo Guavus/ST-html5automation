@@ -10,6 +10,8 @@ class ExplorePageClass(BasePageClass):
         self.driver = driver
         self.exploreList = ExploreListComponentClass()
 
+        # Common Components
+        BasePageClass.__init__(self, driver)
 
     def launchPage(self, elHandle):
         self.exploreList.click(elHandle)

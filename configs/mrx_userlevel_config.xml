@@ -601,7 +601,7 @@
         <network id = "23" filters = ' :: ::No_Selection_On_Tree:: :: ::E,1,3'/>
         <content id = "23" filters = 'No_Selection_On_Tree::No_Selection_On_Tree:: :: ::No_Input' inputvalue="guavus.com,facebook.com"/>
         <usage id ="23" filters = ' '/>
-        <quicklink id="23" locatorText="Last 24 hours" table="daily_points"/>
+        <quicklink id="23" locatorText="Last 24 hours" table="hourly_points"/>
         <!--<quicklink id="23" locatorText="CustomClick" startTime="2017 June 06 10 00" endTime="2017 June 06 12 00" table="hourly_points"/>-->
         <measure id="23" locatorText="Volume (Upload)"/>
         <testcase id="23" value="MKR-1789"/>
@@ -1094,7 +1094,56 @@
     </globalScreenFilters2>
 
 
-  <segmentDetails>
+    <userdetail>
+        <user id="admin" username="autopraveen" firstname="Praveen0" lastname="Garg" email="praveen10@guavus.com"  password="New@12345"  cpassword="New@12345" currentpassword='New@12345' newpassword="New@13245"  newcpassword="New@13245" userrole="Admin" value= "" enabled="1" button="Create"/>
+        <user id="disabled" username="autoPinni140" firstname="Praveen1" lastname="Garg" email="pp11@guaus.com"  password="T@1234567"  cpassword="T@1234567" currentpassword="T@1234567" newpassword="New@13245"  newcpassword="New@13245" userrole="AppUser" value="" enabled="0" button="Create"/>
+        <user id="segmentmanager" username="autotest_789Test" firstname="Praveen2" lastname="Garg" email="p_312@gs.com"  password="tesT_1234"  cpassword="tesT_1234" currentpassword="tesT_1234" newpassword="Tew@13245"  newcpassword="Tew@13245" userrole="SegmentManager" value="" enabled="1" button="Create"/>
+        <user id="appuser" username="auto_testpraveenTest123a123456789098765432aaaaaaaadddddddddd1212" firstname="Praveen3" lastname="Garg" email="123@guavus.in"  password="1234!T234"  cpassword="1234!T234" currentpassword="1234!T234" newpassword="New@54321"  newcpassword="New@54321" userrole="AppUser" value="" enabled="1" button="Create"/>
+        <user id="cancel" username="auto123_cross" firstname="Praveen4" lastname="Garg" email="pr23@guavus.com"  password="1Test#124"  cpassword="1Test#124" currentpassword="1Test#124" newpassword="New_13245"  newcpassword="New_13245" userrole="Admin" value="" enabled="1" button="Cancel"/>
+        <user id="cross" username="auto123_cross" firstname="Praveen5" lastname="Garg" email="pr23@guavus.com"  password="1Test#124"  cpassword="1Test#124" currentpassword="1Test#124" newpassword="New_13245"  newcpassword="New_13245" userrole="Admin" value="" enabled="1" button="Cross"/>
+        <user id="changePassword_Negative_Scenario1" username="autoChangePasswordNegativeScenario_1" firstname="CP" lastname="Scenario_1" email="praveen10@guavus.com"  password="test@123PG"  cpassword="test@123PG" currentpassword='test@123PG' newpassword="New@13245"  newcpassword="New@13245" userrole="Admin" value= "" enabled="1" button="Create"/>
+        <user id="changePassword_Negative_Scenario2" username="autoChangePasswordNegativeScenario_2" firstname="CP" lastname="Scenario_2" email="praveen10@gmail.com"  password="test#123P1"  cpassword="test#123P1" currentpassword='test#123P1' newpassword="New@13245"  newcpassword="New@13245" userrole="Admin" value= "" enabled="1" button="Create"/>
+        <user id="changePassword_Negative_Scenario3" username="autoChangePasswordNegativeScenario_3" firstname="CP" lastname="Scenario_3" email="praveen10@yahoo.com"  password="123P1$test"  cpassword="123P1$test" currentpassword='123P1$test' newpassword="New@13245"  newcpassword="New@13245" userrole="Admin" value= "" enabled="1" button="Create"/>
+        <user id="edit1" username="autoEdit_1" firstname="edit" lastname="Scenario_1" email="praveen10@guavus.com"  password="New@12345"  cpassword="New@12345" currentpassword='New@12345' newpassword="New@13245"  newcpassword="New@13245" userrole="Admin" value= "" enabled="0" button="Create"/>
+        <user id="edit2" username="autoEdit_2" firstname="edit" lastname="Scenario_2" email="pp11@guaus.com"  password="T@1234567"  cpassword="T@1234567" currentpassword="T@1234567" newpassword="New@13245"  newcpassword="New@13245" userrole="AppUser" value="" enabled="1" button="Create"/>
+        <user id="edit3" username="autoEdit_3" firstname="edit" lastname="Scenario_3" email="pp11YT@yahoo.com"  password="T@1234567"  cpassword="T@1234567" currentpassword="T@1234567" newpassword="New@13245"  newcpassword="New@13245" userrole="AppUser" value="" enabled="1" button="Create"/>
+
+        <edituser id="edit1" username="autoEdit_1" firstname="_Edit" lastname="Garg_edit" email="praveen10_edit@guavus.com"  password="New@12345"  cpassword="New@12345" currentpassword='New@12345' newpassword="New@13245"  newcpassword="New@13245" userrole="AppUser" value= "" enabled="1" button="Update"/>
+        <edituser id="edit2" username="autoEdit_2" firstname="_edit" lastname="Garg_Edit" email="pp_edit11@guaus.com"  password="T@1234567"  cpassword="T@1234567" currentpassword="T@1234567" newpassword="New@13245"  newcpassword="New@13245" userrole="Admin" value="" enabled="0" button="Cancel"/>
+        <edituser id="edit3" username="autoEdit_3" firstname="_edit" lastname="Garg_Edit" email="pp_edit11@yahoo.com"  password="T@1234567"  cpassword="T@1234567" currentpassword="T@1234567" newpassword="New@13245"  newcpassword="New@13245" userrole="Admin" value="" enabled="0" button="Cross"/>
+        <editadmin id="editAdmin" username="admin" firstname="admin_Edit" lastname="G_edit" email="admin@guavus.com"  password="New@12345"  cpassword="New@12345"  currentpassword="New@12345" newpassword="New@1234"  newcpassword="New@1234" userrole="Application" value="" enabled="1" button="Update"/>
+    </userdetail>
+
+    <changePasswordScenario>
+        <user id="0" username="autopraveen" firstname="Praveen0" lastname="Garg" email="praveen10@guavus.com"  password="New@12345"  cpassword="New@12345" currentpassword='New@12345' newpassword="New@13245"  newcpassword="New@13245" userrole="Admin" value= "" enabled="1" button="Create"/>
+        <user id="1" username="autotest_789Test" firstname="Praveen2" lastname="Garg" email="p_312@gs.com"  password="tesT_1234"  cpassword="tesT_1234" currentpassword="tesT_1234" newpassword="Tew@13245"  newcpassword="Tew@13245" userrole="SegmentManager" value="" enabled="1" button="Create"/>
+        <user id="2" username="auto_testpraveenTest123a123456789098765432aaaaaaaadddddddddd1212" firstname="Praveen3" lastname="Garg" email="123@guavus.in"  password="1234!T234"  cpassword="1234!T234" currentpassword="1234!T234" newpassword="New@54321"  newcpassword="New@54321" userrole="AppUser" value="" enabled="1" button="Create"/>
+    </changePasswordScenario>
+
+    <changePassword_NegativeScenario>
+        <user id="0" username="autoChangePasswordNegativeScenario_1" firstname="CP" lastname="Scenario_1" email="praveen10@guavus.com"  password='test@123PG' currentpassword='test@123PG' newpassword="12345678"  newcpassword="12345678" userrole="Admin" value= "" enabled="1" button="Create"/>
+        <user id="1" username="autoChangePasswordNegativeScenario_2" firstname="CP" lastname="Scenario_2" email="praveen10@gmail.com"  password='test#123P1' currentpassword='test#123P1' newpassword="New@13245"  newcpassword="New@13298" userrole="Admin" value= "" enabled="1" button="Create"/>
+        <user id="2" username="autoChangePasswordNegativeScenario_3" firstname="CP" lastname="Scenario_3" email="praveen10@yahoo.com"  password='123P1$test' currentpassword='123P1@test' newpassword="New@13245"  newcpassword="New@13245" userrole="Admin" value= "" enabled="1" button="Create"/>
+    </changePassword_NegativeScenario>
+
+    <userdetail_NegativeScenario>
+        <user id="samename" username="autopraveen" firstname="SameName" lastname="Garg" email="cug15@gmail.com"  password="$H2311234"  cpassword="$H2311234" currentpassword="$H2311234" newpassword="$Ha2213245"  newcpassword="$Ha2213245" userrole="SegmentManager" value="" enabled="1" button="Create"/>
+        <user id="blankusername" username="" firstname="Praveen" lastname="Garg" email="praveen10@guavus.com"  password="New@12345"  cpassword="New@12345" currentpassword='New@12345' newpassword="New@13245"  newcpassword="New@13245" userrole="Admin" value= "" enabled="1" button="Create"/>
+        <user id="blankfirstname" username="autopraveen2" firstname="" lastname="Garg" email="praveen10@guavus.com"  password="New@12345"  cpassword="New@12345" currentpassword='New@12345' newpassword="New@13245"  newcpassword="New@13245" userrole="Admin" value= "" enabled="1" button="Create"/>
+        <user id="blanklastname" username="autopraveen3" firstname="Praveen" lastname="" email="praveen10@guavus.com"  password="New@12345"  cpassword="New@12345" currentpassword='New@12345' newpassword="New@13245"  newcpassword="New@13245" userrole="Admin" value= "" enabled="1" button="Create"/>
+        <user id="blankemail" username="autopraveen4" firstname="Praveen" lastname="Garg" email=""  password="New@12345"  cpassword="New@12345" currentpassword='New@12345' newpassword="New@13245"  newcpassword="New@13245" userrole="Admin" value= "" enabled="1" button="Create"/>
+        <user id="incorrectemail" username="autopraveen5" firstname="Praveen" lastname="Garg" email="praveen$10@guavus.com"  password="New@12345"  cpassword="New@12345" currentpassword='New@12345' newpassword="New@13245"  newcpassword="New@13245" userrole="Admin" value= "" enabled="1" button="Create"/>
+        <user id="incorrectpassword" username="autopraveen6" firstname="Praveen" lastname="Garg" email="praveen10@guavus.com"  password=""  cpassword="New@12345" currentpassword='New@12345' newpassword="New@13245"  newcpassword="New@13245" userrole="Admin" value= "" enabled="1" button="Create"/>
+        <user id="incorrectpassword1" username="autopraveen7" firstname="Praveen" lastname="Garg" email="praveen10@guavus.com"  password="12345678"  cpassword="12345678" currentpassword='12345678' newpassword="New@13245"  newcpassword="New@13245" userrole="Admin" value= "" enabled="1" button="Create"/>
+        <user id="incorrectpassword2" username="autopraveen8" firstname="Praveen" lastname="Garg" email="praveen10@guavus.com"  password="test@1234"  cpassword="test@1234" currentpassword='test@1234' newpassword="New@13245"  newcpassword="New@13245" userrole="Admin" value= "" enabled="1" button="Create"/>
+        <user id="incorrectpassword3" username="autopraveen9" firstname="Praveen" lastname="Garg" email="praveen10@guavus.com"  password="TEST@test"  cpassword="TEST@test" currentpassword='TEST@test' newpassword="New@13245"  newcpassword="New@13245" userrole="Admin" value= "" enabled="1" button="Create"/>
+        <user id="incorrectpassword4" username="autopraveen10" firstname="Praveen" lastname="Garg" email="praveen10@guavus.com"  password="testAutopraveen10@123"  cpassword="testAutopraveen10@123" currentpassword='testAutopraveen10@123' newpassword="New@13245"  newcpassword="New@13245" userrole="Admin" value= "" enabled="1" button="Create"/>
+        <user id="incorrectpassword5" username="autopraveen11" firstname="Praveen" lastname="Garg" email="praveen10@guavus.com"  password="test@12345678909Test123a123456789098765432aaaaaaaadddddddddd12132"  cpassword="test@12345678909Test123a123456789098765432aaaaaaaadddddddddd12132" currentpassword='test@12345678909Test123a123456789098765432aaaaaaaadddddddddd12132' newpassword="New@13245"  newcpassword="New@13245" userrole="Admin" value= "" enabled="1" button="Create"/>
+        <user id="incorrectconfirmpassword" username="autopraveen12" firstname="Praveen" lastname="Garg" email="praveen10@guavus.com"  password="New@12345"  cpassword="New@1234" currentpassword='New@12345' newpassword="New@13245"  newcpassword="New@13245" userrole="Admin" value= "" enabled="1" button="Create"/>
+        <user id="incorrectusername" username="auto_testpraveenTest123a123456789098765432aaaaaaaadddddddddd12132" firstname="Praveen8" lastname="Garg" email="123@guavus.in"  password="1234!T234"  cpassword="1234!T234" currentpassword="1234!T234" newpassword="New@54321"  newcpassword="New@54321" userrole="AppUser" value="" enabled="1" button="Create"/>
+    </userdetail_NegativeScenario>
+
+    <segmentDetails>
       <segment id="0" segmentname="autopraveen_0" newsegmentname='autoedit_Praveen_0' access='Shared' file="segment_sample.csv" button="Import" status="Completed" uniquecount="15"/>
       <segment id="1" segmentname="autopraveen_1" newsegmentname='autoedit_Praveen_1' access='Shared' file="segment_sample_1.csv" button="Import" status="Completed" uniquecount="15"/>
       <segment id="2" segmentname="autopraveen_2" newsegmentname='autoedit_Praveen_2' access='Private' file="segment_sample_2.csv" button="Import" status="Completed" uniquecount="15"/>
@@ -1105,8 +1154,15 @@
       <segment id="6" segmentname="autopraveen_6" newsegmentname='autoedit_Praveen_6' access='Shared' file="segment_sample_4.csv" button="Import" status="Rejected" uniquecount="0"/>
 
       <segment id="7" segmentname="autopraveen_7" newsegmentname='autoedit_Praveen_7' access='Shared' file="segment_sample.csv" button="Cancel" status="Completed" uniquecount="15"/>
-  </segmentDetails>
+    </segmentDetails>
 
+
+    <importSegmentDetailsForUM>
+      <segment id="admin" segmentname='autoSegment_Admin_Private' access='Private' file="segment_sample.csv" button="Import" status="Completed" uniquecount="15"/>
+      <segment id="segmentmanager" segmentname='autoSegment_SegmentManager_Private' access='Private' file="segment_sample_1.csv" button="Import" status="Completed" uniquecount="15"/>
+      <segment id="admin_Shared" segmentname='autoSegment_Admin_Shared' access='Shared' file="segment_sample.csv" button="Import" status="Completed" uniquecount="15"/>
+      <segment id="segmentmanager_Shared" segmentname='autoSegment_SegmentManager_Shared' access='Shared' file="segment_sample_1.csv" button="Import" status="Completed" uniquecount="15"/>
+    </importSegmentDetailsForUM>
 
 
 

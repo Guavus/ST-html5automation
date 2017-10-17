@@ -123,6 +123,9 @@ class Constants(object):
     BORDERCOLOR='border-color'
     ACTIVE_STATUS='Active'
     INACTIVE_STATUS='Inactive'
+    ENABLED_STATUS = 'enabled'
+    DISABLED_STATUS = 'disabled'
+    LASTMODIFYTEXTFORNEWUSER='NA'
 
     CONFIRMATIONPOPUP='confirmation_popup'
     CONFIRMATIONBODY='confirm_popup'

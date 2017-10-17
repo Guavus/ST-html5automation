@@ -144,6 +144,20 @@ class ContextMenuComponentClass(BaseComponentClass):
                 e.click()
                 break
 
+    def gotoScreenViaWorkFlowDrop_MRX(self,setup,screenName,h,parent="breadcrumb",child='workflow'):
+        for e in h[parent][child][0].find_elements_by_xpath("./ul[1]/*"):
+            if str(e.text).strip().strip('\n').strip() == screenName:
+                setup.d.execute_script("arguments[0].click()",e)
+                break
+
+    def availableOptionOnWorkFlowDrop(self,h,parent="breadcrumb",child='workflow'):
+        option=[]
+        for e in h[parent][child][0].find_elements_by_css_selector("li[class*=workflow]"):
+            option.append(str(e.text).strip())
+        logger.info("Got available option on Workflow drop down : %s",str(option))
+        return option
+
+
     def activateWorkFlowDropDown(self,h,parent="breadcrumb",child='workflow'):
         try:
             h[parent][child][0].click()
