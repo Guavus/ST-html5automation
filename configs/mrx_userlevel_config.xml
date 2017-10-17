@@ -61,6 +61,13 @@
         <filter id = "Access"/>
     </segment_Filters>
 
+    <report_Filters>
+        <filter id = "Report Name"/>
+        <filter id = "Report Type"/>
+        <filter id = "Delivered on"/>
+        <filter id = "Period"/>
+    </report_Filters>
+
     <availableClassesForDE>
         <class id="Device" method="Device Category,Device OS,Device Model,Device Manufacturer" testcase="MKR-1954"/>
         <class id="Network" method="Radio Access Type,APN" testcase="MKR-1955"/>
@@ -139,6 +146,22 @@
         <filter id="8" segmentname=" " user=" :: " createdon=" :: " status=" " source=" " owner=" " access="0" />
 
     </segmentFilter>
+
+     <reportFilter>
+         <!-- leftSide of Delivered on can be in 0,1,2-->
+        <!--Date must be complete yyyy Month dd hh MM-->
+
+         <filter id="0" reportname="Mobile Monthly - Sept 2017" reporttype="Excel" deliveredon="0::2017 September 15 08 00" reportperiod="2017 September 13 08 00::2017 September 16 08 00" />
+         <filter id="1" reportname="Mobile Monthly - Sept 2017" reporttype="Excel" deliveredon=" :: " reportperiod=" :: " />
+         <filter id="2" reportname="Mobile Monthly - Sept 2017" reporttype="Excel" deliveredon="0::2017 September 15 08 00" reportperiod="2017 September 13 08 00::2017 September 14 08 00" />
+         <filter id="3" reportname=" " reporttype="Excel" deliveredon="0::2017 September 15 08 00" reportperiod=" :: " />
+         <filter id="4" reportname="Mobile Monthly - Sept 2017" reporttype=" " deliveredon="0::2017 September 15 08 00" reportperiod=" :: " />
+         <filter id="5" reportname="Mobile Monthly - Sept 2017" reporttype=" " deliveredon=" :: " reportperiod=" :: " />
+         <filter id="6" reportname=" " reporttype="Excel" deliveredon=" :: " reportperiod=" :: " />
+         <filter id="7" reportname=" " reporttype=" " deliveredon="1::2017 September 16 08 00" reportperiod=" " />
+         <filter id="8" reportname=" " reporttype=" " deliveredon=" :: " reportperiod="2017 September 13 08 00::2017 September 14 08 00" />
+
+     </reportFilter>
 
     <subscriber>
         <sub id="0" value="100"/>

@@ -135,6 +135,11 @@
             <component id="centerHeader" selector="css selector" locator='[class*=navbar-nav-center-template]' parent="True"/>
         </screenConfig>
 
+        <screenConfig id = "validate_Footer">
+            <component id="leftFooter" selector="css selector" locator="div.footerdivtimezone" parent="True"/>
+            <component id="rightFooter" selector="css selector" locator="div.footerdiv" parent="True"/>
+        </screenConfig>
+
 
         <screenConfig id = "TableDummy_Screen">
             <component id = "table" selector="tag name" locator="kiwik-grid-view,gvs-grid" parent="True"/>
@@ -622,6 +627,7 @@
             <component id="helpIcon" selector="css selector" locator="div.helpIcon"/>
             <component id="closePopupIcon" selector="css selector" locator="div.closePopupIcon"/>
             <component id="datePickerIcon" selector="css selector" locator='.datePickerIcon'/>
+            <component id="refreshIcon" selector="tag name" locator="marx-report-grid-view"/>
         </componentConfig>
 
         <componentConfig id="errorMsgContainer">

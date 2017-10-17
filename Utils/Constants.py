@@ -146,6 +146,7 @@ class Constants(object):
     INVALIDUSERNAME_MESSAGE='Enter a valid Username.'
     INVALIDPASSWORD_MESSAGE='Enter a valid Password.'
     VALIDATE_HEADER='validate_Header'
+    VALIDATE_FOOTER ='validate_Footer'
     DUMMY_SCREEN="Dummy_Screen"
 
 

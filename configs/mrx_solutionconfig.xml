@@ -10,6 +10,16 @@
         <column id="created_on" locatorText="Created on"/>
     </segmentsorttablecolumn>
 
+    <reportsorttablecolumn>
+        <column id="id" locatorText="Id"/>
+        <column id="name" locatorText="Name"/>
+        <column id="type" locatorText="Type"/>
+        <column id="delivered_on" locatorText="Delivered on"/>
+        <column id="report_period" locatorText="Report Period"/>
+        <column id="download" locatorText="Download"/>
+        <column id="delete" locatorText="Delete"/>
+    </reportsorttablecolumn>
+
     <udpfilters>
         <filter id = 'segment' locatorText="Segmentation Filters"/>
         <filter id = 'device' locatorText="Device Filters"/>
@@ -162,6 +172,12 @@
             <component id ='dropdown_open' selector="class name" locator="dropdown" parent="True"/>
         </screenConfig>
 
+        <screenConfig id = "report_Screen">
+            <component id ="filterArea" selector="css selector" locator="div.filterContainerBox" parent="True"/>
+            <component id = "table" selector="css selector" locator='[class="ag-fresh"]' childOf="" action="" parent="True" />/>
+            <component id = 'globalfiltertooltip' selector="css selector" locator="[class*=tooltipBox]" parent="True"/>
+            <component id = "icons" selector="css selector" locator='[class="report-container"]' parent="True"/>
+        </screenConfig>
 
         <screenConfig id = "popUp_Screen">
             <component id = "allspans" selector="css selector" locator='[class="basePopupView"]' parent="True"/>
