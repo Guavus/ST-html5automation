@@ -126,7 +126,7 @@ class MulitpleDropdownComponentClass(DropdownComponentClass):
         time.sleep(1)
         return selections
 
-    def getSingleSelectionFromMultiDropDown(self,h,index,parent="filterPopup",child="multiselect-dropdown"):
+    def getSingleSelectionFromMultiDropDown(self,h,index=0,parent="filterPopup",child="multiselect-dropdown"):
         selections = ''
         try:
             if len(h[parent][child])>0:
