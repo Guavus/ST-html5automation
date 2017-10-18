@@ -128,7 +128,7 @@ def setFilters(setup,screenInstance,h,k=0):
         if setSlider(screenInstance, h, 2):
             select = screenInstance.picker.domultipleSelectionWithIndex(getHandle(setup, MRXConstants.FILTERSCREEN, "allDropDown"), [int(str(global_filter[str(k)]['deliveredon']).split('::')[0].strip(''))], index=0, parent="allDropDown")
             if select == ['']:
-                select = screenInstance.picker.getSingleSelectionFromMultiDropDown(getHandle(setup, MRXConstants.FILTERSCREEN, "allDropDown"), parent="allDropDown")
+                select = screenInstance.picker.getSingleSelectionFromMultiDropDown(getHandle(setup, MRXConstants.FILTERSCREEN, "allDropDown"), index=0, parent="allDropDown")
 
             dumpResultForButton(False, "Delivered on without Date", screenInstance, setup,
                                 screen=MRXConstants.FILTERSCREEN, button_label="Apply Filters")
@@ -255,13 +255,11 @@ def getFilters(setup,screenInstance,h):
     ##  get Delivered On
     selectedFilter_listforDeliveredOn = []
     if checkSlider(screenInstance, h, 2):
-        select = screenInstance.picker.getSingleSelectionFromMultiDropDown(getHandle(setup, MRXConstants.FILTERSCREEN, "allDropDown"), parent="allDropDown")
+        select = screenInstance.picker.getSingleSelectionFromMultiDropDown(getHandle(setup, MRXConstants.FILTERSCREEN, "allDropDown"),index=0,parent="allDropDown")
 
         choosedate = screenInstance.cm.getValue_input(h, 2)
         selectedFilter_listforDeliveredOn.append(str(select) + " " + str(choosedate))
     selected_filter.append(selectedFilter_listforDeliveredOn)
-
-
 
 
     ##  get Report Period

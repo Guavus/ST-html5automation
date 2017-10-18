@@ -20,6 +20,7 @@ try:
     exploreScreenInstance.exploreList.launchModule(exploreHandle, "REPORT")
 
     reportScreenInstance = ReportScreenClass(setup.d)
+
     tableHandle = getHandle(setup, MRXConstants.REPORTSCREEN, 'table')
     data2 = reportScreenInstance.table.getTableData1(tableHandle,length=20)
 
@@ -27,7 +28,7 @@ try:
 ### Verify Filter button just above the Report table is clickable
 
     click_status=ReportHelper.clickOnfilterIcon(setup,MRXConstants.REPORTSCREEN,'nofilterIcon')
-    checkEqualAssert(True,click_status,message='Verify that "Filter" button just above the Report table is clickable',testcase_id='MKR-1675')
+    checkEqualAssert(True,click_status,message='Verify that "Filter" button just above the Report table is clickable')
 
 
 ###  Verify Filter Header Text on Filter Popup
@@ -41,7 +42,7 @@ try:
         actualFilters_onFilterPopup = [item for item in allSpanList if item != "" and item != "Report Filters"]
     Keys = setup.cM.getAllNodeElements("report_Filters", "filter")
     expectedFilters_onFilterPopup = Keys + ['Select']
-    checkEqualAssert(True, set(expectedFilters_onFilterPopup) == set(actualFilters_onFilterPopup),message='Verify available Filter Expected= ' + str(expectedFilters_onFilterPopup) + ' Actual Available Set= ' + str(actualFilters_onFilterPopup),testcase_id='MKR-1676')
+    checkEqualAssert(True, set(expectedFilters_onFilterPopup) == set(actualFilters_onFilterPopup),message='Verify available Filter Expected= ' + str(expectedFilters_onFilterPopup) + ' Actual Available Set= ' + str(actualFilters_onFilterPopup))
 
 
 ####  Verify available button on filter screen ####################################################################################################################
@@ -51,16 +52,16 @@ try:
         availableButtonList.append(str(button.text))
     availableButtonList.append(str(len(filterScreenHandle['icons']['closePopupIcon'])))
     actualButtonList=['Apply Filters','Cancel','Clear All','1']
-    checkEqualAssert(actualButtonList,availableButtonList,'','','Verify available button on filter screen',testcase_id='MKR-1677')
+    checkEqualAssert(actualButtonList,availableButtonList,'','','Verify available button on filter screen')
     ReportHelper.clickOnfilterIcon(setup, MRXConstants.FILTERSCREEN, 'closePopupIcon', parent='icons')
 
-#### Verify text of all filters present in filter popup matches with those present in the table
+    #### Verify text of all filters present in filter popup matches with those present in the table
 
     tableHandle = getHandle(setup, MRXConstants.REPORTSCREEN, "table")
     tableMap = reportScreenInstance.table.getTableDataMap(tableHandle, driver=setup)
     tableMap_finalHeaderList = [item for item in tableMap['header'] if item != "Download" and item != "Delete" and item != "Id"]
     actualFilters_onFilterPopup.remove("Select")
-    checkEqualAssert(True, actualFilters_onFilterPopup == tableMap_finalHeaderList, '', '', 'Verify text of all filters present in filter popup matches with those present in the table' + "----Text in filter popup: "+str(actualFilters_onFilterPopup) + "----Text in table header: " +str(tableMap_finalHeaderList),testcase_id='MKR-3635')
+    checkEqualAssert(True, actualFilters_onFilterPopup == tableMap_finalHeaderList, '', '', 'Verify text of all filters present in filter popup matches with those present in the table' + "----Text in filter popup: "+str(actualFilters_onFilterPopup) + "----Text in table header: " +str(tableMap_finalHeaderList), testcase_id='MKR-3635')
 
     ### Verify Filters Selections from Tooltip on the Report Screen #####################################################################################################################
 
@@ -84,12 +85,12 @@ try:
     reportScreenInstance.cm.clickButton("Clear All", getHandle(setup, MRXConstants.FILTERSCREEN, 'allbuttons'))
     expectedFromFilterPopUpAfterClear = ReportHelper.getReportFilter(setup, reportScreenInstance)
     BlankDict=ReportHelper.insertKeys({},Keys)
-    checkEqualDict(BlankDict,expectedFromFilterPopUpAfterClear,message='Verify Clear all Functionality for Filter on Filter-Popup Screen',testcase_id='MKR-1678')
+    checkEqualDict(BlankDict,expectedFromFilterPopUpAfterClear,message='Verify Clear all Functionality for Filter on Filter-Popup Screen')
 
     reportScreenInstance.cm.clickButton("Apply Filters", getHandle(setup, MRXConstants.FILTERSCREEN, 'allbuttons'))
     tableHandle = getHandle(setup, MRXConstants.REPORTSCREEN, 'table')
     data3 = reportScreenInstance.table.getTableData1(tableHandle,length=20)
-    checkEqualAssert(data2['rows'], data3['rows'],message='Checked Clear all Functionality for Filter on Report Screen by verifying number of records visible under table', testcase_id='MKR-1678')
+    checkEqualAssert(data2['rows'], data3['rows'],message='Checked Clear all Functionality for Filter on Report Screen by verifying number of records visible under table')
 
 
 ###  Verify X(cross) button clears all the filters applied  #####################################################################################################################
@@ -105,13 +106,21 @@ try:
             pass
 
     if click_status:
-        checkEqualAssert(0,len(getHandle(setup,MRXConstants.FILTERSCREEN,'icons')['icons']['closePopupIcon']),message='On pressing the "X", the filter window dissappears',testcase_id='MKR-1679')
+        checkEqualAssert(0,len(getHandle(setup,MRXConstants.FILTERSCREEN,'icons')['icons']['closePopupIcon']),message='On pressing the "X", the filter window dissappears')
         filterFromScreenAfterClear=ReportHelper.getGlobalFiltersFromScreen(MRXConstants.REPORTSCREEN, reportScreenInstance, setup,flag=False)
-        checkEqualAssert(MRXConstants.NO_FILTER, str(filterFromScreenAfterClear),message='After press cross (X), no filters should be seen on Report Screen',testcase_id='MKR-1679')
+        checkEqualAssert(MRXConstants.NO_FILTER, str(filterFromScreenAfterClear),message='After press cross (X), no filters should be seen on Report Screen')
 
-    click_status = ReportHelper.clickOnfilterIcon(setup, MRXConstants.REPORTSCREEN, 'nofilterIcon')
-    reportScreenInstance.cm.clickButton("Cancel", getHandle(setup, MRXConstants.FILTERSCREEN, 'allbuttons'))
-    checkEqualAssert(0, len(getHandle(setup, MRXConstants.FILTERSCREEN, 'allsliders')['allsliders']['slider']), message='On pressing the "Cancel" button the filter window dissappears',testcase_id='MKR-1679')
+####  Verify on pressing "Cancel" button the filter window disappears
+
+    ReportHelper.clickOnfilterIcon(setup, MRXConstants.REPORTSCREEN, 'nofilterIcon')
+    buttonHandle = getHandle(setup, MRXConstants.FILTERSCREEN, 'allbuttons')
+    logger.info("Performing Hover action on Cancel Button")
+
+    ActionChains(setup.d).move_to_element(buttonHandle['allbuttons']['button'][1]).perform()
+    buttonHandle['allbuttons']['button'][1].click()
+
+    checkEqualAssert(0, len(getHandle(setup, MRXConstants.FILTERSCREEN, 'allsliders')['allsliders']['slider']), message='On pressing the "Cancel" button the filter window dissappears')
+
 
     setup.d.close()
 

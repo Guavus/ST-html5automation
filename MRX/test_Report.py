@@ -14,10 +14,12 @@ try:
     checkEqualAssert(True, screen_status, message='Verify Reports tab gets opened successfully', testcase_id='MKR-3517')
 
     reportScreenInstance = ReportScreenClass(setup.d)
-    '''
+
     tableHandle = getHandle(setup, MRXConstants.REPORTSCREEN, 'table')
     tableHandle['table']['download'][0].click()
-    '''
+    num_of_files_downoaded = len([name for name in os.listdir(Constants.firefoxdownloadpath) if not name.startswith('.') and os.path.isfile(os.path.join(Constants.firefoxdownloadpath, name))])
+    checkEqualAssert(1, num_of_files_downoaded, message='Verify report gets successfully downloaded', testcase_id='MKR-3828')
+
 
     ReportHelper.VerifyBasicTableFuncationality(setup,reportScreenInstance,MRXConstants.ReportScreenTableHeaderList)
 
@@ -28,7 +30,7 @@ try:
     iconHandle = getHandle(setup, MRXConstants.REPORTSCREEN, 'icons')
     #click_status = setup.d.execute_script(myscript)
     click_status = setup.d.execute_script("return arguments[0].click();",iconHandle['icons']['refreshIcon'][0].find_elements_by_class_name("refresh-icon")[0])
-    #checkEqualAssert(True,click_status , message='Verify that "Refresh" button just above the Report table is clickable',testcase_id='MKR-1675')
+    #checkEqualAssert(True,click_status , message='Verify that "Refresh" button just above the Report table is clickable')
 
 
     setup.d.close()

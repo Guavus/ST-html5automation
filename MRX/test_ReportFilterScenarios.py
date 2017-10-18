@@ -40,9 +40,9 @@ try:
     tableHandle = getHandle(setup, MRXConstants.REPORTSCREEN, 'table')
     tableMap2 = reportScreenInstance.table.getTableDataMap(tableHandle, driver=setup)
 
-    checkEqualAssert(MRXConstants.NO_FILTER, str(filterFromScreenAfterClear).strip(),message='Verify No filter text on Report Screen',testcase_id='MKR-3450')
+    checkEqualAssert(MRXConstants.NO_FILTER, str(filterFromScreenAfterClear).strip(),message='Verify No filter text on Report Screen')
 
-    checkEqualAssert(len(tableMap1['rows']),len(tableMap2['rows']),message='Verify Cross (X) functionality on Report Screen :: Before any filter total records in report table ='+str(len(tableMap1['rows']))+' After removing filters total records in report table ='+str(len(tableMap2['rows'])),testcase_id='MKR-1690')
+    checkEqualAssert(len(tableMap1['rows']),len(tableMap2['rows']),message='Verify Cross (X) functionality on Report Screen :: Before any filter total records in report table ='+str(len(tableMap1['rows']))+' After removing filters total records in report table ='+str(len(tableMap2['rows'])))
 
 
 
@@ -111,13 +111,13 @@ try:
             if str(tableMap_afterFilters['rows']) == MRXConstants.NODATA:
                 actualCount = 0
                 checkEqualAssert(True,str(tableMap_afterFilters['rows']) == MRXConstants.NODATA ,message='Filter applied on multiple columns sucessfully')
-                checkEqualAssert(expectedCount, actualCount, message='Verify Table Data after applying Filter = ' + str(filtersToBeApplied_dict.items()) + ' :::  Before Filter = ' + str(tableMap_beforeFilters['rows']) + ' :::  After Filter = ' + str(tableMap_afterFilters['rows']), testcase_id='MKR-1682')
+                checkEqualAssert(expectedCount, actualCount, message='Verify Table Data after applying Filter = ' + str(filtersToBeApplied_dict.items()) + ' :::  Before Filter = ' + str(tableMap_beforeFilters['rows']) + ' :::  After Filter = ' + str(tableMap_afterFilters['rows']))
 
             else:
                 actualCount = len(tableMap_afterFilters['rows'])
                 checkEqualAssert(True, len(tableMap_beforeFilters['rows']) >= len(tableMap_afterFilters['rows']),
                              message='Filter applied on multiple columns sucessfully')
-                checkEqualAssert(expectedCount, actualCount, message='Verify Table Data after applying Filter = ' + str(filtersToBeApplied_dict.items()) + ' :::  Before Filter = ' + str(tableMap_beforeFilters['rows'].values()) + ' :::  After Filter = ' + str(tableMap_afterFilters['rows'].values()), testcase_id='MKR-1682')
+                checkEqualAssert(expectedCount, actualCount, message='Verify Table Data after applying Filter = ' + str(filtersToBeApplied_dict.items()) + ' :::  Before Filter = ' + str(tableMap_beforeFilters['rows'].values()) + ' :::  After Filter = ' + str(tableMap_afterFilters['rows'].values()))
 
             ReportHelper.clickOnfilterIcon(setup, MRXConstants.REPORTSCREEN, 'filterClearIcon')
 
@@ -147,7 +147,7 @@ try:
 
 
         checkEqualAssert(True, len(column1_ValuesFromTable_beforeFilters) >= len(column1_ValuesFromTable_afterFilters),message='Filter applied on column "Report Name" sucessfully')
-        checkEqualAssert(expectedCount, actualCount,message='Verify Table Data after applying Filter on Report Name = ' + reportName + ' :::  Before Filter = ' + str(column1_ValuesFromTable_beforeFilters) + ' :::  After Filter = ' + str(column1_ValuesFromTable_afterFilters),testcase_id='MKR-1682')
+        checkEqualAssert(expectedCount, actualCount,message='Verify Table Data after applying Filter on Report Name = ' + reportName + ' :::  Before Filter = ' + str(column1_ValuesFromTable_beforeFilters) + ' :::  After Filter = ' + str(column1_ValuesFromTable_afterFilters))
         ReportHelper.clickOnfilterIcon(setup, MRXConstants.REPORTSCREEN, 'filterClearIcon')
 
     else :
@@ -174,7 +174,7 @@ try:
         actualCount = len(column2_ValuesFromTable_afterFilters)
 
         checkEqualAssert(True, len(column2_ValuesFromTable_beforeFilters) >= len(column2_ValuesFromTable_afterFilters),message='Filter applied on column "Report Type" sucessfully')
-        checkEqualAssert(expectedCount, actualCount,message='Verify Table Data after applying Filter on Report Type = ' + reportType + ' :::  Before Filter = ' + str(column2_ValuesFromTable_beforeFilters) + ' :::  After Filter = ' + str(column2_ValuesFromTable_afterFilters), testcase_id='MKR-1682')
+        checkEqualAssert(expectedCount, actualCount,message='Verify Table Data after applying Filter on Report Type = ' + reportType + ' :::  Before Filter = ' + str(column2_ValuesFromTable_beforeFilters) + ' :::  After Filter = ' + str(column2_ValuesFromTable_afterFilters))
         ReportHelper.clickOnfilterIcon(setup, MRXConstants.REPORTSCREEN, 'filterClearIcon')
 
     else:
@@ -251,7 +251,7 @@ try:
         actualCount = len(column4_valuesFromTable_afterFilters)
 
         checkEqualAssert(True, len(column4_valuesFromTable_beforeFilters) >= len(column4_valuesFromTable_afterFilters),message='Filter applied on column "Report Period" sucessfully')
-        checkEqualAssert(expectedCount, actualCount,message='Verify Table Data after applying Filter on Report Period = ' + ReportPeriodStartDate  + ' - ' + ReportPeriodEndDate + '    :::  Before Filter = ' + str(column4_valuesFromTable_beforeFilters) + ' :::  After Filter = ' + str(column4_valuesFromTable_afterFilters), testcase_id='MKR-1682')
+        checkEqualAssert(expectedCount, actualCount,message='Verify Table Data after applying Filter on Report Period = ' + ReportPeriodStartDate  + ' - ' + ReportPeriodEndDate + '    :::  Before Filter = ' + str(column4_valuesFromTable_beforeFilters) + ' :::  After Filter = ' + str(column4_valuesFromTable_afterFilters))
         ReportHelper.clickOnfilterIcon(setup, MRXConstants.REPORTSCREEN, 'filterClearIcon')
 
     else:
