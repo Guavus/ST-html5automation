@@ -93,7 +93,7 @@ try:
     checkEqualAssert(data2['rows'], data3['rows'],message='Checked Clear all Functionality for Filter on Report Screen by verifying number of records visible under table')
 
 
-###  Verify X(cross) button clears all the filters applied  #####################################################################################################################
+###  Verify X(cross)button on filter popup clears all the filters applied  #####################################################################################################################
 
     ReportHelper.clickOnfilterIcon(setup, MRXConstants.REPORTSCREEN, 'nofilterIcon')
     expected = ReportHelper.setReportFilter(setup, reportScreenInstance, k=0)
@@ -113,15 +113,23 @@ try:
 ####  Verify on pressing "Cancel" button the filter window disappears
 
     ReportHelper.clickOnfilterIcon(setup, MRXConstants.REPORTSCREEN, 'nofilterIcon')
-    buttonHandle = getHandle(setup, MRXConstants.FILTERSCREEN, 'allbuttons')
-    logger.info("Performing Hover action on Cancel Button")
-
-    ActionChains(setup.d).move_to_element(buttonHandle['allbuttons']['button'][1]).perform()
-    buttonHandle['allbuttons']['button'][1].click()
+    reportScreenInstance.cm.hoverAndClickButton(setup=setup,value="Cancel", h=getHandle(setup, MRXConstants.FILTERSCREEN, 'allbuttons'))
 
     checkEqualAssert(0, len(getHandle(setup, MRXConstants.FILTERSCREEN, 'allsliders')['allsliders']['slider']), message='On pressing the "Cancel" button the filter window dissappears')
 
 
+####  Verify "Help" icon on Filter Popup is clickable
+
+    ReportHelper.clickOnfilterIcon(setup, MRXConstants.REPORTSCREEN, 'nofilterIcon')
+    try:
+        click_status = ReportHelper.clickOnfilterIcon(setup, MRXConstants.FILTERSCREEN, 'helpIcon', parent='icons')
+    except:
+        try:
+            click_status = ReportHelper.clickOnfilterIcon(setup, MRXConstants.FILTERSCREEN, 'helpIcon', parent='icons')
+        except:
+            pass
+
+    checkEqualAssert(True, click_status, message='Verify Help icon on Filter Popup is clickable')
     setup.d.close()
 
 except Exception as e:

@@ -1,6 +1,7 @@
 # from classes.DriverHelpers.DriverHelper import DriverHelper
 # from selenium import webdriver
 # webdriver.Firefox().find_element_by_xpath().send_keys()
+from selenium.webdriver import ActionChains
 from Utils.UnitSystem import UnitSystem
 from Utils.ConfigManager import ConfigManager
 from selenium.common.exceptions import *
@@ -414,6 +415,39 @@ class BaseComponentClass:
                     except ElementNotVisibleException or ElementNotSelectableException or Exception as e:
                         return e
             except Exception as e:
+                return e
+        return False
+
+    def hoverAndClickButton(self, setup, value, h, parent="allbuttons", child="button"):
+        for el in h[parent][child]:
+            try:
+                if value == el.text.strip() or str(value).lower() == str(el.text.strip()).lower():
+                    try:
+                        logger.info("Performing Hover on "+ str(value) +" Button on Filter Popup")
+                        ActionChains(setup.d).move_to_element(el).perform()
+                        logger.info("Performing click action on " + str(value) + " Button on Filter Popup")
+                        el.click()
+                        time.sleep(2)
+                        logger.info("Hover and Click action executed successfully on " + str(value) + " Button on Filter Popup")
+                        return True
+                    except ElementNotSelectableException as e:
+                        logger.info("ElementNotSelectableException: "  +str(e))
+                        try:
+                            logger.info("Performing Hover again on " + str(value) + " Button on Filter Popup")
+                            ActionChains(setup.d).move_to_element(el).perform()
+                            logger.info("Performing click action again on " + str(value) + " Button on Filter Popup")
+                            el.click()
+                            time.sleep(2)
+                            logger.info("Hover and Click action executed successfully in second attempt on " + str(value) + " Button on Filter Popup")
+                            return True
+                        except Exception as e:
+                            logger.info("Exception: " + str(e))
+                            return e
+                    except Exception as e:
+                        logger.info("Exception: " + str(e))
+                        return e
+            except Exception as e:
+                logger.info("Exception: " + str(e))
                 return e
         return False
 

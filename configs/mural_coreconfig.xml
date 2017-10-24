@@ -624,7 +624,7 @@
         </componentConfig>
 
         <componentConfig id = "icons">
-            <component id="helpIcon" selector="css selector" locator="div.helpIcon"/>
+            <component id="helpIcon" selector="css selector" locator='div.helpIcon,span.HELP_INFO'/>
             <component id="closePopupIcon" selector="css selector" locator="div.closePopupIcon"/>
             <component id="datePickerIcon" selector="css selector" locator='.datePickerIcon'/>
             <component id="refreshIcon" selector="tag name" locator="marx-report-grid-view"/>
