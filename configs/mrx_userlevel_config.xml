@@ -1075,6 +1075,32 @@
 
     </deScreenFilters>
 
+    <cbScreenFilters>
+
+        <segment id ="0" filters = 'E,1,2,3'/>
+        <device id = "0" filters = ' :: :: :: '/>
+        <network id = "0" filters = ' :: ::No_Selection_On_Tree:: :: :: '/>
+        <content id = "0" filters = 'No_Selection_On_Tree::No_Selection_On_Tree:: :: ::No_Input' inputvalue="guavus.com,facebook.com"/>
+        <usage id ="0" filters = ' '/>
+        <quicklink id="0" locatorText="Last 7 days" table="daily_points"/>
+        <compareDim id="0" locatorText="OS"/>
+        <measure id="0" locatorText="Volume (Download)"/>
+        <breakDown id="0" locatorText="Name"/>
+        <testcase id="0" value=""/>
+
+
+        <segment id ="1" filters = ' '/>
+        <device id = "1" filters = 'E,2:: :: :: '/>
+        <network id = "1" filters = ' :: ::No_Selection_On_Tree:: :: :: '/>
+        <content id = "1" filters = 'No_Selection_On_Tree::No_Selection_On_Tree:: :: ::No_Input' inputvalue="guavus.com,facebook.com"/>
+        <usage id ="1" filters = ' '/>
+        <quicklink id="1" locatorText="Yesterday" table="hourly_points"/>
+        <compareDim id="1" locatorText="Serving Node"/>
+        <measure id="1" locatorText="Volume"/>
+        <breakDown id="1" locatorText="Roaming"/>
+        <testcase id="1" value=""/>
+
+    </cbScreenFilters>
 
 
 

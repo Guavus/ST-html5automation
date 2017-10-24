@@ -26,7 +26,7 @@
         <column id="email" locatorText="Email"/>
         <column id="applicationrole" locatorText="Application Role"/>
         <column id="lastmodified" locatorText="Last Modified"/>
-        m<column id="status" locatorText="Status"/>
+        <column id="status" locatorText="Status"/>
     </umsorttablecolumn>
 
     <udpfilters>
@@ -42,14 +42,64 @@
         <measure id = "volumeU" locatorText="Volume (Upload)" isCount="sum" /> 
         <measure id = "volume" locatorText="Volume" isCount="sum" />  
         <measure id ="network_session" locatorText="# Network Session" isCount="sum" />
-        <!--<measure id = "session" locatorText="# Session" isCount="sum" /> -->
         <measure id ="web_domain_session" locatorText="# Web Domain Session" isCount="sum" />
         <measure id ="iab_session" locatorText="# IAB Session" isCount="sum" />
         <measure id ="contextual_session" locatorText="# Contextual Session" isCount="sum" />
-
     </ud_measures>    
 
+    <compare_dim> 
+        <dimension id = "segment" locatorText="Segment" /> 
+        <!--<dimension id = "device" locatorText="Device" /> -->
+        <dimension id = "category" locatorText="Category" />  
+        <dimension id ="manufacturer" locatorText="Manufacturer" />
+        <dimension id ="os" locatorText="OS" />
+        <dimension id ="model" locatorText="Model" />
 
+        <dimension id ="serving_node" locatorText="Serving Node" />
+        <dimension id ="packet_gw" locatorText="Packet GW" />
+
+        <!--<dimension id ="location" locatorText="Location" />-->
+        <dimension id ="level_1" locatorText="Level 1" />
+        <dimension id ="level_2" locatorText="Level 2" />
+        <dimension id ="level_3" locatorText="Level 3" />
+
+        <dimension id ="apn" locatorText="APN" />
+    </compare_dim>    
+         
+
+    <compare_mes>
+        <measure id = "volumeD" locatorText="Volume (Download)"/> 
+        <measure id = "volumeU" locatorText="Volume (Upload)" /> 
+        <measure id = "volume" locatorText="Volume" />  
+        <measure id ="network_session" locatorText="# Network Session" />
+        <measure id ="web_domain_session" locatorText="# Web Domain Session" />
+        <measure id ="iab_session" locatorText="# IAB Session" />
+        <measure id ="contextual_session" locatorText="# Contextual Session" />
+        <measure id = "user" locatorText="# User" />
+    </compare_mes>
+
+    <brokendown_dim>
+        <!--<dimension id = "network" locatorText="Network" />-->
+        <dimension id = "radio_access_type" locatorText="Radio Access Type" />
+        <dimension id = "roaming" locatorText="Roaming" />
+
+        <!--<dimension id = "content_interest" locatorText="Content Interest" />-->
+        <dimension id = "tier_1" locatorText="Tier 1" />
+        <dimension id = "tier_2" locatorText="Tier 2" />
+
+        <!--<dimension id = "operator_data_services" locatorText="Operator Data Services" />-->
+        <dimension id ="level_1" locatorText="Level 1" />
+        <dimension id ="level_2" locatorText="Level 2" />
+        <dimension id ="level_3" locatorText="Level 3" />
+
+        <!--<dimension id = "application" locatorText="Application" />-->
+        <dimension id = "category" locatorText="Category" />
+        <dimension id = "name" locatorText="Name" />
+
+        <dimension id = "web_domain" locatorText="Web Domain" />
+        <dimension id = "global_data_service" locatorText="Global Data Service" />
+    </brokendown_dim>
+    
     <screenConfigs>
 
         <screenConfig id = "workflowstart_Screen">
@@ -460,14 +510,6 @@
             <component id = "no_data_msg" selector="id" locator="overlay"/>
         </componentConfig>
 
-
-        <componentConfig id = "trend-main">
-            <component id = "trendchart" selector="tag name" locator="gvs-cb-chart"/>
-            <!--<component id ="header" selector="css selector" locator="[class*=chart-header]"/>-->
-            <component id ='yaxis' selector="css selector" locator="g[class*=y-axis]"/>
-            <component id ='xaxis' selector="css selector" locator="g[class*=x-axis]"/>
-        </componentConfig>
-
         <componentConfig id="qttooltip">
             <component id ="dim_name" selector="xpath" locator="./../div[1]" parent="True"/>
             <!--<component id ="span" selector="tag name" locator="span"/>-->
@@ -530,6 +572,16 @@
             <component id="close" selector="css selector" locator='[class*=close][class*=Icon],[class*=Close][class*=Icon],[class*=close][class*=icon]'/>
             <component id = "button" selector="tag name" locator='button' />-->
             <component id ='header' selector="css selector" locator="span.wizardTitle"/>
+        </componentConfig>
+
+
+        <componentConfig id = "trend-main">
+            <component id = "switcher" selector="css selector" locator="div.modeSwitcherBtnBar" wait="skip"/>
+            <component id = "select" selector="tag name" locator="select" wait="skip"/>
+            <component id = "trendchart" selector="css selector" locator="trend-component,gvs-cb-chart"/>
+            <component id = "qttooltip" selector="css selector" locator="div.trend-hover-date" wait="skip"/>
+            <component id ='yaxis' selector="css selector" locator="g[class*=y-axis]" wait="skip"/>
+            <component id ='xaxis' selector="css selector" locator="g[class*=x-axis]" wait="skip"/>
         </componentConfig>
 
 

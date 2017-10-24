@@ -142,3 +142,13 @@ class DropdownComponentClass(BaseComponentClass):
         return str(self.get(activedrops[index]).strip().strip('\n').strip())
 
 
+    def availableDropDownOption(self,handle, index=0, parent='allselects', child='select'):
+        logger.info("Method Called : availableDropDownOption")
+        availableDropDownOptionList = []
+        if len(handle[parent][child]) > index:
+            for ele in handle[parent][child][index].find_elements_by_tag_name('option'):
+                availableDropDownOptionList.append(str(ele.text).strip())
+        else:
+            logger.error("Drop Down not found :: Check manually")
+
+        return availableDropDownOptionList

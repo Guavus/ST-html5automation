@@ -13,7 +13,7 @@ def button_Status(condition,request,screenInstance,setup,screen=MRXConstants.POP
     return button_status
 
 
-def setUDPFilters(udpScreenInstance, setup, k='0',toggleStateFlag=False):
+def setUDPFilters(udpScreenInstance, setup, k='0',toggleStateFlag=False,screen=MRXConstants.UDSCREEN):
     logger.info("Method Called : setUDPFilters")
     segmentKeys=setup.cM.getAllNodeElements("segmenntFilters","filter")
     deviceKeys = setup.cM.getAllNodeElements("deviceFilters","filter")
@@ -21,11 +21,11 @@ def setUDPFilters(udpScreenInstance, setup, k='0',toggleStateFlag=False):
     contentKeys = setup.cM.getAllNodeElements("contentFilters","filter")
     usageKeys = setup.cM.getAllNodeElements("usageFilters","filter")
 
-    segmentFilters = createFilterMap(setFilters(setup,udpScreenInstance,"segment",k=k,toggleStateFlag=toggleStateFlag),segmentKeys)
-    deviceFilters = createFilterMap(setFilters(setup,udpScreenInstance,"device",k=k,toggleStateFlag=toggleStateFlag),deviceKeys)
-    networkFilters = createFilterMap(setFilters(setup,udpScreenInstance,"network",k=k,toggleStateFlag=toggleStateFlag),networkKeys)
-    contentFilters = createFilterMap(setFilters(setup,udpScreenInstance,"content",k=k,toggleStateFlag=toggleStateFlag),contentKeys)
-    usageFilters = createFilterMap(setFilters(setup,udpScreenInstance,"usage",k=k,toggleStateFlag=toggleStateFlag),usageKeys)
+    segmentFilters = createFilterMap(setFilters(setup,udpScreenInstance,"segment",k=k,toggleStateFlag=toggleStateFlag,screen=screen),segmentKeys)
+    deviceFilters = createFilterMap(setFilters(setup,udpScreenInstance,"device",k=k,toggleStateFlag=toggleStateFlag,screen=screen),deviceKeys)
+    networkFilters = createFilterMap(setFilters(setup,udpScreenInstance,"network",k=k,toggleStateFlag=toggleStateFlag,screen=screen),networkKeys)
+    contentFilters = createFilterMap(setFilters(setup,udpScreenInstance,"content",k=k,toggleStateFlag=toggleStateFlag,screen=screen),contentKeys)
+    usageFilters = createFilterMap(setFilters(setup,udpScreenInstance,"usage",k=k,toggleStateFlag=toggleStateFlag,screen=screen),usageKeys)
 
     expectedFilters = merge_dictionaries(merge_dictionaries(merge_dictionaries(merge_dictionaries(segmentFilters,deviceFilters),networkFilters),contentFilters),usageFilters)
     if toggleStateFlag:
@@ -40,7 +40,7 @@ def setUDPFilters(udpScreenInstance, setup, k='0',toggleStateFlag=False):
 
 
 
-def getToggleStateForFilters(udpScreenInstance,setup,k='0',validateSearch=False):
+def getToggleStateForFilters(udpScreenInstance,setup,k='0',validateSearch=False,screen=MRXConstants.UDSCREEN):
     logger.info("Method Called : getToggleStateForFilters")
     segmentKeys=setup.cM.getAllNodeElements("segmenntFilters","filter")
     deviceKeys = setup.cM.getAllNodeElements("deviceFilters","filter")
@@ -48,11 +48,11 @@ def getToggleStateForFilters(udpScreenInstance,setup,k='0',validateSearch=False)
     contentKeys = setup.cM.getAllNodeElements("contentFilters","filter")
     usageKeys = setup.cM.getAllNodeElements("usageFilters","filter")
 
-    segmentFilters = createFilterMap(getToggleState(setup,udpScreenInstance,"segment",k=k,validateSearch=validateSearch),segmentKeys)
-    deviceFilters = createFilterMap(getToggleState(setup,udpScreenInstance,"device",k=k,validateSearch=validateSearch),deviceKeys)
-    networkFilters = createFilterMap(getToggleState(setup,udpScreenInstance,"network",k=k,validateSearch=validateSearch),networkKeys)
-    contentFilters = createFilterMap(getToggleState(setup,udpScreenInstance,"content",k=k,validateSearch=validateSearch),contentKeys)
-    usageFilters = createFilterMap(getToggleState(setup,udpScreenInstance,"usage",k=k,validateSearch=validateSearch),usageKeys)
+    segmentFilters = createFilterMap(getToggleState(setup,udpScreenInstance,"segment",k=k,validateSearch=validateSearch,screen=screen),segmentKeys)
+    deviceFilters = createFilterMap(getToggleState(setup,udpScreenInstance,"device",k=k,validateSearch=validateSearch,screen=screen),deviceKeys)
+    networkFilters = createFilterMap(getToggleState(setup,udpScreenInstance,"network",k=k,validateSearch=validateSearch,screen=screen),networkKeys)
+    contentFilters = createFilterMap(getToggleState(setup,udpScreenInstance,"content",k=k,validateSearch=validateSearch,screen=screen),contentKeys)
+    usageFilters = createFilterMap(getToggleState(setup,udpScreenInstance,"usage",k=k,validateSearch=validateSearch,screen=screen),usageKeys)
 
     toggleStateForFilters = merge_dictionaries(merge_dictionaries(merge_dictionaries(merge_dictionaries(segmentFilters,deviceFilters),networkFilters),contentFilters),usageFilters)
     return toggleStateForFilters
@@ -60,9 +60,13 @@ def getToggleStateForFilters(udpScreenInstance,setup,k='0',validateSearch=False)
 
 
 
-def getToggleState(setup,udpScreenInstance,tab_name,k ="0",validateSearch=False):
+def getToggleState(setup,udpScreenInstance,tab_name,k ="0",validateSearch=False,screen=MRXConstants.UDSCREEN):
     logger.info("Method Called : getToggleState")
-    udp_filter= parseFilters(setup.cM.getNodeElements("udpScreenFilters",tab_name))
+    if screen!=MRXConstants.UDSCREEN:
+        udp_filter= parseFilters(setup.cM.getNodeElements("cbScreenFilters",tab_name))
+    else:
+        udp_filter = parseFilters(setup.cM.getNodeElements("udpScreenFilters", tab_name))
+
     udpfilters= setup.cM.getNodeElements("udpfilters","filter")
     udpScreenInstance.clickLink(udpfilters[tab_name]['locatorText'],getHandle(setup,MRXConstants.UDPPOPUP,MRXConstants.ALLLINKS))
 
@@ -273,8 +277,12 @@ def setQuickLink_Measure(setup,udScreenInstance,i='0'):
 #         return filterSelected
 
 
-def setFilters(setup,udpScreenInstance,tab_name,k ="0",toggleStateFlag=False):
-    udp_filter= parseFilters(setup.cM.getNodeElements("udpScreenFilters",tab_name))
+def setFilters(setup,udpScreenInstance,tab_name,k ="0",toggleStateFlag=False,screen=MRXConstants.UDSCREEN):
+    if screen!=MRXConstants.UDSCREEN:
+        udp_filter= parseFilters(setup.cM.getNodeElements("cbScreenFilters",tab_name))
+    else:
+        udp_filter = parseFilters(setup.cM.getNodeElements("udpScreenFilters", tab_name))
+
     udpfilters= setup.cM.getNodeElements("udpfilters","filter")
     udpScreenInstance.clickLink(udpfilters[tab_name]['locatorText'],getHandle(setup,MRXConstants.UDPPOPUP,MRXConstants.ALLLINKS))
 

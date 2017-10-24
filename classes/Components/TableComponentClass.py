@@ -206,6 +206,40 @@ class TableComponentClass(BaseComponentClass):
         return rows
 
 
+    def getIterfaceRowsWithColumnHavingColor(self,colcount,h,length,colorColumnIndex=0):
+        logger.info("Method Called : getColumnContainColor")
+        elHandle=h['ROWS']
+
+        if len(elHandle) <1:
+            logger.info("No DATA On Table")
+            return Constants.NODATA
+
+        rowCount = len(elHandle) / colcount
+        if rowCount < length:
+            l = len(elHandle)
+        else:
+            l = length*colcount
+
+        rowList=[]
+
+        for i in range(0,l,colcount):
+            j=i
+            count=0
+            row = []
+            try:
+                for j in range(j, j + colcount):
+                    if count==colorColumnIndex:
+                        row.append(str(BaseComponentClass().rgb_to_hex(elHandle[j].find_element_by_xpath("./div").value_of_css_property('background-color'))).strip())
+                    else:
+                        row.append(str(elHandle[j].text).strip())
+                    count=count+1
+            except Exception as e:
+                logger.error("Got exception during retriving table data :: check manually")
+
+            rowList.append(row)
+
+        return rowList
+
 
     def scrollUpTable(self,setup):
         for ele in setup.d.find_elements_by_class_name('ag-body-viewport'):
@@ -620,6 +654,17 @@ class TableComponentClass(BaseComponentClass):
             data = {}
             data['header'] = self.getIterfaceHeaders(h[parent])
             data['rows'] = self.getIterfaceRows(len(data['header']),h[parent],length,selected)
+            return data
+        except Exception as e:
+            return e
+
+    def getTableData1WithColumnHavingColor(self,h,parent="table",length=15,colorColumnIndex=0):
+        logger.info("Method Called : getTableData1WithColumnHavingColor")
+        # handlers = self.compHandlers('table', h)
+        try:
+            data = {}
+            data['header'] = self.getIterfaceHeaders(h[parent])
+            data['rows'] = self.getIterfaceRowsWithColumnHavingColor(len(data['header']),h[parent],length,colorColumnIndex)
             return data
         except Exception as e:
             return e

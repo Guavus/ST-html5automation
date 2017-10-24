@@ -216,6 +216,55 @@ class QuickTrendsComponentClass(BaseComponentClass):
             return e
 
 
+    def hoverOverTicksGetMainHorizontalBarChartText(self,setup,h1,screenName,parent="trend-main",child="trendchart",tooltipParent="qttooltip"):
+        try:
+            totalbar, barHandle = self.getPointsOnHorizontalBarForHover_DCT(h1, parent=parent, child=child)
+            tooltipText = {}
+            for el in barHandle:
+                setup.d.execute_script("return arguments[0].scrollIntoView();", el)
+                logger.info("Going to perform Hover Action")
+                ActionChains(setup.d).move_to_element(el).perform()
+                flag,text=self.getTooltipTextAfterHover(setup,screenName,tooltipParent)
+                if not flag:
+                    logger.info('Not able to Perform Hover Action')
+                else:
+                    logger.info("Hover Action Performed")
+                    for key in text.keys():
+                        tooltipText[key]=text[key]
+            logger.debug("Got tooltip data =  %s", str(tooltipText))
+            return tooltipText
+
+        except Exception as e:
+            logger.error("Got Exception while performing hover actions = %s", str(e))
+            return e
+
+
+    def getTooltipTextAfterHover(self,setup,screenName,tooltipParent,child="dim_name"):
+        flag=False
+        toolTipText={}
+        tooltipHandle=self.util.utility.getHandle(setup,screenName,tooltipParent)
+
+        try:
+            if len(tooltipHandle[tooltipParent][child])>0:
+                flag=True
+                dim=str(tooltipHandle[tooltipParent][child][0].text).split('\n')[0]
+                valueArray=str(tooltipHandle[tooltipParent][child][0].text).split('\n')
+
+                toolTipText[dim]=[]
+                if len(tooltipHandle[tooltipParent]['color_Box'])==len(valueArray)-1:   #for Color on Tooltip
+                    for i in range(len(tooltipHandle[tooltipParent]['color_Box'])):
+                        toolTipText[dim].append([self.rgb_to_hex(tooltipHandle[tooltipParent]['color_Box'][i].value_of_css_property('background-color')),valueArray[i+1]])
+
+                logger.info("Tootltip found with value = %s",str(toolTipText))
+            else:
+               logger.error("Tooltip Not Found :: Check Manually")
+
+        except Exception as e:
+            logger.error("Got Exception while getting value of Tooltip =%s",str(e))
+
+        return flag,toolTipText
+
+
 
     def getHoverText(self, h,parent="trend-header", child="qttooltip",index=0,setup=""):
         try:
@@ -360,12 +409,50 @@ class QuickTrendsComponentClass(BaseComponentClass):
         return len(handle),handle
 
     def getAllBar_DCT(self,h,parent="trend-main", child="trendchart",indexOfComp=0):
-        handle = h[parent][child][indexOfComp].find_elements_by_css_selector("g.chart-bar-element-group")
+        logger.info("Method Called : getAllBar_DCT")
+        handle=[]
+        if len(h[parent][child])>0:
+            handle = h[parent][child][indexOfComp].find_elements_by_css_selector("g.chart-bar-element-group")
         return len(handle),handle
 
     def getAllBarForHover_DCT(self,h,parent="trend-main", child="trendchart",indexOfComp=0):
         handle = h[parent][child][indexOfComp].find_elements_by_css_selector("rect[class*=chart-selection-element]")
         return len(handle),handle
+
+    def getPointsOnHorizontalBarForHover_DCT(self,h,parent="trend-main", child="trendchart",indexOfComp=0):
+        logger.info("Method Called : getPointsOnHorizontalBarForHover_DCT")
+        numberofBar,handle=self.getAllBar_DCT(h,parent,child,indexOfComp)
+        hoverPointHandle=[]
+        try:
+            for el_index in range(numberofBar):
+                hoverPointHandle.append(handle[el_index].find_elements_by_tag_name("rect")[0])
+            return len(hoverPointHandle),hoverPointHandle
+
+        except Exception as e:
+            logger.error("Got Exception during hover point handle =%s",str(e))
+            return e
+
+    def getAllColorOnHorizontalBar_DCT(self,setup,h,parent="trend-main",child="trendchart",indexOfComp=0):
+        logger.info("Method Called : getPointsOnHorizontalBarForHover_DCT")
+        numberofBar,handle=self.getAllBar_DCT(h,parent,child,indexOfComp)
+        color_List=[]
+        try:
+            for el_index in range(numberofBar):
+                setup.d.execute_script("return arguments[0].scrollIntoView();", handle[el_index])
+                colorList=[]
+
+                for el in handle[el_index].find_elements_by_tag_name("rect"):
+                    if el.get_attribute('width')!="0":
+                        colorList.append(self.rgb_to_hex(el.value_of_css_property('fill')))
+
+                color_List.append(colorList)
+            logger.info("Got Color List Form Bar =%s",str(color_List))
+
+            return color_List
+
+        except Exception as e:
+            logger.error("Got Exception while getting color on bar =%s",str(e))
+            return e
 
 
     def getChartsCount(self, h, parent="trend-main", child="trendchart"):
