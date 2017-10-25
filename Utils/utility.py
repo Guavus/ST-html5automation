@@ -481,13 +481,13 @@ def confirm(setup,button='OK'):
         return [False, ""]
 
 
-def confirm_Popup(setup,segment_name,button='OK',headerText=Constants.CONFIRMHEADERINCONFIRMFILTERPOPUP,testCaseId=''):
+def confirm_Popup(setup,segment_name,button='OK',headerText=Constants.CONFIRMHEADERINCONFIRMFILTERPOPUP,screenName='segment',testCaseId=''):
     #sleep(10)
     eHandle=getHandle(setup,Constants.CONFIRMFILTERPOPUP,Constants.CONFIRMFILTERBODY)
     if len(eHandle[Constants.CONFIRMFILTERBODY][Constants.CONFIRMFILTERCLOSE])>0 and len(eHandle[Constants.CONFIRMFILTERBODY][Constants.CONFIRMFILTERMESSAGE]) >0:
         checkEqualAssert(headerText,str(eHandle[Constants.CONFIRMFILTERBODY][Constants.CONFIRMFILTERHEADER][0].text),"","","Verify Header for popUp")
         msg=str(eHandle[Constants.CONFIRMFILTERBODY][Constants.CONFIRMFILTERMESSAGE][0].text)
-        real_msg="Do you want to delete \""+segment_name+"\" segment ?"
+        real_msg="Do you want to delete \""+segment_name+"\" "+screenName+" ?"
         checkEqualAssert(real_msg,msg,"","", "Verify Text on popUp for Segment deletion",testcase_id=testCaseId)
         for el in eHandle[Constants.CONFIRMFILTERBODY][Constants.CONFIRMFILTERBUTTON]:
             try:
