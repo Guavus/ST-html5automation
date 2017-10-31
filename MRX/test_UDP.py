@@ -60,6 +60,7 @@ try:
 
     checkBlankLoadFilter=True
     beforeCreateSegmentTotalSaveFilter=0
+    afterCreateSegmentTotalSaveFilter=0
 
     for k, segmentDetail in createSegmentDetails.iteritems():
         udScreenInstance.switcher.measureChangeSwitcher_UD(1,getHandle(setup, MRXConstants.UDSCREEN, "switcher"))
@@ -77,9 +78,10 @@ try:
         if checkBlankLoadFilter:
             h = getHandle(setup, MRXConstants.UDSCREEN, 'filterArea')
             h['filterArea']['toggleicon'][0].click()
-            udScreenInstance.multiDropdown.domultipleSelectionWithNameWithoutActiveDropDown(getHandle(setup, MRXConstants.UDSCREEN, 'filterArea'), 'Load Filter', 0, parent="filterArea",child="multiSelectDropDown")
-            beforeCreateSegmentTotalSaveFilter=UDHelper.getTotalSaveFilter(setup)
-            udScreenInstance.clickButton("Cancel", getHandle(setup, MRXConstants.LFPOPUP, Constants.ALLBUTTONS))
+            clickFlag=udScreenInstance.multiDropdown.domultipleSelectionWithNameWithoutActiveDropDown(getHandle(setup, MRXConstants.UDSCREEN, 'filterArea'), 'Load Filter', 0, parent="filterArea",child="multiSelectDropDown",checkDisabled=True)
+            if clickFlag:
+                beforeCreateSegmentTotalSaveFilter=UDHelper.getTotalSaveFilter(setup)
+                udScreenInstance.clickButton("Cancel", getHandle(setup, MRXConstants.LFPOPUP, Constants.ALLBUTTONS))
 
         udScreenInstance.clickButton('Create Segment',getHandle(setup,MRXConstants.UDSCREEN,'summary_validation'),parent='summary_validation')
         addedSegmentDetail, detailFromPopup_Dict, textFromPopUp =UDHelper.createSegmentFromUD(setup,udScreenInstance,segmentDetail)
@@ -136,9 +138,12 @@ try:
                 time.sleep(5)
                 h = getHandle(setup, MRXConstants.UDSCREEN, 'filterArea')
                 h['filterArea']['toggleicon'][0].click()
-                udScreenInstance.multiDropdown.domultipleSelectionWithNameWithoutActiveDropDown(getHandle(setup, MRXConstants.UDSCREEN, 'filterArea'), 'Load Filter', 0, parent="filterArea",child="multiSelectDropDown")
-                afterCreateSegmentTotalSaveFilter = UDHelper.getTotalSaveFilter(setup)
-                udScreenInstance.clickButton("Cancel", getHandle(setup, MRXConstants.LFPOPUP, Constants.ALLBUTTONS))
+
+                clickFlag = udScreenInstance.multiDropdown.domultipleSelectionWithNameWithoutActiveDropDown(getHandle(setup, MRXConstants.UDSCREEN, 'filterArea'), 'Load Filter', 0, parent="filterArea",child="multiSelectDropDown", checkDisabled=True)
+                if clickFlag:
+                    afterCreateSegmentTotalSaveFilter = UDHelper.getTotalSaveFilter(setup)
+                    udScreenInstance.clickButton("Cancel", getHandle(setup, MRXConstants.LFPOPUP, Constants.ALLBUTTONS))
+
                 checkEqualAssert(beforeCreateSegmentTotalSaveFilter,afterCreateSegmentTotalSaveFilter,message=' Validate that when user wants to create segment from the UDR screen , then no blank filters should be added in the load filters list',testcase_id='MKR-3090')
                 checkBlankLoadFilter=False
         else:

@@ -381,14 +381,21 @@ class MulitpleDropdownComponentClass(DropdownComponentClass):
         return h[parent][child][index].find_elements_by_css_selector("[class*=PickerHeaderClass]")[0].text.strip().strip('\n').strip()
 
 
-    def domultipleSelectionWithNameWithoutActiveDropDown(self,h,value,index,parent="filterPopup",child="multiSelectDropDown"):
+    def domultipleSelectionWithNameWithoutActiveDropDown(self,h,value,index,parent="filterPopup",child="multiSelectDropDown",checkDisabled=False):
         DropDowns = h[parent][child]
 
-        for el in DropDowns[index].find_elements_by_class_name("menuitemDiv"):
-            if str(el.text).strip() == value:
-                el.click()
-                return True
+        if checkDisabled:
+            for el in DropDowns[index].find_elements_by_class_name("menuitemDiv"):
+                if str(el.text).strip() == value and not ('disable' in el.find_elements_by_xpath('./div')[0].get_attribute('class')):
+                    el.click()
+                    return True
+            return False
 
+        else:
+            for el in DropDowns[index].find_elements_by_class_name("menuitemDiv"):
+                if str(el.text).strip() == value:
+                    el.click()
+                    return True
 
     def domultipleSelectionWithName(self,h,value,index,parent="filterPopup",child="multiselect-dropdown"):
         activeDropDowns = h[parent][child]
