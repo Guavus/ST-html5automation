@@ -235,6 +235,16 @@ def login(obj,username,password):
         # signinHandler = driverHelper.waitForVisibleElement(LoginPageLocators.SIGNIN)
         loginPage.signIn(loginhandler)
 
+        loginErrorMsgHandler = getHandle(obj, Constants.LOGINSCREEN,'msg')
+        try:
+            if len(loginErrorMsgHandler['msg']['msg'])>0:
+                errorMsg=str(loginErrorMsgHandler['msg']['msg'][0].text)
+                logger.error("Login Unsuccessful :: Error message = %s",errorMsg)
+                resultlogger.error("Login Unsuccessful :: Error message = %s<br>",errorMsg)
+                return False
+        except:
+            pass
+
         logger.info('Login Successful')
         logger.debug('Username : %s',username)
         logger.debug('Password : %s',password)
