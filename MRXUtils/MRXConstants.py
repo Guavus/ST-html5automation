@@ -58,7 +58,7 @@ class MRXConstants(Constants):
     Source_User_Distribution='User Distribution'
     ExpectedFilterOption = ['Segmentation Filters','Device Filters','Network Filters','Content Filters','Usage Filters']
     ExpectedFilterOptionForDE = ['Time Range', 'Measure', 'Top Rows (leave blank for All)', 'Segmentation Filters', 'Device Filters', 'Network Filters','Content Filters', 'Usage Filters']
-    ExpectedQuickLinkList= ['Last 30 days','Last 7 days','Yesterday','Last 24 hours','Last 4 hours','Today','Calender']
+    ExpectedQuickLinkList= ['Last 6 Months', 'Last Month', 'Last 7 days', 'Yesterday', 'Today', 'Calender']
     #ExpectedMeasure=['Volume (Upload)','Volume (Download)','Volume','# Session']
     ExpectedMeasure = ['Volume (Upload)', 'Volume (Download)', 'Volume', '# Network Session','# Web Domain Session','# IAB Session','# Contextual Session']
     ExpectedMeasureForDE = ['Volume (Upload)', 'Volume (Download)', 'Volume', '# Network Session', '# Web Domain Session','# IAB Session', '# Contextual Session', '# User']
