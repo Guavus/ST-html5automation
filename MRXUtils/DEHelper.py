@@ -232,7 +232,7 @@ def setFilters(setup,udpScreenInstance,tab_name,method_Index,selectedMethod,meth
 
     if validateAvailableMethod:
         availableMethodOnUI = udpScreenInstance.getAllTitle(getHandle(setup, MRXConstants.DEPOPUP, MRXConstants.ALLTITLES))
-        if str(selectedMethod).strip()=='Global Data Service' and 'Content Interest' in availableMethodOnUI:
+        if str(selectedMethod).strip()=='Global Data Service' and 'Content Interest' in availableMethodOnUI and tab_name=='usage':
             availableMethodOnUI=[]
         checkEqualAssert(methodNeeded,availableMethodOnUI,message="Verify that for a selected method, in the corresponding data extraction window, user gets an option to apply filter on every other method except the selected method :: Selected Method = "+str(selectedMethod),testcase_id='MKR-1963')
 

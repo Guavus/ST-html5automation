@@ -61,7 +61,7 @@ try:
                         for dim in deHandle['filterTab']['dimension']:
                             availableFilter.append(str(dim.text))
 
-                        if class_de=="Usage Filters":
+                        if class_de=="Usage":
                             ExpectedFilterForUsage=deepcopy(MRXConstants.ExpectedFilterOptionForDE)
                             ExpectedFilterForUsage.pop()
                             checkEqualAssert(ExpectedFilterForUsage,availableFilter,message="Verify that in the Data extraction window which opens on clicking a method a user can set the time range, choose a Measure, select Top Rows and also apply different filters.",testcase_id='MKR-1959')
