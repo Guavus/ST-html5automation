@@ -24,7 +24,7 @@ try:
     segmentScreenHandle = getHandle(setup,MRXConstants.SEGMENTSCREEN,'allbuttons')
     segmentDetails=setup.cM.getNodeElements("segmentDetails","segment")
 
-    ##################################### Blank Segment Name scenario ##################################################
+    ##################################### Blank Segment Name Scenario ##################################################
     segmentScreenInstance.cm.clickButton("Import", segmentScreenHandle)
     popUpHandle = getHandle(setup, MRXConstants.POPUPSCREEN)
     segmentScreenInstance.cm.sendkeys_input(' ', popUpHandle, 0)
