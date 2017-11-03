@@ -5,7 +5,7 @@ from MRXUtils import UDHelper
 from selenium.webdriver import ActionChains
 import json
 
-Delimiter=' , '
+Delimiter=' ,'
 DictContainingTree={}
 
 def getDEPopupHeaderText(setup,screenName,index=0,parent='allspans',child='span'):
