@@ -5,7 +5,7 @@ from classes.Components.QuicklinkTimeRangeComponentClass import *
 from classes.Components.SearchComponentClass import *
 from classes.Components.CalendarComponentClass import *
 
-class BasePageClass():
+class BasePageClass(BaseComponentClass):
     def __init__(self,driver):
 
         self.measure = MeasureComponentClass()
@@ -14,6 +14,8 @@ class BasePageClass():
         self.searchComp = SearchComponentClass()
         self.cm = ContextMenuComponentClass()
         self.calendar = CalendarComponentClass()
+
+        BaseComponentClass.__init__(self)
 
     def testComponents(self):
         pass

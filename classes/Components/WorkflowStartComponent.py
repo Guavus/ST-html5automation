@@ -18,6 +18,7 @@ class WorkflowStartComponentClass(BaseComponentClass):
                     el.click()
                     logger.info("Launched = %s",str(name))
                     return True
+            return False
         except Exception as e:
             logger.error("Exception caught while launching = %s",name)
             raise e

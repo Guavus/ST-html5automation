@@ -131,6 +131,17 @@ class ContextMenuComponentClass(BaseComponentClass):
             logger.error("Got Exception while clicking Option %s = %s",value,str(e))
             return e
 
+    def getAvailableOptionOnDrillDown(self,h,parent='exploreBar',child='cm',index=0):
+        try:
+            self.activate(h,parent,child)
+            availableOption=[]
+            for e in h[parent][child][index].find_elements_by_tag_name('a'):
+                availableOption.append(str(e.text).strip())
+            self.activate(h, parent, child)
+            return availableOption
+        except Exception as e:
+            logger.error("Got Exception getting option on Drill Down :: %s",str(e))
+            return e
 
     def gotoScreenViaBreadCrumb(self,screenName,h,parent="breadcrumb",child='bar'):
         for e in h[parent][child]:

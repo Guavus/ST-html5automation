@@ -659,6 +659,16 @@ class BaseComponentClass:
         setAtr = 'arguments[0].setAttribute(arguments[1],arguments[2])'
         setup.d.execute_script(setAtr,elem,property,value)
 
+    def set_PathOnTree(self,elem):
+        path=str(elem.text)
+        try:
+            while True:
+                elem=elem.find_element_by_xpath('ancestor::tree-node[1]')
+                path=str(elem.text).split('\n')[0]+"/"+path
+        except:
+            return path
+
+
     def dragDrop(self,setup,source,target):
         # selectedRows = setup.d.execute_script('return $(".selectedRowClass")')
         with open("/Users/mayank.mahajan/PycharmProjects/html5automation/classes/DriverHelpers/drag_and_drop_helper.js","r") as f:

@@ -354,6 +354,24 @@
             <component id = "breadcrumb" selector="css selector" locator="nav.BreadcrumbsArea" parent="True"/>
         </screenConfig>
 
+        <screenConfig id = "tm_Screen">
+            <component id = "ktrs" selector="tag name" locator="kiwik-ktrs" parent="True"/>
+            <component id = "trend-header" selector="css selector" locator="div.trend-header-container" parent="True"/>
+            <component id = "trend-main" selector="css selector" locator="div.trend-main-container" parent="True"/>
+            <component id = "trend-compare" selector="css selector" locator="div.trend-compare-container" parent="True"/>
+            <component id="trend-slider" selector="css selector" locator="div.compare-trend-slide" parent="True"/>
+            <component id = "trend-legend" selector="tag name" locator="kiwik-trend-legend" parent="True"/>
+            <component id = "filterArea" selector="tag name" locator="kiwik-filter-layout" parent="True"/>
+            <component id = "table" selector="tag name" locator="gvs-grid" parent="True"/>
+            <component id = "footer" selector="css selector" locator="div.footerdivtimezone" parent="True"/>
+            <component id = 'globalfiltertooltip' selector="css selector" locator="[class*=tooltipBox]" parent="True"/>
+            <!--<component id = 'globalfiltertooltip' selector="xpath" locator='//kiwik-filter-layout//*[contains(@class, "tooltipBox")]' parent="True"/>-->
+            <component id =  "breadcrumb" selector="css selector" locator="nav.BreadcrumbsArea" parent="True"/>
+
+            <component id="editFilters" selector="tag name" locator="kiwik-edit-parameter-dropdown" parent="True"/>
+            <component id="time_measure" selector="css selector" locator="div.timeRangeValue" parent="True"/>
+        </screenConfig>
+
 
     </screenConfigs>
 
@@ -416,6 +434,7 @@
 
         <componentConfig id ='footerText'>
             <component id = "text" selector="css selector" locator='div.filepathlabel' />
+            <component id ="errorMsg" selector="css selector" locator="div.error-message"/>
         </componentConfig>
 
         <componentConfig id="allsliders">
@@ -574,6 +593,31 @@
             <component id ='header' selector="css selector" locator="span.wizardTitle"/>
         </componentConfig>
 
+
+
+        <componentConfig id ="trend-legend">
+            <component id = "legend" selector="tag name" locator="li" />
+        </componentConfig>
+
+        <componentConfig id ="trend-compare">
+            <component id = "select" selector="css selector" locator="select" />
+            <component id = "qttooltip" selector="css selector" locator=".trend-compare-header"/>
+            <component id = "trendchart" selector="tag name" locator="trend-component"/>
+            <component id = "comparedimension" selector="css selector" locator="div.trend-compare-dimension"/>
+        </componentConfig>
+
+        <componentConfig id = "trend-header">
+            <component id = "select" selector="tag name" locator="select"/>
+            <component id = "qttooltip" selector="css selector" locator="div.trend-main-header"/>
+            <component id= "cm" selector="css selector" locator="div[class*=trend-export]"/>
+            <component id = "a" selector="tag name" locator='a'/>
+        </componentConfig>
+
+        <componentConfig id="trend-slider">
+            <component id="label" selector="css selector" locator="div.trend-compare-label"/>
+            <component id="expand-btn" selector="css selector" locator="div.trend-expand-btn"/>
+            <component id="collapse-btn" selector="css selector" locator="div.trend-collapse-btn"/>
+        </componentConfig>
 
         <componentConfig id = "trend-main">
             <component id = "switcher" selector="css selector" locator="div.modeSwitcherBtnBar" wait="skip"/>

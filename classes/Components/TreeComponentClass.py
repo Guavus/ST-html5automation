@@ -7,10 +7,11 @@ from selenium.webdriver.common.keys import *
 from selenium.webdriver import ActionChains
 from MRXUtils.MRXConstants import *
 import random
+from copy import deepcopy
 
+TreeElementDict = {}
 
 class TreeComponentClass(BaseComponentClass):
-
 
     def __init__(self,driver):
         '''
@@ -21,34 +22,33 @@ class TreeComponentClass(BaseComponentClass):
         BaseComponentClass.__init__(self)
         self.configmanager = ConfigManager()
 
+
     def expandTree(self,setup,treeHandle,parent='alltrees',child='tree',index=0):
         logger.info('Going to expand Tree')
-        return self.expandTree1(setup,treeHandle[parent][child][index])
+        global TreeElementDict
+        TreeElementDict = {}
+        self.expandTree1(setup,treeHandle[parent][child][index])
+        return TreeElementDict
 
-    # def expandTree1(self,treeElementHandle):
-    #     tree_nodes=treeElementHandle.find_elements_by_tag_name('tree-node')
-    #     if len(tree_nodes)>5:
-    #         l = [tree_nodes[random.randrange(len(tree_nodes))] for item in range(MRXConstants.NumberOfElementToBeExpandOnAtAnyLevel)]
-    #         treenodes = list(set(l))
-    #     else:
-    #         treenodes = tree_nodes
-    #     for ele in treenodes:
-    #         if 'leaf' in ele.find_elements_by_xpath('.//*')[1].get_attribute('class'):
-    #             continue
-    #         else:
-    #             ele.find_elements_by_class_name('toggle-children')[0].click()
-    #             self.expandTree1(ele)
 
     def expandTree1(self,setup,treeElementHandle,count=0):
         tree_nodes=treeElementHandle.find_elements_by_tag_name('tree-node')
         for ele in tree_nodes:
-            self.set_attribute(setup,ele.find_element_by_tag_name('tree-node-content'),property='tree-level',value=count)
+            self.set_attribute(setup, ele.find_element_by_tag_name('tree-node-content'), property='tree-level',value=count)
+            path=self.set_PathOnTree(ele)
+            if str(count) in TreeElementDict.keys():
+                TreeElementDict[str(count)].append([str(ele.text), path.replace('\n', '/')])
+            else:
+                TreeElementDict[str(count)]=[]
+                TreeElementDict[str(count)].append([str(ele.text), path.replace('\n', '/')])
 
         if len(tree_nodes)>5:
-            l = [tree_nodes[random.randrange(len(tree_nodes))] for item in range(MRXConstants.NumberOfElementToBeExpandOnAtAnyLevel)]
-            treenodes = list(set(l))
+            nodeIndexList=random.sample(range(len(tree_nodes)),MRXConstants.NumberOfElementToBeExpandOnAtAnyLevel)
+            nodeIndexList.sort()
+            treenodes = [tree_nodes[index] for index in range(len(nodeIndexList))]
         else:
             treenodes = tree_nodes
+
         for ele in treenodes:
             if 'leaf' in ele.find_elements_by_xpath('.//*')[1].get_attribute('class'):
                 continue
@@ -58,16 +58,8 @@ class TreeComponentClass(BaseComponentClass):
                 time.sleep(1)
                 self.expandTree1(setup,ele,count_1+1)
 
-    def expandTree1_old(self,treeElementHandle):
-        for ele in treeElementHandle.find_elements_by_tag_name('tree-node'):
-            if 'leaf' in ele.find_elements_by_xpath('./*')[0].get_attribute('class'):
-                continue
-            else:
-                ele.find_elements_by_class_name('toggle-children')[0].click()
-                self.expandTree1(ele)
 
-
-    def doSelectionOnTree_Random(self,setup,elementDict,treeHandle,parent='alltrees',child='tree',index=0):
+    def doSelectionOnTree_Random(self, setup, elementDict, treeHandle, parent='alltrees', child='tree', index=0):
         elementToBeSelect={}
         for k in elementDict.keys():
             if len(elementDict[k])>MRXConstants.NumberOfSelectionOnAtAnyLevel:
@@ -77,9 +69,6 @@ class TreeComponentClass(BaseComponentClass):
                 elementToBeSelect[k]=elementDict[k]
 
         expectedTextFormUIForSelectedTree=[]
-        # for k in elementToBeSelect.keys():
-        #     expectedText=self.selectTree(setup,treeHandle,elementToBeSelect[k],index=index)
-        #     expectedTextFormUIForSelectedTree.append(expectedText)
 
         expected={}
         for k in elementToBeSelect.keys():
@@ -88,10 +77,10 @@ class TreeComponentClass(BaseComponentClass):
         keysList=expected.keys()  ### for verify level 1>2>3...###
         keysList.sort()
         for k in keysList:
-            expectedTextFormUIForSelectedTree.append(expected[k])
+            expectedTextFormUIForSelectedTree+=expected[k]
 
-        # return str(' > '.join(expectedTextFormUIForSelectedTree)),elementToBeSelect,self.getSelectionFromExpendedTree(treeHandle,index=index)
-        return str(' >'.join(expectedTextFormUIForSelectedTree)), elementToBeSelect, self.getSelectionFromExpendedTree(treeHandle, index=index)
+        return expectedTextFormUIForSelectedTree,elementToBeSelect,self.getSelectionFromExpendedTree(treeHandle,index=index)
+
 
     def getSelectionFromExpendedTree(self,treeHandle,parent='alltrees',child='tree',index=0):
         selectedElements = {}
@@ -108,26 +97,36 @@ class TreeComponentClass(BaseComponentClass):
         return selectedElements
 
 
-
     def selectTree(self,setup,treeHandle,listForSelection,parent='alltrees',child='tree',key='',index=0):
         List = []
+        listForSelectionCopy=deepcopy(listForSelection)
+        TreeElementListCopy=[]
+        if key in TreeElementDict.keys():
+            TreeElementListCopy = deepcopy(TreeElementDict[str(key)])
+
         for ele in treeHandle[parent][child][index].find_elements_by_tag_name('tree-node-content'):
             try:
-                if str(ele.text).strip() in listForSelection:
-                    try:
-                        if str(ele.get_attribute('tree-level')) == str(key):
+                for element in listForSelectionCopy:
+                    if str(ele.text).strip()==str(element).strip() and str(ele.get_attribute('tree-level')) == str(key):
+                        try:
                             logger.info('Going to select %s on tree',str(ele.text))
                             ActionChains(setup.d).key_down(Keys.SHIFT).perform()
                             ele.click()
-                            List.append(str(ele.text))
+                            for node in TreeElementListCopy:
+                                if node[0]==str(ele.text).strip():
+                                    List+=[node[1]]
+                                    TreeElementListCopy.remove(node)
+                                    break
+
                             ActionChains(setup.d).key_down(Keys.SHIFT).perform()
-                    except Exception as e:
-                        logger.error('Got exception during selection on Tree:: Exception = %s',str(e))
+                            listForSelectionCopy.remove(element)
+                            break
+                        except Exception as e:
+                            logger.error('Got exception during selection on Tree:: Exception = %s',str(e))
             except:
-                #uncode char handling
                 pass
-        #return '( '+str(', '.join(List))+')'
-        return '(' + str(', '.join(List)) + ')'
+        return List
+
 
     def seprateElementOfTreeByLevel(self,treeHandle,parent='alltrees',child='tree',index=0):
         classname = []

@@ -4,7 +4,7 @@ from classes.Components.TimeRangeComponentClass import *
 from MRXUtils import SegmentHelper
 import datetime
 
-Delimiter=' , '
+Delimiter=' ,'
 
 def button_Status(condition,request,screenInstance,setup,screen=MRXConstants.POPUPSCREEN,button_label="Create",testcase_id=''):
     logger.info("Method Called :button_Status ")
@@ -62,8 +62,10 @@ def getToggleStateForFilters(udpScreenInstance,setup,k='0',validateSearch=False,
 
 def getToggleState(setup,udpScreenInstance,tab_name,k ="0",validateSearch=False,screen=MRXConstants.UDSCREEN):
     logger.info("Method Called : getToggleState")
-    if screen!=MRXConstants.UDSCREEN:
+    if screen==MRXConstants.COMPARATIVESCREEN:
         udp_filter= parseFilters(setup.cM.getNodeElements("cbScreenFilters",tab_name))
+    elif screen==MRXConstants.TMSCREEN:
+        udp_filter = parseFilters(setup.cM.getNodeElements("tmScreenFilters", tab_name))
     else:
         udp_filter = parseFilters(setup.cM.getNodeElements("udpScreenFilters", tab_name))
 
@@ -278,7 +280,9 @@ def setQuickLink_Measure(setup,udScreenInstance,i='0'):
 
 
 def setFilters(setup,udpScreenInstance,tab_name,k ="0",toggleStateFlag=False,screen=MRXConstants.UDSCREEN):
-    if screen!=MRXConstants.UDSCREEN:
+    if screen==MRXConstants.TMSCREEN:
+        udp_filter= parseFilters(setup.cM.getNodeElements("tmScreenFilters",tab_name))
+    elif screen==MRXConstants.COMPARATIVESCREEN:
         udp_filter= parseFilters(setup.cM.getNodeElements("cbScreenFilters",tab_name))
     else:
         udp_filter = parseFilters(setup.cM.getNodeElements("udpScreenFilters", tab_name))
@@ -311,7 +315,7 @@ def setFilters(setup,udpScreenInstance,tab_name,k ="0",toggleStateFlag=False,scr
                 toggleStateList.append('')
             else:
                 if expectedFromUI != ['']:
-                    filterSelected.append([expectedFromUI])
+                    filterSelected.append(expectedFromUI)
                 else:
                     filterSelected.append([])
 

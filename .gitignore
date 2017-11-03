@@ -16,3 +16,7 @@ Results.html
 .idea/workspace.xml
 
 classes/Components/MeasureComponentClass.py
+suitemural_screens/dummy_content.py
+suitemural_screens_cell_sectors/dummy_cellsector.py
+.idea/html5automation.iml
+.idea/misc.xml

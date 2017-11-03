@@ -63,13 +63,17 @@ try:
             msg=''
             segmentScreenInstance.cm.clickButton('Import', popUpHandle)
             popUpHandle = getHandle(setup, MRXConstants.POPUPSCREEN)
-            for ele in popUpHandle['allspans']['span']:
-                if 'red' in str(ele.get_attribute('style')).lower():
-                    msg=str(ele.text)
-                    break
-            button_Status = segmentScreenInstance.cm.isButtonEnabled('Import',getHandle(setup, MRXConstants.POPUPSCREEN,"allbuttons"))
-            checkEqualAssert(False,button_Status,message="Segment with same name can't Import")
-            checkEqualAssert(MRXConstants.MSGFORSAMESEGMENT.strip(),msg.strip(),message="Verify Message during import Segment with same name")
+
+            if len(popUpHandle['footerText']['errorMsg'])>0:
+                msg=str(popUpHandle['footerText']['errorMsg'][0].text).strip()
+
+            # for ele in popUpHandle['allspans']['span']:
+            #     if 'red' in str(ele.get_attribute('style')).lower():
+            #         msg=str(ele.text)
+            #         break
+            # button_Status = segmentScreenInstance.cm.isButtonEnabled('Import',getHandle(setup, MRXConstants.POPUPSCREEN,"allbuttons"))
+            # checkEqualAssert(False,button_Status,message="Segment with same name can't Import")
+            checkEqualAssert(MRXConstants.MSGFORSAMESEGMENT.strip(),msg.strip(),message="Verify Segment with same name can't Import and also verify error message")
         segmentScreenInstance.cm.clickButton('Cancel', getHandle(setup, MRXConstants.POPUPSCREEN, "allbuttons"))
     else:
         segmentScreenInstance.cm.clickButton('Cancel', getHandle(setup, MRXConstants.POPUPSCREEN, "allbuttons"))
