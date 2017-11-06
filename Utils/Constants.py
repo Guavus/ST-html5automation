@@ -73,6 +73,7 @@ class Constants(object):
     # driver based constants
     WEBDRIVERTIMEOUT = 1
 
+    SECURITY=True
     # Component based constants
     ## BTV
     BTV = 'BTV'

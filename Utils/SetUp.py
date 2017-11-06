@@ -13,14 +13,12 @@ import platform
 class SetUp:
     def __init__(self):
 
-        security = True
-
         if platform.system() == "Windows":
             delimiter = "\\"
         else:
             delimiter = "/"
 
-        if security:
+        if Constants.SECURITY:
             if "chrome" == Constants.BROWSER:
                 os.system("mkdir "+Constants.chromdownloadpath)
                 removeFileAtGivenPath(Constants.chromdownloadpath)
@@ -54,10 +52,18 @@ class SetUp:
 
             # self.d = webdriver.Chrome(Constants.chromedriverpath)
         else:
+            os.system("mkdir " + Constants.chromdownloadpath)
+            removeFileAtGivenPath(Constants.chromdownloadpath)
 
             chromeOptions = webdriver.ChromeOptions()
             chromeOptions.add_argument("--disable-web-security")
             chromeOptions.add_argument("--user-data-dir")
+            chromeOptions.add_argument("--start-maximized")
+            exp_options = {}
+            exp_options['profile.default_content_settings.popups'] = 0
+            downloadFilepath = Constants.chromdownloadpath
+            exp_options['download.default_directory'] = downloadFilepath
+            chromeOptions.add_experimental_option("prefs", exp_options)
             self.d = webdriver.Chrome(Constants.chromedriverpath,chrome_options=chromeOptions)
 
 
