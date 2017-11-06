@@ -1073,8 +1073,8 @@ def FindWordInString(ar,grPopHandle):
 
 def getepoch(datestring,tOffset=Constants.TIMEZONEOFFSET,tPattern=Constants.TIMEPATTERN):
     if '24:00' in datestring:
-        datestring.replace("24:00","23:00")
-        epoch = int(calendar.timegm(time.strptime(datestring.strip(), tPattern)))
+        newDateString=datestring.replace("24:00","23:00")
+        epoch = int(calendar.timegm(time.strptime(newDateString.strip(), tPattern)))
         return epoch + 3600 - tOffset * 3600
     else:
         epoch = int(calendar.timegm(time.strptime(datestring.strip(),tPattern)))
