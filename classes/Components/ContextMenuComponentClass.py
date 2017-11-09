@@ -149,6 +149,12 @@ class ContextMenuComponentClass(BaseComponentClass):
                 e.click()
                 break
 
+    def getSelectedScreenNameFromBreadCrumb(self,h,parent="breadcrumb",child='selected_bar'):
+        screenName=''
+        if len(h[parent][child])>0:
+            screenName=h[parent][child][0].text
+        return screenName
+
     def gotoScreenViaWorkFlowDrop(self,screenName,h,parent="breadcrumb",child='workflow'):
         for e in h[parent][child][0].find_elements_by_xpath(".//*"):
             if str(e.text).strip().strip('\n').strip() == screenName:

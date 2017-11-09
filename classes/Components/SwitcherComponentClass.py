@@ -53,10 +53,22 @@ class SwitcherComponentClass(BaseComponentClass):
             h[parent][child][occurence].find_elements_by_tag_name('div')[index].click()
             try:
                 h[parent][child][occurence].find_elements_by_tag_name('div')[index].click()
+                try:
+                    h[parent][child][occurence].find_elements_by_tag_name('div')[index].click()
+                except:
+                    pass
             except:
                 pass
             time.sleep(2)
             return True
+        except Exception as e:
+            logger.error("Got Exception while using Measure Switcher %s",str(e))
+            return e
+
+    def getMeasureChangeSwitcherTitle(self,index,h,parent="measureChangeSection",child="switcher",occurence = 0):
+        try:
+            logger.info("Going to click Switcher index = %d",index)
+            return (h[parent][child][occurence].find_elements_by_tag_name('div')[index].get_attribute('title'))
         except Exception as e:
             logger.error("Got Exception while using Measure Switcher %s",str(e))
             return e
