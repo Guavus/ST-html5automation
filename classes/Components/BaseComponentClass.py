@@ -576,7 +576,7 @@ class BaseComponentClass:
         return False
 
     def getAllRadiosText(self, h, childDiv="span", parent="radios", child="radio"):
-        return [self.getRadioButtonText(e,h,childDiv,parent,child) for e in len(h[parent][child])]
+        return [self.getRadioButtonText(e,h,childDiv,parent,child) for e in range(len(h[parent][child]))]
 
     def getRadioButtonText(self, index, h, childDiv="span", parent="radios", child="radio"):
         childs = ".//" + childDiv

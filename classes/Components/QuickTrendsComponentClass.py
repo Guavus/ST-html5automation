@@ -188,6 +188,71 @@ class QuickTrendsComponentClass(BaseComponentClass):
             logger.error("Got Exception while performing hover actions = %s",str(e))
             return e
 
+    def doMultipleSelectionOnChart(self,setup,barHandle,indices,key):
+        try:
+            logger.info('Going to select chart [from,to] = %s', str(indices))
+            barHandle[indices[0]].click()
+            if len(indices) == 2:
+                ActionChains(setup.d).key_down(key).perform()
+                barHandle[indices[1]].click()
+                ActionChains(setup.d).key_up(key).perform()
+
+        except Exception as e:
+            logger.error("Got Exception while doing multiple selection on chart = %s",str(e))
+            return e
+
+    def getSelectionFromChart(self,h1,parent="trend-main", child="trendchart"):
+        try:
+            selectedIndices=[]
+            totalbar, barHandle = self.getAllBarForHover_DCT(h1, parent=parent, child=child)
+            for i,el in enumerate(barHandle):
+                if 'selected' in str(el.get_attribute('class')).lower():
+                    selectedIndices.append(i)
+            logger.info('Got Selected Indices = %s',str(selectedIndices))
+            return selectedIndices
+        except Exception as e:
+            logger.error("Got Exception while doing multiple selection on chart = %s",str(e))
+            return []
+
+
+    def hoverOverTicksGetMainAndCompareChartText_MRX(self, setup, h1, screenName, parent="trend-main", child="trendchart",compare_parent = "trend-compare",active_compare_chart = 0, parent_tooltip="trend-header", child_tooltip="qttooltip",parent_legend='trend-legend',child_legend='legend'):
+        try:
+            from dateutil.parser import parse
+            totalbar, barHandle = self.getAllBarForHover_DCT(h1, parent=parent, child=child)
+            tooltipText = {}
+            compareTooltipText={}
+            legendDict={}
+            for el in barHandle:
+                logger.info("Going to perform Hover Action")
+                ActionChains(setup.d).move_to_element(el).perform()
+                time.sleep(1)
+                logger.info("Hover Action Performed")
+                tempHandlers = self.util.utility.getHandle(setup,screenName,parent)
+                #time.sleep(1) # only to show in demo
+
+                compareHandlers = self.util.utility.getHandle(setup,screenName,compare_parent)
+                #time.sleep(1) # only to show in demo
+
+                headerhandles = self.util.utility.getHandle(setup,screenName,parent_tooltip)
+                #time.sleep(1) # only to show in demo
+
+                key=parse(str(tempHandlers[parent][child_tooltip][0].text).split("-")[0].strip()).strftime("%s")
+                tooltipText[key] = str(headerhandles[parent_tooltip][child_tooltip][0].text)
+                compareTooltipText[key] = str(compareHandlers[compare_parent][child_tooltip][active_compare_chart].text)
+
+                list=self.getLegends_tm(self.util.utility.getHandle(setup,screenName,parent_legend))
+                temp={}
+                for legend in list:
+                    temp[str(legend['value']).split('\n')[0].strip()]=str(legend['value']).split('\n')[1].strip()
+                legendDict[key]=temp
+
+            logger.debug("Got tooltip data from main Chart =  %s and from compare chart = %s",str(tooltipText),str(compareTooltipText))
+            return tooltipText,compareTooltipText,legendDict
+        except Exception as e:
+            logger.error("Got Exception while performing hover actions = %s",str(e))
+            return {},{},{}
+
+
     def hoverOverTicksGetMainBarChartText_DCT(self, setup, h1, screenName, parent="trend-main", child="trendchart",parent_tooltip="trend-header", child_tooltip="qttooltip"):
         try:
             totalbar, barHandle = self.getAllBarForHover_DCT(h1, parent=parent, child=child)
@@ -239,7 +304,7 @@ class QuickTrendsComponentClass(BaseComponentClass):
             return e
 
 
-    def getTooltipTextAfterHover(self,setup,screenName,tooltipParent,child="dim_name"):
+    def  getTooltipTextAfterHover(self,setup,screenName,tooltipParent,child="dim_name"):
         flag=False
         toolTipText={}
         tooltipHandle=self.util.utility.getHandle(setup,screenName,tooltipParent)
@@ -361,6 +426,26 @@ class QuickTrendsComponentClass(BaseComponentClass):
         return paths
 
 
+    def getPaths_MRX(self,h,parent="trend-main", child="trendchart",indexOfComp=0):
+        paths = []
+        try:
+            for el in h[parent][child][indexOfComp].find_elements_by_css_selector("g.chart-line-element-group path"):
+                paths.append(self.rgb_to_hex(el.get_attribute("stroke")))
+        except Exception as e:
+            logger.error("Exception Found :: Not able to gets path from chart")
+            return e
+        return paths
+
+    def getBaseLinePath_MRX(self,h,parent="trend-main", child="trendchart",indexOfComp=0):
+        paths = []
+        try:
+            for el in h[parent][child][indexOfComp].find_elements_by_css_selector("g path"):
+                if 'baseline' in str(el.get_attribute('class')).lower() and str(el.get_attribute('d'))!='None':
+                    paths.append(self.rgb_to_hex(el.value_of_css_property("stroke")))
+        except Exception as e:
+            logger.error("Exception Found :: Not able to gets path from chart")
+            return e
+        return paths
 
     def checkColorFromAllBar(self,h,parent="trend-main", child="trendchart",indexOfComp=0):
         totalbar,handle= self.getAllBar(h,parent=parent,child=child,indexOfComp=indexOfComp)
@@ -467,18 +552,28 @@ class QuickTrendsComponentClass(BaseComponentClass):
         return False
 
 
+    def getSelectedCompareChartIndex_MRX(self, h, parent="trend-compare", child="trendchart",selectedColor="#ffffff"):
+        childs = h[parent][child]
+        for index in range(len(childs)):
+            color = self.rgb_to_hex(childs[index].find_elements_by_xpath("../../../div[1]")[0].value_of_css_property("background-color"))
+            if color == selectedColor:
+                return index
+        return False
 
 
     def clickOnExpandButton(self,h,parent="trend-slider",child='expand-btn',setup=""):
-        if len(h[parent][child]) > 0:
-            setup.d.execute_script("return arguments[0].scrollIntoView();", h[parent][child][0])
-            h[parent][child][0].click()
-            try:
+        try:
+            if len(h[parent][child]) > 0:
+                setup.d.execute_script("return arguments[0].scrollIntoView();",h[parent][child][0])
+                ActionChains(setup.d).move_to_element(h[parent][child][0]).perform()
+                time.sleep(2)
                 h[parent][child][0].click()
-            except:
-                pass
+                return True
+        except Exception as e:
+            logger.info("Got Exception while clicking on expand/cross button")
+            return e
 
-
+        return False
 
 
 

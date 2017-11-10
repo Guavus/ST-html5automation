@@ -5,6 +5,7 @@ class MRXConstants(Constants):
 
     TIMEZONEOFFSET = 0
     TIMEPATTERN = '%d %b %Y %H:%M'
+    UMTIMEPATTERN='%d-%m-%Y %H:%M'
 
     NumberOfSelectionOnAtAnyLevel = 2
     NumberOfElementToBeExpandOnAtAnyLevel = 3
@@ -15,9 +16,11 @@ class MRXConstants(Constants):
     SEGMENTFILTERSCREEN="filter_Screen"
     UDSCREEN= "ud_Screen"
     COMPARATIVESCREEN="comparative_Screen"
+    WFSTARTSCREEN = "workflowstart_Screen"
     UDPPOPUP= "udp_popup"
     DEPOPUP="de_popup"
     POPUPSCREEN="popUp_Screen"
+    TMSCREEN="tm_Screen"
     EDITHEADERINEDITPOPUP = 'Edit Segment'
     CREATESEGMENT='Create Segment'
     IMPORTSEGMENT= 'Import Segment'
@@ -26,6 +29,7 @@ class MRXConstants(Constants):
     Apply_Filter='Apply Filters'
     Clear_All='Clear All'
     LFPOPUP='loadfilter_popup'
+    PIVOTPOPUP = "pivotfilter_popup"
     SNFPOPUP='saveNewfilter_popup'
     ExploreScreen="explore_Screen"
     AvailableFilterList='availableFilterList'
@@ -44,7 +48,9 @@ class MRXConstants(Constants):
     NUMBEROFFILTERSCENARIO = 3
     NUMBEROFFILTERSCENARIOFORDE=2
     NUMBEROFFILTERSCENARIOFORCB=2
+    NUMBEROFFILTERSCENARIOFORTM = 2
     SleepForComparativeScreen=20
+    SleepForTNMScreen = 20
     ChangePassword ='Change Password'
     UMHeader="User Management"
 
@@ -90,3 +96,21 @@ class MRXConstants(Constants):
     Passoword_Not_Matched='Passwords do not match.'
     Invalid_Current_Password='Invalid credentials, please enter correct current password.'
     Accese_Denied_Msg="Access denied, please contact administrator."
+    BarChartIndex = 0
+    LineChartIndex = 1
+    TableViewIndex = 2
+
+    # dimensionListForHover=['Radio Access Type', 'Roaming', 'Tier 1', 'Tier 2','Level 1', 'Level 2', 'Level 3','Category', 'Name', 'Web Domain', 'Global Data Service']
+    # measureListForHover=['Volume (Upload)', 'Volume (Download)', 'Volume', '# Network Session', '# Web Domain Session', '# IAB Session', '# Contextual Session', '# User']
+    # quickLinkListForHover=['Last 6 Months', 'Last Month', 'Last 7 days', 'Yesterday', 'Today','CustomClick_0']
+
+    dimensionListForHover = ['Radio Access Type']
+    measureListForHover = ['Volume']
+    quickLinkListForHover = ['Last 7 days','CustomClick_0']
+
+    ExpectedDefaultValueOnTM=[[0],'Last 7 days','Volume',1]
+    ExpectedDrillDownOptionOnTM=['Create Segment','Apply as filter and pivot','Export Data']
+    AvailableOptionOnPivotPopup=['Workflow / Comparative Breakdown','Workflow / User Distribution']
+    BaselinePath=['#000000']
+    PivotPopupHeader="Apply as Filter and Pivot"
+    TrendsScreen="Behavior Trending"

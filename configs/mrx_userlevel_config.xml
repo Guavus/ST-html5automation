@@ -1102,7 +1102,47 @@
 
     </cbScreenFilters>
 
+    <tmScreenFilters>
 
+        <!--<segment id ="testCalender" filters = ' '/>-->
+        <!--<device id = "testCalender" filters = ' :: :: :: '/>-->
+        <!--<network id = "testCalender" filters = ' :: ::No_Selection_On_Tree:: :: :: '/>-->
+        <!--<content id = "testCalender" filters = 'No_Selection_On_Tree::No_Selection_On_Tree:: :: ::No_Input' inputvalue="guavus.com,facebook.com"/>-->
+        <!--<usage id ="testCalender" filters = ' '/>-->
+        <!--<quicklink id="testCalender" locatorText="CustomClick" startTime="2017 March 12 12 00" endTime="2017 March 12 03 00"/>-->
+        <!--<measure id="testCalender" locatorText="Volume"/>-->
+        <!--<breakDown id="testCalender" locatorText="Name"/>-->
+        <!--<testcase id="testCalender" value=""/>-->
+
+        <segment id ="0" filters = 'E,1,2,3'/>
+        <device id = "0" filters = ' :: :: :: '/>
+        <network id = "0" filters = ' :: ::No_Selection_On_Tree:: :: :: '/>
+        <content id = "0" filters = 'No_Selection_On_Tree::No_Selection_On_Tree:: :: ::No_Input' inputvalue="guavus.com,facebook.com"/>
+        <usage id ="0" filters = ' '/>
+        <testcase id="0" value=""/>
+
+        <segment id ="1" filters = ' '/>
+        <device id = "1" filters = 'E,2:: :: :: '/>
+        <network id = "1" filters = ' :: ::No_Selection_On_Tree:: :: :: '/>
+        <content id = "1" filters = 'No_Selection_On_Tree::No_Selection_On_Tree:: :: ::No_Input' inputvalue="guavus.com,facebook.com"/>
+        <usage id ="1" filters = ' '/>
+        <testcase id="1" value=""/>
+
+        <segment id ="2" filters = ' '/>
+        <device id = "2" filters = 'E,2:: :: :: '/>
+        <network id = "2" filters = ' :: ::No_Selection_On_Tree:: :: :: '/>
+        <content id = "2" filters = 'No_Selection_On_Tree::No_Selection_On_Tree:: :: ::No_Input' inputvalue="guavus.com,facebook.com"/>
+        <usage id ="2" filters = ' '/>
+        <testcase id="2" value=""/>
+
+        <segment id ="3" filters = ' '/>
+        <device id = "3" filters = 'E,2:: :: :: '/>
+        <network id = "3" filters = ' :: ::No_Selection_On_Tree:: :: :: '/>
+        <content id = "3" filters = 'No_Selection_On_Tree::No_Selection_On_Tree:: :: ::No_Input' inputvalue="guavus.com,facebook.com"/>
+        <usage id ="3" filters = ' '/>
+        <testcase id="3" value=""/>
+
+    </tmScreenFilters>
 
 
     <globalScreenFilters2>
@@ -1236,10 +1276,10 @@
   <filter_Mapping>
       <filter id="Application Category" backEnd_ID="mobileappcategory"/>
       <filter id="Global Data Service" backEnd_ID="gds"/>
-      <filter id="Content Interest" backEnd_ID="spt1category,spt2category"/>
+      <filter id="Content Interest" backEnd_ID="spt1category,spt2category" tree_Dimension="content_Interest_Tree"/>
       <filter id="Serving Node" backEnd_ID="sgsn"/>
       <filter id="Device Category" backEnd_ID="devicegroup"/>
-      <filter id="Operator Data Services" backEnd_ID="ods1,ods2,ods3"/>
+      <filter id="Operator Data Services" backEnd_ID="ods1,ods2,ods3" tree_Dimension="ods_Tree"/>
       <filter id="Application" backEnd_ID="mobileapp"/>
       <filter id="Device Manufacturer" backEnd_ID="devicemanufacturer"/>
       <filter id="Packet GW" backEnd_ID="ggsn"/>
@@ -1250,7 +1290,7 @@
       <filter id="Roaming" backEnd_ID="roamingflag"/>
       <filter id="Segment" backEnd_ID="segment_name"/>
       <filter id="Radio Access Type" backEnd_ID="rat"/>
-      <filter id="Location" backEnd_ID="location_layer1,location_layer2,location_layer3,location_layer4,location_layer5 "/>
+      <filter id="Location" backEnd_ID="location_layer1,location_layer2,location_layer3,location_layer4,location_layer5" tree_Dimension="location_Tree"/>
   </filter_Mapping>
 
   <measure_Mapping>
@@ -1264,6 +1304,20 @@
       <measure id = "# Contextual Session" backEnd_ID="sessioncount4" />
       <measure id = "# User" backEnd_ID="subscriberid" />
   </measure_Mapping>
+
+  <brokendown_Dimension_Mapping>
+      <dimension id = "Radio Access Type" backEnd_ID="rat" /> 
+      <dimension id = "Roaming" backEnd_ID="roamingflag" /> 
+      <dimension id = "Tier 1" backEnd_ID="spt1category" />  
+      <dimension id = "Tier 2" backEnd_ID="spt2category" />  
+      <dimension id = "Level 1" backEnd_ID="location_layer1" />
+      <dimension id = "Level 2" backEnd_ID="location_layer2" />
+      <dimension id = "Level 3" backEnd_ID="location_layer3" />
+      <dimension id = "Category" backEnd_ID="mobileappcategory" />
+      <dimension id = "Name" backEnd_ID="mobileapp" />
+      <dimension id = "Web Domain" backEnd_ID="serviceprovider" />
+      <dimension id = "Global Data Service" backEnd_ID="gds" />
+  </brokendown_Dimension_Mapping>
 
   <segment_Table_Mapping>
       <dimension id = "Segment Name" backEnd_ID="campaign_name" /> 
@@ -1290,5 +1344,30 @@
       <method id="Global Data Service" backEnd_ID="globalDataService"/>
   </DE_Table_Pgsql_Mapping>
 
+
+  <compare_mes_testCaseMapping>
+      <measure id = "Volume (Download)" testcase="MKR-3789" /> 
+      <measure id = "Volume (Upload)" testcase="MKR-3790" /> 
+      <measure id = "Volume" testcase="MKR-3788" />  
+      <measure id = "# Network Session" testcase="MKR-3792" />
+      <measure id = "# Web Domain Session" testcase="MKR-3793" />
+      <measure id = "# IAB Session" testcase="MKR-3794" />
+      <measure id = "# Contextual Session" testcase="MKR-3795" />
+      <measure id = "# User" testcase="MKR-3791" />
+  </compare_mes_testCaseMapping>
+
+  <brokendown_dim_testCaseMapping>
+        <dimension id = "Radio Access Type"  testcase="MKR-3796"/>
+        <dimension id = "Roaming" testcase="MKR-3797" />
+        <dimension id = "Tier 1" testcase="MKR-3798" />
+        <dimension id = "Tier 2" testcase="MKR-3798" />
+        <dimension id = "Level 1" testcase="MKR-3799" />
+        <dimension id = "Level 2" testcase="MKR-3799" />
+        <dimension id = "Level 3" testcase="MKR-3799" />
+        <dimension id = "Category" testcase="MKR-3800" />
+        <dimension id = "Name" testcase="MKR-3801" />
+        <dimension id = "Web Domain" testcase="MKR-3802" />
+        <dimension id = "Global Data Service" testcase="MKR-3803" />
+  </brokendown_dim_testCaseMapping>
 
 </data>

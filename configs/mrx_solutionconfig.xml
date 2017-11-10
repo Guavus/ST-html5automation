@@ -1,5 +1,14 @@
 <?xml version="1.0"?>
 <data>
+    <wizardquicklinks1>
+        <!--<wizardquicklink id = "today" locatorText="Today" table="hourly_points"/>-->
+        <wizardquicklink id = "yesterday" locatorText="Yesterday" table="hourly_points"/>
+        <wizardquicklink id = "last7days" locatorText="Last 7 days" table="daily_points"/>
+        <!--<wizardquicklink id = "lastmonth" locatorText="Last Month" table="monthly_points"/>-->
+        <!--<wizardquicklink id = "last6months" locatorText="Last 6 Months" table="monthly_points"/>-->
+        <customquicklink id="customclick_0" startTime="2017 October 13 09 00" endTime="2017 October 13 10 00" table="hourly_points"/>
+    </wizardquicklinks1>
+
     <segmentsorttablecolumn>
         <column id="segmentname" locatorText="Segment Name"/>
         <column id="user" locatorText="User Count"/>
@@ -213,6 +222,13 @@
             <component id = 'alertMsg' selector="css selector" locator="div.filterPopup" parent="True"/>
         </screenConfig>
 
+         <screenConfig id="pivotfilter_popup">
+            <component id = "icons" selector="css selector" locator="div.filter-popup" parent="True"/>
+            <component id = "allbuttons" selector="class name" locator="footer-div" parent="True" />
+            <component id = "allspans" selector="css selector" locator="div.filter-popup" parent="True" />
+            <component id = "radios" selector="css selector" locator="div.filter-popup" parent="True"/>
+        </screenConfig>
+
 
         <screenConfig id ='error_popup'>
             <component id = "errorbody" selector="class name" locator="errorBody" parent="True"/>
@@ -368,6 +384,7 @@
             <!--<component id = 'globalfiltertooltip' selector="xpath" locator='//kiwik-filter-layout//*[contains(@class, "tooltipBox")]' parent="True"/>-->
             <component id =  "breadcrumb" selector="css selector" locator="nav.BreadcrumbsArea" parent="True"/>
 
+            <component id="tm_no_data_msg" selector="css selector" locator="div.trend-main-container" parent="True"/>
             <component id="editFilters" selector="tag name" locator="kiwik-edit-parameter-dropdown" parent="True"/>
             <component id="time_measure" selector="css selector" locator="div.timeRangeValue" parent="True"/>
         </screenConfig>
@@ -540,6 +557,10 @@
             <component id="msgOnLegend" selector="css selector" locator="label[class*=cb][class*=legend][class*=state][class*=label]"/>
         </componentConfig>
 
+        <componentConfig id="tm_no_data_msg">
+            <component id="msgOnChart" selector="css selector" locator="label[class*=trend][class*=chart][class*=state][class*=label]"/>
+        </componentConfig>
+
 
         <componentConfig id="cb_chart_header">
             <component id="text" selector="css selector" locator="label[class*=cb][class*=chart][class*=header]"/>
@@ -551,7 +572,8 @@
 
         <componentConfig id ="breadcrumb">
             <component id = "workflow" selector="xpath" locator="./div[1]"/>
-            <!--<component id = "bar" selector="xpath" locator="//kiwik-breadcrumb-bar/div"/>-->
+            <!--<component id = "bar" selector="css selector" locator="div.breadcrumbs"/>-->
+            <component id = "selected_bar" selector="class name" locator="gvs-selected"/>
         </componentConfig>
 
         <componentConfig id="expand_more">
