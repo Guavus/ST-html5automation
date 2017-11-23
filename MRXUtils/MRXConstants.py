@@ -82,7 +82,7 @@ class MRXConstants(Constants):
     ColumnHeadeForRole_UM="Application Role"
     ExpectedUser_MRX=['Admin,AppUser,SegmentManager']
     MONTHLIST=['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
-    MSGFORSAMESEGMENT='Segment name already exists,please give different name.'
+    MSGFORSAMESEGMENT='Segment with same name already exists.'
     DE_TABLE_HEADER=['Method','Description','Last Extraction Date']
     Button_On_DEPOPUP=['Extract Data Set','Cancel']
     MaximumValueForTopRowInput=1000
@@ -95,7 +95,8 @@ class MRXConstants(Constants):
     #Disabled_User_Login_Msg="Invalid credentials, please enter correct username and password."
     Passoword_Not_Matched='Passwords do not match.'
     Invalid_Current_Password='Invalid credentials, please enter correct current password.'
-    Accese_Denied_Msg="Access denied, please contact administrator."
+    #Accese_Denied_Msg="Access denied, please contact administrator."
+    Accese_Denied_Msg="Invalid credentials, please enter correct username and password."
     BarChartIndex = 0
     LineChartIndex = 1
     TableViewIndex = 2
@@ -109,7 +110,7 @@ class MRXConstants(Constants):
     quickLinkListForHover = ['Last 7 days','CustomClick_0']
 
     ExpectedDefaultValueOnTM=[[0],'Last 7 days','Volume',1]
-    ExpectedDrillDownOptionOnTM=['Create Segment','Apply as filter and pivot','Export Data']
+    ExpectedDrillDownOptionOnTM=['Create Segment','Apply as filter and pivot','Export data']
     AvailableOptionOnPivotPopup=['Workflow / Comparative Breakdown','Workflow / User Distribution']
     BaselinePath=['#000000']
     PivotPopupHeader="Apply as Filter and Pivot"
