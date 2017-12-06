@@ -1310,9 +1310,9 @@
       <dimension id = "Roaming" backEnd_ID="roamingflag" /> 
       <dimension id = "Tier 1" backEnd_ID="spt1category" />  
       <dimension id = "Tier 2" backEnd_ID="spt2category" />  
-      <dimension id = "Level 1" backEnd_ID="location_layer1" />
-      <dimension id = "Level 2" backEnd_ID="location_layer2" />
-      <dimension id = "Level 3" backEnd_ID="location_layer3" />
+      <dimension id = "Level 1" backEnd_ID="ods1" />
+      <dimension id = "Level 2" backEnd_ID="ods2" />
+      <dimension id = "Level 3" backEnd_ID="ods3" />
       <dimension id = "Category" backEnd_ID="mobileappcategory" />
       <dimension id = "Name" backEnd_ID="mobileapp" />
       <dimension id = "Web Domain" backEnd_ID="serviceprovider" />
