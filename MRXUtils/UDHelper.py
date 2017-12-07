@@ -402,7 +402,9 @@ def getToolTipData(setup,h,parent="filterArea",tooltip_parent = "globalfiltertoo
             logger.info("Got Selected Filters as %s", str(filters))
         else:
             logger.info("Performing Hover action on UDP Filter text Area")
-            ActionChains(setup.d).move_to_element(h[parent][child][0]).perform()
+            javaScript_str = "var evObj = document.createEvent('MouseEvents');" + "evObj.initMouseEvent(\"mouseover\",true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);" + "arguments[0].dispatchEvent(evObj);"
+            setup.d.execute_script(javaScript_str, h[parent][child][0])
+            #ActionChains(setup.d).move_to_element(h[parent][child][0]).perform()
             tooltipHandle = getHandle(setup,screenName,tooltip_parent)
             filters = getAllSelectedFilters(tooltipHandle,tooltip_parent,child,flag=flag)
             logger.info("Got Tooltip data = %s",str(filters))
