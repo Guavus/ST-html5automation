@@ -20,6 +20,9 @@ def appendTestCase(module):
 
 def dump_to_html(testsuite):
     with open(result_chart_file_path,"a") as f:
+        style= '''<head><style>table {font-family: arial, sans-serif;border-collapse: collapse;    width: 100%;} td, th {border: 1px solid #dddddd;text-align: left;padding: 8px;} tr:nth-child(even) {background-color: #dddddd;}</style></head>'''
+        f.write(style)
+
 
         pass_count = 0
         fail_count = 0
@@ -33,20 +36,20 @@ def dump_to_html(testsuite):
         f.write("<br>Total testcases failed: "+str(fail_count) + "<br><br>")
 
         f.write("<table>")
-        f.write("<tr>")
-        f.write("<td>"+str("Testcase")+"</td>")
-        f.write("<td>"+str("Status")+"</td>")
-        f.write("<td>"+str("Expected Result")+"</td>")
-        f.write("<td>"+str("Actual Result")+"</td>")
-        f.write("</tr>")
+        # f.write("<tr>")
+        # f.write("<td>"+str("Testcase")+"</td>")
+        # f.write("<td>"+str("Status")+"</td>")
+        # f.write("<td>"+str("Expected Result")+"</td>")
+        # f.write("<td>"+str("Actual Result")+"</td>")
+        # f.write("</tr>")
         for suite,testcases in testsuite.iteritems():
             f.write(str(suite))
             f.write("<table>")
             f.write("<tr>")
-            f.write("<td>"+str("Testcase")+"</td>")
-            f.write("<td>"+str("Status")+"</td>")
-            f.write("<td>"+str("Expected Result")+"</td>")
-            f.write("<td>"+str("Actual Result")+"</td>")
+            f.write("<th>"+str("Testcase")+"</th>")
+            f.write("<th>"+str("Status")+"</th>")
+            f.write("<th>"+str("Expected Result")+"</th>")
+            f.write("<th>"+str("Actual Result")+"</th>")
             f.write("</tr>")
             for i in range(len(testcases)-2):
                 if testcases[i]['status'] == "FAIL":
