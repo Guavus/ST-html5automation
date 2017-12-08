@@ -95,8 +95,8 @@ try:
             checkEqualAssert(str(dimensionfrommain), str(dimensionfromcompare), str(selectedQuicklink), "", "Verify dimension on Main and Compare Chart")
 
         measureFromCompare = TMScreenInstance.dropdown.doSelectionOnVisibleDropDownByIndex(getHandle(setup, MRXConstants.TMSCREEN,"trend-compare"), random.randint(0, len(mes) - 1), index=i,parent="trend-compare")
-        measurefrommain = TMScreenInstance.dropdown.getSelectionOnVisibleDropDown(getHandle(setup, MRXConstants.TMSCREEN, "trend-header"), index=0, parent="trend-header")
-        checkEqualAssert(measurefromcompare,measurefrommain,selectedQuicklink,message="Verfiy measure on main chart after change from compare chart")
+        measureFrommain = TMScreenInstance.dropdown.getSelectionOnVisibleDropDown(getHandle(setup, MRXConstants.TMSCREEN, "trend-header"), index=0, parent="trend-header")
+        checkEqualAssert(measureFromCompare,measureFrommain,selectedQuicklink,message="Verfiy measure on main chart after change from compare chart")
 
         TMScreenInstance.switcher.measureChangeSwitcher(MRXConstants.TableViewIndex, getHandle(setup, MRXConstants.TMSCREEN, "trend-main"),parent="trend-main")
 

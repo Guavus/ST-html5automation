@@ -162,7 +162,7 @@ def setQuickLink_Measure_BreakDown(setup,tmScreenInstance,quicklink,measure,brok
     qs1 = ConfigManager().getNodeElements("wizardquicklinks1", "customquicklink")
     qs=merge_dictionaries(qs0,qs1)
 
-    if 'custom' in quicklink:
+    if 'custom' in str(quicklink).lower():
         calHandler = getHandle(setup, MRXConstants.TMSCREEN, "ktrs")
         logger.info("Launching Calendar from UDP Popup")
         calHandler['ktrs']['datepicker'][0].click()

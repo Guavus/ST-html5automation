@@ -134,10 +134,10 @@ def checkEqualAssert(expected, actual, time="", measure="", message="",testcase_
 
 
 def get_num(x):
-    return float(''.join(ele for ele in x if ele.isdigit() or ele == '.'))
+    return float(''.join(ele for ele in str(x) if ele.isdigit() or ele == '.'))
 
 def get_str(x):
-    return str(''.join(ele for ele in x if not (ele.isdigit() or ele == '.')))
+    return str(''.join(ele for ele in str(x) if not (ele.isdigit() or ele == '.')))
 
 def checkEqualValueAssert(expected, actual, time="", measure="", message="",testcase_id=""):
     logger.info("Method Called :checkEqualValueAssert")
@@ -1019,7 +1019,7 @@ def isDateDisabled(y,m,d,h,min,instance,setup,page="routers_popup",parent="leftc
 def setCalendar(y,m,d,h,min,intance,setup,page="routers_popup",parent="leftcalendar"):
     try:
         logger.info('Going to Select :'+str(d)+"-"+str(m)+"-"+str(y)+" "+str(h)+":"+str(min))
-        resultlogger.info('Going to Select :'+str(d)+"-"+str(m)+"-"+str(y)+" "+str(h)+":"+str(min))
+        resultlogger.info('Going to Select :<br>'+str(d)+"-"+str(m)+"-"+str(y)+" "+str(h)+":"+str(min))
         selectedYear = intance.calendar.set("year",y,getHandle(setup,page,parent),parent)
         selectedMonth = intance.calendar.set("month",m,getHandle(setup,page,parent),parent)
         selectedDay = intance.calendar.setDay("day",d,getHandle(setup,page,parent),parent)
