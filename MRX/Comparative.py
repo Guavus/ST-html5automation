@@ -18,7 +18,7 @@ try:
     UD_Flag=cbScreenInstance.wfstart.launchScreen("Comparative", getHandle(setup, MRXConstants.WFSCREEN))
     checkEqualAssert(True,UD_Flag,message="Verify that user can open the Comparative breakdown Screen from the Workflows tab",testcase_id='MKR-3534')
 
-    ####################### get all possible value for drop down from xml ##############################################
+    ####################### Get all possible value for drop down from xml ##############################################
 
     compare_dim = setup.cM.getNodeElements("compare_dim", "dimension")
     compareDimList = []
@@ -53,7 +53,12 @@ try:
 
     checkEqualAssert(MRXConstants.DefaultSelectionOnCBScreen,dafaultSelectionOnScreen,message="Verify the default values of the Comparative breakdown Screen from the Workflows tab",testcase_id="MKR-3536")
 
-    ####################################################################################################################
+    ######################################### Available Quicklinks on CB screen ###########################################################################
+
+    actualAvailableQuickLinkList = UDHelper.availableQuickLink(setup, MRXConstants.COMPARATIVESCREEN)
+    checkEqualAssert(MRXConstants.ExpectedQuickLinkList, actualAvailableQuickLinkList,message='Verify that avalivale quicklinks on CB screen are: "Last 6 Months", "Last Month", "Last 7 days", "Yesterday", "Today", "Calender"',testcase_id='')
+
+    ############################################## Avalibale Options in dropdowns on CB screen #############################################################
 
     h=getHandle(setup,MRXConstants.COMPARATIVESCREEN,'allselects')
     compare=cbScreenInstance.dropdown.availableDropDownOption(h,index=0)
@@ -68,7 +73,7 @@ try:
     workFlowOption = cbScreenInstance.cm.availableOptionOnWorkFlowDrop(getHandle(setup, MRXConstants.COMPARATIVESCREEN, "breadcrumb"))
     checkEqualAssert(MRXConstants.ExpectedOptionForWorkFlow,workFlowOption,message="Verify available option for workflows drop down menu",testcase_id="MKR-3540")
 
-    ###################################### Available filter dimension ##################################################
+    ###################################### Match Color sequence in bar and table, Table data order(Measure) should be Desc   ##################################################
 
     for cd in range(len(compareDimList)):
         selectedCompareDim = cbScreenInstance.dropdown.doSelectionOnVisibleDropDown(getHandle(setup, MRXConstants.COMPARATIVESCREEN, "allselects"), str(compareDimList[cd]), index=0, parent="allselects")
@@ -93,7 +98,23 @@ try:
                     checkEqualAssert(True,flag,message="Verify the colour sequence of the table and bar",testcase_id="MKR-3563")
                     flag=CBHelper.validateColorOnTooltipWithBar(chartData,barColorDict)
 
+                elif tableData['rows']== Constants.NODATA:
+                    msg1 = CBHelper.getNoDataMsg(setup, MRXConstants.COMPARATIVESCREEN, child='msgOnLegend')
+                    checkEqualAssert(MRXConstants.NODATAMSG, msg1,
+                                     measure='Verify that the meaningful message should be shown on the Table view when no data is on screen.',
+                                     testcase_id='')
+
+                    r = "issue_" + str(random.randint(0, 9999999)) + ".png"
+                    setup.d.save_screenshot(r)
+                    logger.debug("No Table Data for selected compare = %s, measure = %s,brokendownvalue = %s :: Screenshot with name = %s is saved"
+                                 ,selectedCompareDim,selectedCompareMes,brokendownDimList, r)
+                    resultlogger.info("No Table Data for selected compare = %s, measure = %s,brokendownvalue = %s :: Screenshot with name = %s is saved"
+                                 ,selectedCompareDim,selectedCompareMes,brokendownDimList, r)
+
+
     setup.d.close()
+    import MRX.test_Header
+    import MRX.test_Footer
 
 except Exception as e:
     isError(setup)
@@ -105,11 +126,3 @@ except Exception as e:
     setup.d.close()
 
 
-# xAxisPointList = CBHelper.getAxisPoint(getHandle(setup, MRXConstants.COMPARATIVESCREEN, 'trend-main'))
-# if chartData=={}:
-#     msg=CBHelper.getNoDataMsg(setup,MRXConstants.COMPARATIVESCREEN,child='msgOnChart')
-# if tableData['rows']==Constants.NODATA:
-#     msg1=CBHelper.getNoDataMsg(setup,MRXConstants.COMPARATIVESCREEN,child='msgOnLegend')
-
-# chartHeader=CBHelper.getHeader(setup,MRXConstants.COMPARATIVESCREEN,parent='cb_chart_header')
-# legendHeader = CBHelper.getHeader(setup, MRXConstants.COMPARATIVESCREEN, parent='cb_legend_header')

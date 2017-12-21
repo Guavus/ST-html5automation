@@ -38,8 +38,10 @@ try:
 
 
 
-    checkLoadMore=True
-    checkLoadMoreCount=0
+    checkLoadMore=True   ### To check load more functionality only for the itertaion when it is set True
+    checkLoadMoreCount=0   ### To check bar-table color sequence only for the first itertation with load  more functinality test
+    checkShowOthers =True ### To check show others functionality only for the itertaion when it is set True
+    checkShowMoreCount = 0  ### To check bar-table color sequence only for the first itertation with show others functinality test
     for cd in range(len(compareDimList)):
         selectedCompareDim = cbScreenInstance.dropdown.doSelectionOnVisibleDropDown(getHandle(setup, MRXConstants.COMPARATIVESCREEN, "allselects"), str(compareDimList[cd]), index=0, parent="allselects")
         isError(setup)
@@ -53,9 +55,9 @@ try:
                 tableData=cbScreenInstance.table.getTableData1WithColumnHavingColor(getHandle(setup, MRXConstants.COMPARATIVESCREEN,'table'))
                 chartHandle = getHandle(setup, MRXConstants.COMPARATIVESCREEN, 'trend-main')
                 chartData = cbScreenInstance.trend.hoverOverTicksGetMainHorizontalBarChartText(setup, chartHandle,MRXConstants.COMPARATIVESCREEN)
-
                 if tableData['rows']!=Constants.NODATA and chartData!={}:
-                    checkLoadMore = CBHelper.expandMoreOnCB(setup, cbScreenInstance, MRXConstants.COMPARATIVESCREEN,child="load_more", checkLoadMore=checkLoadMore)
+                    #######################  Check load more functionality  ##############################################
+                    checkLoadMore = CBHelper.expandMoreOnCB(setup, cbScreenInstance, MRXConstants.COMPARATIVESCREEN,checkLoadMore=checkLoadMore)
                     if not checkLoadMore and checkLoadMoreCount==0:
                         CBHelper.validateSortingInTable(cbScreenInstance,tableData,"",selectedCompareMes)
                         color_List=cbScreenInstance.trend.getAllColorOnHorizontalBar_DCT(setup,chartHandle)
@@ -65,6 +67,21 @@ try:
                         checkEqualAssert(True,flag,message="Verify the colour sequence of the table and bar with load more functionality",testcase_id="MKR-3563")
                         CBHelper.validateColorOnTooltipWithBar(chartData,barColorDict)
                         checkLoadMoreCount=checkLoadMoreCount+1
+
+                    #######################  Check show others functionality  ##############################################
+                    checkShowOthers = CBHelper.expandMoreOnCBTable(setup, cbScreenInstance, MRXConstants.COMPARATIVESCREEN,checkShowOther=checkShowOthers)
+                    if not checkShowOthers and checkShowMoreCount == 0:
+                        CBHelper.validateSortingInTable(cbScreenInstance, tableData, "", selectedCompareMes)
+                        color_List = cbScreenInstance.trend.getAllColorOnHorizontalBar_DCT(setup, chartHandle)
+                        yAxisPointList = CBHelper.getAxisPoint(getHandle(setup, MRXConstants.COMPARATIVESCREEN, 'trend-main'), child='yaxis')
+                        barColorDict = CBHelper.map_YAxisWithColorList(yAxisPointList, color_List)
+                        flag = CBHelper.validateColorSequence(barColorDict, tableData)
+                        checkEqualAssert(True, flag,message="Verify the colour sequence of the table and bar with Show others functionality",testcase_id="MKR-3563")
+                        CBHelper.validateColorOnTooltipWithBar(chartData, barColorDict)
+                        checkShowMoreCount = checkShowMoreCount + 1
+
+                else:
+                    logger.info("Table and/or Chart has no data ")
 
     setup.d.close()
 
@@ -78,11 +95,4 @@ except Exception as e:
     setup.d.close()
 
 
-# xAxisPointList = CBHelper.getAxisPoint(getHandle(setup, MRXConstants.COMPARATIVESCREEN, 'trend-main'))
-# if chartData=={}:
-#     msg=CBHelper.getNoDataMsg(setup,MRXConstants.COMPARATIVESCREEN,child='msgOnChart')
-# if tableData['rows']==Constants.NODATA:
-#     msg1=CBHelper.getNoDataMsg(setup,MRXConstants.COMPARATIVESCREEN,child='msgOnLegend')
 
-# chartHeader=CBHelper.getHeader(setup,MRXConstants.COMPARATIVESCREEN,parent='cb_chart_header')
-# legendHeader = CBHelper.getHeader(setup, MRXConstants.COMPARATIVESCREEN, parent='cb_legend_header')

@@ -148,12 +148,13 @@
             <component id = "ktrs" selector="tag name" locator="kiwik-ktrs" parent="True"/>
             <component id = "allselects" selector="css selector" locator="div.ud-container" parent="True" />
             <component id ="trend-main" selector="css selector" locator="div[class*=chart][class*=section]" parent="True"/>
-            <component id = "qttooltip" selector="css selector" locator="div.divtooltipdefault" parent="True"/>
+            <component id = "qttooltip" selector="css selector" locator="div[class*=tool][class*=tip][class*=div]" parent="True"/>
             <component id="cb_no_data_msg" selector="css selector" locator="div.cb-container" parent="True"/>
             <component id="cb_chart_header" selector="css selector" locator="div[class*=chart][class*=section]" parent="Tue"/>
             <component id="cb_legend_header" selector="css selector" locator="div[class*=legend][class*=section]" parent="Tue"/>
             <component id = "breadcrumb" selector="css selector" locator="nav.BreadcrumbsArea" parent="True"/>
             <component id="expand_more" selector="css selector" locator="div.cb-container" parent="True"/>
+            <component id ='dropdown_open' selector="class name" locator="dropdown" parent="True"/>
         </screenConfig>
 
         <screenConfig id ="createsegment_popup">
@@ -389,6 +390,9 @@
             <component id="time_measure" selector="css selector" locator="div.timeRangeValue" parent="True"/>
         </screenConfig>
 
+         <screenConfig id ="exportdata_popup">
+           <component id ='alllinks' selector="css selector" locator='ul.cb-export-container' parent="True"/>
+         </screenConfig>
 
     </screenConfigs>
 
@@ -549,7 +553,7 @@
         <componentConfig id="qttooltip">
             <component id ="dim_name" selector="xpath" locator="./../div[1]" parent="True"/>
             <!--<component id ="span" selector="tag name" locator="span"/>-->
-            <component id ="color_Box" selector="css selector" locator="div[class*=ColorBox]"/>
+            <component id ="color_Box" selector="css selector" locator="div[class*=color-box]"/>
         </componentConfig>
 
         <componentConfig id="cb_no_data_msg">

@@ -30,16 +30,26 @@
                    leftLogoFlag="True"
                    screenFlag="True"
                    numberOfScreen='4'
-                   listOfScreen="SEGMENTS,WORKFLOWS,DATA EXTRACTION,REPORT"
+                   listOfScreen="WORKFLOWS,SEGMENTS,DATA EXTRACTION,REPORT"
                    projectTitleFlag="True"
                    projectTitle="Marketing Reflex"
                    userNameFlag="True"
                    profilePicFlag="True"
                    helpIconFlag="True"
                    switcherIconFlag="True"
-                   testcaseID="MKR-1646"
+                   testcaseID="MKR-1646,MKR-3537"
         />
     </headerComponent>
+
+    <footerComponent>
+        <component id="0"
+                   timezoneLabel="True"
+                   timezoneText="Timezone: GMT"
+                   orgLabel="True"
+                   orgText = "? 2017 Guavus"
+                   testcaseID="MKR-3566"
+        />
+    </footerComponent>
 
 
     <!--YYYY MONTH DD HH min  => '%d %b %Y %H:%M'-->
@@ -100,6 +110,56 @@
         <measure id = "# Contextual Session" testcase="MKR-3220" />
         <measure id = "# User" testcase="MKR-3221" />
     </testcaseMappingWithMeasure_DE>
+
+    <testcaseMappingWithCompareMethod_CB>
+        <!--TestCase Mapping for cover testcase related to method only -->
+        <method id="Device Category" testcase="MKR-3580"/>
+        <method id="Device OS" testcase="MKR-3582"/>
+        <method id="Device Manufacturer" testcase="MKR-3581"/>
+        <method id="Device Model" testcase="MKR-3583"/>
+        <method id="Serving Node" testcase="MKR-3584"/>
+        <method id="Packet GW" testcase="MKR-3585"/>
+        <method id="Level 1" testcase="MKR-3586"/>
+        <method id="Level 2" testcase="MKR-3586"/>
+        <method id="Level 3" testcase="MKR-3586"/>
+        <method id="APN" testcase="MKR-3587"/>
+    </testcaseMappingWithCompareMethod_CB>
+
+    <testcaseMappingWithBreakdownMethod_CB>
+        <method id="Radio Access Type" testcase="MKR-3596"/>
+        <method id="Roaming" testcase="MKR-3597"/>
+        <method id="Tier 1" testcase="MKR-3598"/>
+        <method id="Tier 2" testcase="MKR-3598"/>
+        <method id="Level 1" testcase="MKR-3599"/>
+        <method id="Level 2" testcase="MKR-3599"/>
+        <method id="Level 3" testcase="MKR-3599"/>
+        <method id="Category" testcase="MKR-3600"/>
+        <method id="Name" testcase="MKR-3601"/>
+        <method id="Web Domain" testcase="MKR-3602"/>
+        <method id="Global Data Service" testcase="MKR-3603"/>
+    </testcaseMappingWithBreakdownMethod_CB>
+
+    <testcaseMappingWithMeasure_CB>
+        <!--TestCase Mapping for cover testcase related to measure only -->
+        <measure id = "Volume (Download)" testcase="MKR-3589" /> 
+        <measure id = "Volume (Upload)" testcase="MKR-3590" /> 
+        <measure id = "Volume" testcase="MKR-3588" />  
+        <measure id = "# Network Session" testcase="MKR-3592" />
+        <measure id = "# Web Domain Session" testcase="MKR-3593" />
+        <measure id = "# IAB Session" testcase="MKR-3594" />
+        <measure id = "# Contextual Session" testcase="MKR-3595" />
+        <measure id = "# User" testcase="MKR-3591" />
+    </testcaseMappingWithMeasure_CB>
+
+    <quickLinkTableTestCaseMapping_CB>
+        <quicklink id="Today"  table="hourly_points_new" testcase="MKR-3556"/>
+        <quicklink id="Yesterday" table="daily_points_new1" testcase="MKR-3556"/>
+        <quicklink id="Last 7 days"  table="daily_points_new1" testcase="MKR-3556"/>
+        <quicklink id="Last Month"  table="monthly_points" testcase="MKR-3556"/>
+        <quicklink id="Last 6 Months"  table="monthly_points" testcase="MKR-3556" />
+        <quicklink id="Calendar"  table="" testcase="MKR-3560" />
+    </quickLinkTableTestCaseMapping_CB>
+
 
     <savenewfilter>
         <filter id="save_0" filtername="savenew_0" default="1" button="Save" isOverwrite="True" deleteFlag="True"/>
@@ -1100,7 +1160,118 @@
         <breakDown id="1" locatorText="Roaming"/>
         <testcase id="1" value=""/>
 
+        <segment id ="2" filters = ' '/>
+        <device id = "2" filters = ' :: :: :: '/>
+        <network id = "2" filters = '8:: ::No_Selection_On_Tree:: :: ::E,7'/>
+        <content id = "2" filters = 'No_Selection_On_Tree::No_Selection_On_Tree:: :: ::No_Input' inputvalue="guavus.com,facebook.com"/>
+        <usage id ="2" filters = ' '/>
+        <quicklink id="2" locatorText="Today" table="hourly_points"/>
+        <compareDim id="2" locatorText="Segment"/>
+        <measure id="2" locatorText="# Network Session"/>
+        <breakDown id="2" locatorText="Tier 1"/>
+        <testcase id="2" value=""/>
+
+        <segment id ="3" filters = ' '/>
+        <device id = "3" filters = ' :: :: :: '/>
+        <network id = "3" filters = ' :: ::No_Selection_On_Tree:: :: :: '/>
+        <content id = "3" filters = 'Do_Selection_On_Tree::No_Selection_On_Tree::E,2,4::E,3::Input' inputvalue="guavus.com,facebook.com"/>
+        <usage id ="3" filters = ' '/>
+        <quicklink id="3" locatorText="Last Month" table="monthly_points"/>
+        <compareDim id="3" locatorText="OS"/>
+        <measure id="3" locatorText="Volume"/>
+        <breakDown id="3" locatorText="Tier 2"/>
+        <testcase id="3" value=""/>
+
+        <segment id ="4" filters = ' '/>
+        <device id = "4" filters = ' :: :: :: '/>
+        <network id = "4" filters = ' :: ::No_Selection_On_Tree:: :: :: '/>
+        <content id = "4" filters = 'No_Selection_On_Tree::No_Selection_On_Tree:: :: ::No_Input' inputvalue="guavus.com,facebook.com"/>
+        <usage id ="4" filters = 'E,2,3,4'/>
+        <quicklink id="4" locatorText="Last 6 Months" table="monthly_points"/>
+        <compareDim id="4" locatorText="Serving Node"/>
+        <measure id="4" locatorText="Volume"/>
+        <breakDown id="4" locatorText="Category"/>
+        <testcase id="4" value=""/>
+
+        <segment id ="multiFilters" filters = 'E,5,6'/>
+        <device id = "multiFilters" filters = 'E,2::E,5,3::E,7:: '/>
+        <network id = "multiFilters" filters = '1:: ::No_Selection_On_Tree:: :: ::E,5'/>
+        <content id = "multiFilters" filters = 'Do_Selection_On_Tree::No_Selection_On_Tree::E,1:: ::Input' inputvalue="guavus.com,facebook.com"/>
+        <usage id ="multiFilters" filters = 'E,2'/>
+        <quicklink id="multiFilters" locatorText="Today" table="hourly_points"/>
+        <compareDim id="multiFilters" locatorText="Model"/>
+        <measure id="multiFilters" locatorText="# IAB Session"/>
+        <breakDown id="multiFilters" locatorText="Name"/>
+        <testcase id="multiFilters" value=""/>
+
+        <segment id ="performanceScenario" filters = 'E,0,1'/>
+        <device id = "performanceScenario" filters = 'E,0,1::E,0,1::E,0,1::E,0,1'/>
+        <network id = "performanceScenario" filters = '0,1::0,1::No_Selection_On_Tree::E,0,1::E,0,1::E,0,1'/>
+        <content id = "performanceScenario" filters = 'No_Selection_On_Tree::No_Selection_On_Tree::E,0,1::E,0,1::Input' inputvalue="guavus.com,facebook.com"/>
+        <usage id ="performanceScenario" filters = 'E,0,1'/>
+        <quicklink id="performanceScenario" locatorText="Today" table="hourly_points"/>
+        <compareDim id="performanceScenario" locatorText="Serving Node"/>
+        <measure id="performanceScenario" locatorText="Volume"/>
+        <breakDown id="performanceScenario" locatorText="Roaming"/>
+        <testcase id="performanceScenario" value=""/>
+
+        <segment id ="testCalender" filters = ' '/>
+        <device id = "testCalender" filters = 'E,2:: :: :: '/>
+        <network id = "testCalender" filters = ' :: ::No_Selection_On_Tree:: :: :: '/>
+        <content id = "testCalender" filters = 'No_Selection_On_Tree::No_Selection_On_Tree:: :: ::No_Input' inputvalue="guavus.com,facebook.com"/>
+        <usage id ="testCalender" filters = ' '/>
+        <quicklink id="testCalender" locatorText="CustomClick" startTime="2017 March 08 12 00" endTime="2017 March 08 04 00"/>
+        <compareDim id="testCalender" locatorText="Serving Node"/>
+        <measure id="testCalender" locatorText="Volume"/>
+        <breakDown id="testCalender" locatorText="Level 1"/>
+        <testcase id="testCalender" value=""/>
+
+        <segment id ="dataValidation_0" filters = ' '/>
+        <device id = "dataValidation_0" filters = ' ::E,2:: ::'/>
+        <network id = "dataValidation_0" filters = ' :: ::No_Selection_On_Tree:: :: :: '/>
+        <content id = "dataValidation_0" filters = 'No_Selection_On_Tree::No_Selection_On_Tree:: :: ::No_Input' inputvalue="guavus.com,facebook.com"/>
+        <usage id ="dataValidation_0" filters = ' '/>
+        <testcase id="dataValidation_0" value=""/>
+
+        <segment id ="dataValidation_1" filters = ' '/>
+        <device id = "dataValidation_1" filters = ' :: :: :: '/>
+        <network id = "dataValidation_1" filters = ' :: ::No_Selection_On_Tree:: ::E,1,2:: '/>
+        <content id = "dataValidation_1" filters = 'No_Selection_On_Tree::No_Selection_On_Tree:: :: ::No_Input' inputvalue="guavus.com,facebook.com"/>
+        <usage id ="dataValidation_1" filters = ' '/>
+        <testcase id="dataValidation_1" value=""/>
+
+        <segment id ="dataValidation_2" filters = ' '/>
+        <device id = "dataValidation_2" filters = 'E,1::E,3:: :: '/>
+        <network id = "dataValidation_2" filters = ' :: ::No_Selection_On_Tree:: ::E,1:: '/>
+        <content id = "dataValidation_2" filters = 'No_Selection_On_Tree::No_Selection_On_Tree:: :: ::No_Input' inputvalue="guavus.com,facebook.com"/>
+        <usage id ="dataValidation_2" filters = ' '/>
+        <testcase id="dataValidation_2" value=""/>
+
+
+        <segment id ="dataValidation_3" filters = ' '/>
+        <device id = "dataValidation_3" filters = ' :: :: :: '/>
+        <network id = "dataValidation_3" filters = ' :: ::No_Selection_On_Tree:: ::E,1:: '/>
+        <content id = "dataValidation_3" filters = 'No_Selection_On_Tree::No_Selection_On_Tree:: :: ::No_Input' inputvalue="guavus.com,facebook.com"/>
+        <usage id ="dataValidation_3" filters = ' '/>
+        <testcase id="dataValidation_3" value=""/>
+
+
+        <segment id ="dataValidation_4" filters = ' '/>
+        <device id = "dataValidation_4" filters = ' :: :: :: '/>
+        <network id = "dataValidation_4" filters = ' :: ::No_Selection_On_Tree:: ::E,1:: '/>
+        <content id = "dataValidation_4" filters = 'Do_Selection_On_Tree::No_Selection_On_Tree:: :: ::No_Input' inputvalue="guavus.com,facebook.com"/>
+        <usage id ="dataValidation_4" filters = ' '/>
+        <testcase id="dataValidation_4" value=""/>
+
+
+        <segment id ="dataValidation_5" filters = ' '/>
+        <device id = "dataValidation_5" filters = ' :: :: :: '/>
+        <network id = "dataValidation_5" filters = ' :: ::Do_Selection_On_Tree:: ::E,1:: '/>
+        <content id = "dataValidation_5" filters = 'No_Selection_On_Tree::No_Selection_On_Tree:: :: ::Input' inputvalue="guavus.com,facebook.com"/>
+        <usage id ="dataValidation_5" filters = ' '/>
+        <testcase id="dataValidation_5" value=""/>
     </cbScreenFilters>
+
 
     <tmScreenFilters>
 
@@ -1293,6 +1464,20 @@
       <filter id="Location" backEnd_ID="location_layer1,location_layer2,location_layer3,location_layer4,location_layer5" tree_Dimension="location_Tree"/>
   </filter_Mapping>
 
+     <compareDim_Mapping> 
+        <dimension id = "Segment" backEnd_ID="" /> 
+        <dimension id = "Category" backEnd_ID="devicegroup" />  
+        <dimension id ="Manufacturer" backEnd_ID="devicemanufacturer" />
+        <dimension id ="OS" backEnd_ID="deviceos" />
+        <dimension id ="Model" backEnd_ID="devicename" />
+        <dimension id ="Serving Node" backEnd_ID="sgsn" />
+        <dimension id ="Packet GW" backEnd_ID="ggsn" />
+        <dimension id ="Level 1" backEnd_ID="location_layer1" />
+        <dimension id ="Level 2" backEnd_ID="location_layer2" />
+        <dimension id ="Level 3" backEnd_ID="location_layer3" />
+        <dimension id ="APN" backEnd_ID="apn" />
+    </compareDim_Mapping>    
+
   <measure_Mapping>
       <measure id = "Volume (Download)" backEnd_ID="downbytes" /> 
       <measure id = "Volume (Upload)" backEnd_ID="upbytes" /> 
@@ -1318,6 +1503,21 @@
       <dimension id = "Web Domain" backEnd_ID="serviceprovider" />
       <dimension id = "Global Data Service" backEnd_ID="gds" />
   </brokendown_Dimension_Mapping>
+
+  <brokendownDim_Mapping>
+        <dimension id = "Radio Access Type" backEnd_ID="rat" />
+        <dimension id = "Roaming" backEnd_ID="roamingflag" />
+        <dimension id = "Tier 1" backEnd_ID="spt1category" />
+        <dimension id = "Tier 2" backEnd_ID="spt2category" />
+        <dimension id ="Level 1" backEnd_ID="ods1" />
+        <dimension id ="Level 2" backEnd_ID="ods2" />
+        <dimension id ="Level 3" backEnd_ID="ods3" />
+        <dimension id = "Category" backEnd_ID="mobileappcategory" />
+        <dimension id = "Name" backEnd_ID="mobileapp" />
+        <dimension id = "Web Domain" backEnd_ID="serviceprovider" />
+        <dimension id = "Global Data Service" backEnd_ID="gds" />
+    </brokendownDim_Mapping>
+
 
   <segment_Table_Mapping>
       <dimension id = "Segment Name" backEnd_ID="campaign_name" /> 

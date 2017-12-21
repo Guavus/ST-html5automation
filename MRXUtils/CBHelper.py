@@ -24,6 +24,7 @@ def getHeader(setup,screen,parent='cb_chart_header',child='text'):
 
 
 def getAxisPoint(h,parent='trend-main',child='xaxis'):
+    logger.info("Method Called : getAxisPoint")
     point=[]
     if len(h[parent][child])>0:
         for ele in h[parent][child][0].find_elements_by_class_name('tick'):
@@ -47,6 +48,14 @@ def map_YAxisWithColorList(yAxisPointList,color_List):
 def validateSortingInTable(cbScreenInstance,data,selectedQuicklink, selectedMeasure):
     index = cbScreenInstance.table.getIndexForValueInArray(data['header'], selectedMeasure)
     selectedMeasure_value_list = [element[index] for element in data['rows']]
+
+    unitFlagForSession = False
+    if 'Session' in selectedMeasure:
+        for i in range(len(selectedMeasure_value_list)):
+            if len(re.findall(r'[a-zA-Z]+', selectedMeasure_value_list[i])) != 0:
+                unitFlagForSession = True
+                break
+        checkEqualAssert(False, unitFlagForSession, selectedQuicklink, selectedMeasure,message='Validate that no unit is seen for the session(Table View)', testcase_id='MKR-3092')
 
     l = []
     for i in range(len(selectedMeasure_value_list)):
@@ -81,7 +90,7 @@ def validateColorSequence(barColorDict,data,coloumIndexOfColor=0):
                     colorSequenceFlag=False
                     break
     else:
-        logger.error("Table Not Found hence can't varify color sequence")
+        logger.error("Table Not Found hence can't verify color sequence")
 
     return colorSequenceFlag
 
@@ -111,20 +120,32 @@ def validateColorOnTooltipWithBar(toolTipData,barColorDict):
 
 
 def expandMoreOnCB(setup,screenInstance,screenname,parent='expand_more',child='load_more',barParent='trend-main',checkLoadMore=True):
+    ################## return False in this method ===> Pass scenarios are being hit
     if checkLoadMore:
         logger.info("Method called : expandMoreOnCB")
-        numberOfBarBeforeClick,barHandles=screenInstance.getAllBar_DCT(getHandle(setup,screenname,barParent))
+        numberOfBarBeforeClick,barHandles=screenInstance.trend.getAllBar_DCT(getHandle(setup,screenname,barParent))
         h=getHandle(setup,screenname,parent)
         if len(h[parent][child])!=0:
             try:
                 h[parent][child][0].click()
                 sleep(MRXConstants.SleepForComparativeScreen)
-                numberOfBarAfterClick, barHandles = screenInstance.getAllBar_DCT(getHandle(setup, screenname, barParent))
-                checkEqualAssert(True, numberOfBarAfterClick - numberOfBarBeforeClick <= 10,message='Verify the functionality of the load more link', testcase_id='MKR-3574')
-                if numberOfBarAfterClick-numberOfBarBeforeClick==10:
+                numberOfBarAfterClick, barHandles = screenInstance.trend.getAllBar_DCT(getHandle(setup, screenname, barParent))
+
+                if numberOfBarAfterClick-numberOfBarBeforeClick == 10:
+                    checkEqualAssert(True, numberOfBarAfterClick - numberOfBarBeforeClick == 10,message='Verify the functionality of the ' + str(child) + ' link',testcase_id='MKR-3574')
                     return False
-                elif numberOfBarAfterClick-numberOfBarBeforeClick<10:
-                    checkEqualAssert(0,len(getHandle(setup,screenname,parent)[parent][child]),message="After click on load more if loaded value less then 10, load more link must disappear")
+
+                elif numberOfBarAfterClick-numberOfBarBeforeClick < 10:
+                    h = getHandle(setup, screenname, parent)
+                    if len(h[parent][child]) != 0:
+                        checkEqualAssert(True, numberOfBarAfterClick - numberOfBarBeforeClick == 10,message='Verify the functionality of the ' + str(child) + ' link',testcase_id='MKR-3574')
+                        return True
+                    else:
+                        checkEqualAssert(True, numberOfBarAfterClick - numberOfBarBeforeClick < 10, message='Verify the functionality of the ' + str(child) + ' link',testcase_id='MKR-3574')
+                        return False
+
+                elif numberOfBarAfterClick-numberOfBarBeforeClick > 10:
+                    checkEqualAssert(True, numberOfBarAfterClick - numberOfBarBeforeClick <= 10,message='Verify the functionality of the ' + str(child) + ' link',testcase_id='MKR-3574')
                     return True
 
             except ElementNotVisibleException or ElementNotSelectableException or Exception as e:
@@ -134,17 +155,84 @@ def expandMoreOnCB(setup,screenInstance,screenname,parent='expand_more',child='l
     else:
         return False
 
-def setQuickLink_Compare_Measure_BreakDown(setup,cbScreenInstance,i='0'):
+
+
+
+def expandMoreOnCBTable(setup,screenInstance,screenname,parent='expand_more',child='show_other',tableParent='table',checkShowOther=True):
+    ################## return False in this method ===> Pass scenarios are being hit
+    if checkShowOther:
+        logger.info("Method called : expandMoreOnCBTable")
+
+        tableData_beforeClick = screenInstance.table.getTableData1WithColumnHavingColor(getHandle(setup, MRXConstants.COMPARATIVESCREEN, tableParent),length=30)
+        numberOfRows_beforeClick = len(tableData_beforeClick['rows'])
+        logger.info("No of Rows inside table before clicking Show others = " + str(numberOfRows_beforeClick))
+
+        column1_list = [row[1] for row in tableData_beforeClick['rows']]
+        if  "Others" in  column1_list:
+            logger.info("Data for Others present inside table")
+            if numberOfRows_beforeClick == 11:
+                colorForOthers = tableData_beforeClick['rows'][column1_list.index("Others")][0]
+                numberOfRowsWithOthers_beforeClick = len([row for row in tableData_beforeClick['rows'] if row[0] == colorForOthers and row[1] != "Others"])
+                h = getHandle(setup, screenname, parent)
+                if len(h[parent][child]) != 0:
+                    try:
+                        h[parent][child][0].click()
+                        sleep(MRXConstants.SleepForComparativeScreen)
+                        tableData_afterClick = screenInstance.table.getTableData1WithColumnHavingColor(getHandle(setup, MRXConstants.COMPARATIVESCREEN, tableParent),length=30)
+                        numberOfRowsWithOthers_AfterClick = len([row for row in tableData_afterClick['rows'] if row[0] == colorForOthers and row[1] != "Others"])
+
+                        if numberOfRowsWithOthers_AfterClick - numberOfRowsWithOthers_beforeClick == 10:
+                            checkEqualAssert(True,numberOfRowsWithOthers_AfterClick - numberOfRowsWithOthers_beforeClick == 10,message='Verify the functionality of the ' + str(child) + ' link',testcase_id='MKR-3577')
+                            return False
+
+                        elif numberOfRowsWithOthers_AfterClick - numberOfRowsWithOthers_beforeClick < 10:
+                            h = getHandle(setup, screenname, parent)
+                            if len(h[parent][child]) != 0:
+                                checkEqualAssert(True,numberOfRowsWithOthers_AfterClick - numberOfRowsWithOthers_beforeClick == 10,message='Verify the functionality of the ' + str(child) + ' link',testcase_id='MKR-3577')
+                                return True
+                            else:
+                                checkEqualAssert(True,numberOfRowsWithOthers_AfterClick - numberOfRowsWithOthers_beforeClick < 10,message='Verify the functionality of the ' + str(child) + ' link',testcase_id='MKR-3577')
+                                return False
+
+                        elif numberOfRowsWithOthers_AfterClick - numberOfRowsWithOthers_beforeClick > 10:
+                            checkEqualAssert(True, numberOfRowsWithOthers_AfterClick - numberOfRowsWithOthers_beforeClick <= 10,message='Verify the functionality of the ' + str(child) + ' link',testcase_id='MKR-3577')
+                            return True
+
+                    except ElementNotVisibleException or ElementNotSelectableException or Exception as e:
+                        return e
+
+            else:
+                logger.info("Table is containing data for 'Others' though the Number of Rows %s being displayed is (< or >) than top 10 rows " %str(numberOfRows_beforeClick))
+                if numberOfRows_beforeClick < 11:
+                    checkEqualAssert(False, numberOfRows_beforeClick < 11 ,message="Verify data for 'Others' group does not exist if Number of rows inside table is <10" )
+                elif numberOfRows_beforeClick > 11:
+                    checkEqualAssert(False, numberOfRows_beforeClick > 11,message="Verify that only 10 rows are displayed inside the table in addition to the row for 'Others'")
+                    return True
+
+        else:
+            h = getHandle(setup, screenname, parent)
+            checkEqualAssert(0, len(h[parent][child]) ,message="Verify that Show Others link is not visible if table does not contain data for Others")
+            return True
+    else:
+        return False
+
+
+
+def setQuickLink_Compare_Measure_BreakDown(setup,cbScreenInstance,k='0'):
 
     quicklink = setup.cM.getNodeElements("cbScreenFilters", 'quicklink')
-    CompareDim = setup.cM.getNodeElements("cbScreenFilters", 'compareDim')[str(i)]['locatorText']
-    CompareMes = setup.cM.getNodeElements("cbScreenFilters", 'measure')[str(i)]['locatorText']
-    BrokenDown = setup.cM.getNodeElements("cbScreenFilters", 'breakDown')[str(i)]['locatorText']
+    CompareDim = setup.cM.getNodeElements("cbScreenFilters", 'compareDim')[str(k)]['locatorText']
+    CompareMes = setup.cM.getNodeElements("cbScreenFilters", 'measure')[str(k)]['locatorText']
+    BrokenDown = setup.cM.getNodeElements("cbScreenFilters", 'breakDown')[str(k)]['locatorText']
+
+    selectedCompareDim = cbScreenInstance.dropdown.doSelectionOnVisibleDropDown(getHandle(setup, MRXConstants.COMPARATIVESCREEN, "allselects"), str(CompareDim), index=0, parent="allselects")
+    selectedCompareMes = cbScreenInstance.dropdown.doSelectionOnVisibleDropDown(getHandle(setup, MRXConstants.COMPARATIVESCREEN, "allselects"), str(CompareMes), index=1, parent="allselects")
+    selectedBrokenDown = cbScreenInstance.dropdown.doSelectionOnVisibleDropDown(getHandle(setup, MRXConstants.COMPARATIVESCREEN, "allselects"), str(BrokenDown), index=2, parent="allselects")
 
     logger.info("Going to Select Compare =%s, By =%s, Brokendown  =%s",str(CompareDim),str(CompareMes),str(BrokenDown))
 
-    if quicklink[str(i)]['locatorText'] == 'CustomClick':
-        selectedQuicklink=quicklink[str(i)]['locatorText']
+    if quicklink[str(k)]['locatorText'] == 'CustomClick':
+        selectedQuicklink=quicklink[str(k)]['locatorText']
         calHandler = getHandle(setup, MRXConstants.COMPARATIVESCREEN, "ktrs")
         logger.info("Launching Calendar from UDP Popup")
         calHandler['ktrs']['datepicker'][0].click()
@@ -152,40 +240,41 @@ def setQuickLink_Compare_Measure_BreakDown(setup,cbScreenInstance,i='0'):
 
         ################################### For test Calender Scenario #################################################
 
-        if i=='testCalender':
-            [year, month, day, hour, min] = str(quicklink[str(i)]['startTime']).split(' ')
+        if k=='testCalender':
+            [year, month, day, hour, min] = str(quicklink[str(k)]['startTime']).split(' ')
             setCalendar(year, month, day, hour, min, cbScreenInstance, setup, page=Constants.CALENDERPOPUP,parent="leftcalendar")
 
-            [et_year, et_month, et_day, et_hour, et_min] = str(quicklink[str(i)]['endTime']).split(' ')
+            [et_year, et_month, et_day, et_hour, et_min] = str(quicklink[str(k)]['endTime']).split(' ')
             setCalendar(et_year, et_month, et_day, et_hour, et_min, cbScreenInstance, setup, Constants.CALENDERPOPUP,"rightcalendar")
 
             valueFromCalender1 = str(getHandle(setup, Constants.CALENDERPOPUP, 'allspans')['allspans']['span'][0].text).strip()
 
-            stepoch,etepoch=parseTimeRange1(valueFromCalender1,timezone=MRXConstants.TIMEZONEOFFSET)
+            #stepoch,etepoch=parseTimeRange1(valueFromCalender1,timezone=MRXConstants.TIMEZONEOFFSET,pattern="%d %b %Y")
+            stepoch, etepoch = parseTimeRange1(valueFromCalender1, timezone=MRXConstants.TIMEZONEOFFSET,pattern=MRXConstants.TIMEPATTERN)
             try:
-                if etepoch-stepoch <=0:
-                    UDHelper.button_Status(False,"When Start Time > End Time ==> Selected Time Range ="+valueFromCalender1, cbScreenInstance, setup,Constants.CALENDERPOPUP, "Apply",testcase_id='')
+                if etepoch-stepoch < 0:
+                    UDHelper.button_Status(False,"Start Time > End Time ==> Selected Time Range ="+valueFromCalender1, cbScreenInstance, setup,Constants.CALENDERPOPUP, "Apply",testcase_id='3559')
                 else:
-                    checkEqualAssert(True,etepoch-stepoch>=0,"Not allow to choose StartTime > EndTime",testcase_id='MKR-3188')
+                    checkEqualAssert(True,etepoch-stepoch>=0,"Verify that StartTime > EndTime is not allowed to choose ",testcase_id='MKR-3559')
             except:
                 logger.info("Skipping TestCase =")
 
             monthListFormLeftCalender=getAvailableMonthList(setup,parent='leftcalendar')
-            checkEqualAssert(MRXConstants.MONTHLIST,monthListFormLeftCalender,message='Verify that all the months should be there in the custom calendar (Left Calender)',testcase_id='')
+            checkEqualAssert(MRXConstants.MONTHLIST,monthListFormLeftCalender,message='Verify that all the months should be there in the custom calendar (Left Calender)',testcase_id='3559')
 
             monthListFormRightCalender = getAvailableMonthList(setup, parent='rightcalendar')
-            checkEqualAssert(MRXConstants.MONTHLIST, monthListFormRightCalender,message='Verify that all the months should be there in the custom calendar (Right Calender)',testcase_id='')
+            checkEqualAssert(MRXConstants.MONTHLIST, monthListFormRightCalender,message='Verify that all the months should be there in the custom calendar (Right Calender)',testcase_id='3559')
 
             cbScreenInstance.clickButton("Cancel", getHandle(setup, Constants.CALENDERPOPUP, Constants.ALLBUTTONS))
 
-            return
+            return valueFromCalender1,selectedCompareDim, selectedCompareMes, selectedBrokenDown
         ################################################################################################################
 
 
-        [year, month, day, hour, min] = str(quicklink[str(i)]['startTime']).split(' ')
+        [year, month, day, hour, min] = str(quicklink[str(k)]['startTime']).split(' ')
         setCalendar(year, month, day, hour, min, cbScreenInstance, setup, page=Constants.CALENDERPOPUP,parent="leftcalendar")
 
-        [et_year, et_month, et_day, et_hour, et_min] = str(quicklink[str(i)]['endTime']).split(' ')
+        [et_year, et_month, et_day, et_hour, et_min] = str(quicklink[str(k)]['endTime']).split(' ')
         setCalendar(et_year, et_month, et_day, et_hour, et_min, cbScreenInstance, setup,Constants.CALENDERPOPUP, "rightcalendar")
 
         valueFromCalender=str(getHandle(setup,Constants.CALENDERPOPUP,'allspans')['allspans']['span'][0].text).strip()
@@ -196,18 +285,47 @@ def setQuickLink_Compare_Measure_BreakDown(setup,cbScreenInstance,i='0'):
         checkEqualAssert(valueFromCalender, t1, selectedQuicklink,message="verify quicklink label")
 
     else:
-        cbScreenInstance.timeBar.setQuickLink(quicklink[str(i)]['locatorText'], getHandle(setup, MRXConstants.COMPARATIVESCREEN, "ktrs"))
+        cbScreenInstance.timeBar.setQuickLink(quicklink[str(k)]['locatorText'], getHandle(setup, MRXConstants.COMPARATIVESCREEN, "ktrs"))
         isError(setup)
         selectedQuicklink = cbScreenInstance.timeBar.getSelectedQuickLink(getHandle(setup, MRXConstants.COMPARATIVESCREEN, "ktrs"))
-        t = TimeRangeComponentClass().get_Label(str(quicklink[str(i)]['locatorText']).replace(' ','').lower())
+        t = TimeRangeComponentClass().get_Label(str(quicklink[str(k)]['locatorText']).replace(' ','').lower())
         t1 = cbScreenInstance.timeBar.getLabel(getHandle(setup, MRXConstants.COMPARATIVESCREEN, "ktrs"))
         checkEqualAssert(t[1], t1, selectedQuicklink,message="verify quicklink label")
 
 
-    selectedCompareDim = cbScreenInstance.dropdown.doSelectionOnVisibleDropDown(getHandle(setup, MRXConstants.COMPARATIVESCREEN, "allselects"), str(CompareDim), index=0,parent="allselects")
-    selectedCompareMes = cbScreenInstance.dropdown.doSelectionOnVisibleDropDown(getHandle(setup, MRXConstants.COMPARATIVESCREEN, "allselects"), str(CompareMes), index=1,parent="allselects")
-    selectedBrokenDown = cbScreenInstance.dropdown.doSelectionOnVisibleDropDown(getHandle(setup, MRXConstants.COMPARATIVESCREEN, "allselects"), str(BrokenDown), index=2,parent="allselects")
 
     timeRangeFromPopup = str(t1)
 
-    return timeRangeFromPopup,selectedCompareDim,selectedCompareMes,selectedBrokenDown
+    return timeRangeFromPopup,selectedCompareDim, selectedCompareMes, selectedBrokenDown
+
+
+
+def setQuickLink_Compare_Measure_BreakDown_forDV(setup, screenInstance, quicklink, compareDim, measure, breakdownDim):
+    logger.info("Selecting Quicklink on screen: " +  str(quicklink))
+    try:
+        screenInstance.timeBar.setQuickLink(quicklink, getHandle(setup, MRXConstants.COMPARATIVESCREEN, "ktrs"))
+        isError(setup)
+        logger.info("Quicklink selected: " +str(quicklink))
+        # selectedQuicklink = cbScreenInstance.timeBar.getSelectedQuickLink(getHandle(setup, MRXConstants.COMPARATIVESCREEN, "ktrs"))
+        t1 = screenInstance.timeBar.getLabel(getHandle(setup, MRXConstants.COMPARATIVESCREEN, "ktrs"))
+        timeRangeFromScreen = str(t1)
+    except Exception as e:
+        logger.info("Exception on selecting quicklink" +str(e))
+
+
+    logger.info("Selecting Compare: %s, Measure: %s, Breakdown: %s on screen: " %(compareDim,measure,breakdownDim))
+    try:
+        selectedCompareDim = screenInstance.dropdown.doSelectionOnVisibleDropDown(getHandle(setup, MRXConstants.COMPARATIVESCREEN, "allselects"), compareDim, index=0, parent="allselects")
+    except Exception as e:
+        logger.info("Exception on selecting Compare" + str(e))
+    try:
+        selectedCompareMes = screenInstance.dropdown.doSelectionOnVisibleDropDown(getHandle(setup, MRXConstants.COMPARATIVESCREEN, "allselects"), measure, index=1, parent="allselects")
+    except Exception as e:
+        logger.info("Exception on selecting Measure" + str(e))
+    try:
+        selectedBrokenDown = screenInstance.dropdown.doSelectionOnVisibleDropDown(getHandle(setup, MRXConstants.COMPARATIVESCREEN, "allselects"), breakdownDim, index=2, parent="allselects")
+    except Exception as e:
+        logger.info("Exception on selecting BreakDown" + str(e))
+
+
+    return  timeRangeFromScreen, selectedCompareDim, selectedCompareMes, selectedBrokenDown
