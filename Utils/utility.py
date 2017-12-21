@@ -1071,6 +1071,48 @@ def FindWordInString(ar,grPopHandle):
 
 # def getAbsolutePath(filename):
 
+def dumpTimeForBackEndValidation(timeRangeFromScreen,tOffset):
+    timeRange=timeRangeFromScreen.split(Constants.TimeRangeSpliter)
+    try:
+        if len(timeRange)==1:
+            if len(str(str(timeRange[0]).strip().split('(')[0]).strip().split(' '))==2:
+                startTime = '01 '+ str(str(timeRange[0]).strip().split('(')[0]).strip() + " 00:00"
+                actualStartTimeEpoch = str(getepoch(startTime, tOffset=tOffset))
+                monthIndex=getDateString(getepoch(startTime, tOffset=tOffset),tPattern='%m')
+                actualEndTimeEpoch = str(getepoch(startTime, tOffset=tOffset) + dayinmonth[str(int(monthIndex))]*86400)
+            else:
+                startTime=str(str(timeRange[0]).strip().split('(')[0]).strip()+" 00:00"
+                actualStartTimeEpoch = str(getepoch(startTime, tOffset=tOffset))
+                actualEndTimeEpoch = str(getepoch(startTime, tOffset=tOffset) + 86400)
+
+
+        else:
+            if len(str(timeRange[0]).strip().split(' ')) == 2:
+                startTime = '01 ' + str(str(timeRange[0]).strip().split('(')[0]).strip() + " 00:00"
+                actualStartTimeEpoch = str(getepoch(startTime, tOffset=tOffset))
+            elif len(str(timeRange[0]).strip().split(' '))==3:
+                actualStartTimeEpoch =str(getepoch(str(timeRange[0]).strip()+" 00:00",tOffset=tOffset))
+            else:
+                actualStartTimeEpoch = str(getepoch(str(timeRange[0]).strip(), tOffset=tOffset))
+
+
+            if len(str(str(timeRange[1]).strip().split('(')[0]).strip().split(' ')) == 2:
+                endtime = '01 ' + str(str(timeRange[1]).strip().split('(')[0]).strip() + " 00:00"
+                monthIndex = getDateString(getepoch(endtime, tOffset=tOffset), tPattern='%m')
+                actualEndTimeEpoch = str(getepoch(endtime, tOffset=tOffset) + dayinmonth[str(int(monthIndex))] * 86400)
+
+            elif len(str(str(timeRange[1]).strip().split('(')[0]).strip().split(' ')) == 3:
+                actualEndTimeEpoch = str(getepoch(str(str(timeRange[1]).strip().split('(')[0]).strip() + " 00:00", tOffset=tOffset)+86400)
+            else:
+                actualEndTimeEpoch =str(getepoch(str(str(timeRange[1]).strip().split('(')[0]).strip(),tOffset=tOffset))
+
+        return actualStartTimeEpoch, actualEndTimeEpoch
+
+    except Exception as e:
+        logger.error("Got Exception = ' %s ' (during converting actual time range = ' %s ' into epoch for BackEnd validation), Hence return 0,0 as Start and End time :: Check manually ",str(e),str(timeRangeFromScreen))
+        return str(0),str(0)
+
+
 def getepoch(datestring,tOffset=Constants.TIMEZONEOFFSET,tPattern=Constants.TIMEPATTERN):
     if '24:00' in datestring:
         newDateString=datestring.replace("24:00","23:00")

@@ -39,24 +39,29 @@ def measureAndDimensionAfterMapping(timeRangeFromScreen,measureFromScreen,breakD
         if str(k) in screenTooltipData.keys() and screenTooltipData[k] !=[] and str(screenTooltipData[k][0]).lower() != 'ALL'.lower():
             query[filter['backEnd_ID']]=screenTooltipData[k]
 
-    timeRange=timeRangeFromScreen.split(Constants.TimeRangeSpliter)
+    # timeRange=timeRangeFromScreen.split(Constants.TimeRangeSpliter)
+    #
+    # if len(timeRange)==1:
+    #     startTime=str(str(timeRange[0]).strip().split('(')[0]).strip()+" 00:00"
+    #     query['starttime']=str(getepoch(startTime,tOffset=MRXConstants.TIMEZONEOFFSET))
+    #     query['endtime'] =str(getepoch(startTime,tOffset=MRXConstants.TIMEZONEOFFSET)+86400)
+    # else:
+    #
+    #     if len(str(timeRange[0]).strip().split(' '))==3:
+    #         query['starttime'] =str(getepoch(str(timeRange[0]).strip()+" 00:00",tOffset=MRXConstants.TIMEZONEOFFSET))
+    #     else:
+    #         query['starttime'] = str(getepoch(str(timeRange[0]).strip(), tOffset=MRXConstants.TIMEZONEOFFSET))
+    #
+    #     if len(str(str(timeRange[1]).strip().split('(')[0]).strip().split(' ')) == 3:
+    #         query['endtime'] = str(getepoch(str(str(timeRange[1]).strip().split('(')[0]).strip() + " 00:00", tOffset=MRXConstants.TIMEZONEOFFSET)+86400)
+    #     else:
+    #         query['endtime'] =str(getepoch(str(str(timeRange[1]).strip().split('(')[0]).strip(),tOffset=MRXConstants.TIMEZONEOFFSET))
 
-    if len(timeRange)==1:
-        startTime=str(str(timeRange[0]).strip().split('(')[0]).strip()+" 00:00"
-        query['starttime']=str(getepoch(startTime,tOffset=MRXConstants.TIMEZONEOFFSET))
-        query['endtime'] =str(getepoch(startTime,tOffset=MRXConstants.TIMEZONEOFFSET)+86400)
-    else:
+    startTimeEpoch, endTimeEpoch = dumpTimeForBackEndValidation(timeRangeFromScreen, MRXConstants.TIMEZONEOFFSET)
 
-        if len(str(timeRange[0]).strip().split(' '))==3:
-            query['starttime'] =str(getepoch(str(timeRange[0]).strip()+" 00:00",tOffset=MRXConstants.TIMEZONEOFFSET))
-        else:
-            query['starttime'] = str(getepoch(str(timeRange[0]).strip(), tOffset=MRXConstants.TIMEZONEOFFSET))
-
-        if len(str(str(timeRange[1]).strip().split('(')[0]).strip().split(' ')) == 3:
-            query['endtime'] = str(getepoch(str(str(timeRange[1]).strip().split('(')[0]).strip() + " 00:00", tOffset=MRXConstants.TIMEZONEOFFSET)+86400)
-        else:
-            query['endtime'] =str(getepoch(str(str(timeRange[1]).strip().split('(')[0]).strip(),tOffset=MRXConstants.TIMEZONEOFFSET))
-
+    query['starttime'] = str(startTimeEpoch)
+    query['endtime'] = str(endTimeEpoch)
+    
     return query
 
 def fireBV(query,method,table_name,testcase=''):

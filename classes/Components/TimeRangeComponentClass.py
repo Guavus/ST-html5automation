@@ -49,11 +49,21 @@ class TimeRangeComponentClass(QuicklinkTimeRangeComponentClass):
 
     def time_format(self,starttime,endtime):
         if starttime.split(" ")[3].split(":")[0]=='00' and endtime.split(" ")[3].split(":")[0]=='00':
+            actualEndTime=deepcopy(endtime)
             endtimeEpoch=getepoch(endtime)
             endtimeEpoch=endtimeEpoch-3600
             endtime=getDateString(endtimeEpoch)
+
+            starttimeEpoch = getepoch(starttime)
+            startMonthIndex=getDateString(starttimeEpoch, tPattern='%m')
+
             if starttime.split(" ")[0] + " " + starttime.split(" ")[1] + " " + starttime.split(" ")[2] == endtime.split(" ")[0] + " " + endtime.split(" ")[1] + " " + endtime.split(" ")[2]:
                 return starttime.split(" ")[0] + " " + starttime.split(" ")[1] + " " + starttime.split(" ")[2]
+
+            elif starttimeEpoch + int(dayinmonth[str(int(startMonthIndex))])*86400 == endtimeEpoch + 3600:
+                return starttime.split(" ")[1] + " " + starttime.split(" ")[2]
+            elif starttime.split(" ")[0]=='01' and  actualEndTime.split(" ")[0]=='01':
+                return starttime.split(" ")[1] + " " + starttime.split(" ")[2]+" "+Constants.TimeRangeSpliter+" "+endtime.split(" ")[1] + " " + endtime.split(" ")[2]
             else:
                 return starttime.split(" ")[0] + " " + starttime.split(" ")[1] + " " + starttime.split(" ")[2] + " "+Constants.TimeRangeSpliter+" " + endtime.split(" ")[0] + " " + endtime.split(" ")[1] + " " + endtime.split(" ")[2]
         else:
@@ -247,6 +257,36 @@ class TimeRangeComponentClass(QuicklinkTimeRangeComponentClass):
                     return True, self.time_format(getDateString(etepoch - ((int(dayinmonth[month]) + numberofday - 1) * 24 + int(h)) * 3600,tPattern ='%d %b %Y %H:%M'),getDateString(etepoch - ((numberofday - 1)*24 + int(h))*3600,tPattern ='%d %b %Y %H:%M'))
                 else:
                     return True,self.time_format(stime1,getDateString(etepoch - ((numberofday - 1)*24 + int(h))*3600,tPattern ='%d %b %Y %H:%M'))
+            else:
+                return False, ""
+
+
+        elif quicklink == "last6months":
+            numberofday = int(d)
+            if int(h) == 0:
+                h = 24
+                numberofday = numberofday - 1
+
+
+            last6MonthsList = []
+            if (etepoch - stepoch) >= ((numberofday - 1) * 24 + int(h)) * 3600:
+                if (int(m) - 1) == 0:
+                    month = str('12')
+                else:
+                    month = str(int(m) - 1)
+
+                for monthindex in range(1, 7):
+                    last6MonthsList += [month]
+                    if (int(month) - 1) == 0:
+                        month = str('12')
+                    else:
+                        month = str(int(month) - 1)
+
+                if (etepoch - stepoch) >= ((sum(
+                        [int(dayinmonth[str(monthindex)]) for monthindex in last6MonthsList]) + int(d) - 1) * 24 + int(h)) * 3600:
+                    return True, self.time_format(getDateString(etepoch - ((sum([int(dayinmonth[str(monthindex)]) for monthindex in last6MonthsList]) + numberofday - 1) * 24 + int(h)) * 3600, tPattern='%d %b %Y %H:%M'),getDateString(etepoch - ((numberofday - 1) * 24 + int(h)) * 3600,tPattern='%d %b %Y %H:%M'))
+                else:
+                    return True, self.time_format(stime1,getDateString(etepoch - ((numberofday - 1) * 24 + int(h)) * 3600,tPattern='%d %b %Y %H:%M'))
             else:
                 return False, ""
 

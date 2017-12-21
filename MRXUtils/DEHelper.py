@@ -354,7 +354,9 @@ def getToolTipData(setup, h, parent="filterArea", tooltip_parent = "globalfilter
     try:
         logger.info("Performing Hover action on Filter text Area")
         if len(h[parent][child])>0:
-            ActionChains(setup.d).move_to_element(h[parent][child][0]).perform()
+            javaScript_str = "var evObj = document.createEvent('MouseEvents');" + "evObj.initMouseEvent(\"mouseover\",true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);" + "arguments[0].dispatchEvent(evObj);"
+            setup.d.execute_script(javaScript_str, h[parent][child][0])
+            # ActionChains(setup.d).move_to_element(h[parent][child][0]).perform()
             tooltipHandle = getHandle(setup,screenName,tooltip_parent)
             filters = getAllSelectedFilters(tooltipHandle,tooltip_parent,child,flag=flag)
             logger.info("Got Tooltip data = %s",str(filters))
@@ -427,25 +429,29 @@ def measureAndDimensionAfterMapping(timeRangeFromScreen, measureFromScreen, sele
         if str(k) == selectedMethod:
             selectedMethodDimension = filter['backEnd_ID']
 
-    timeRange = timeRangeFromScreen.split(Constants.TimeRangeSpliter)
+    startTimeEpoch, endTimeEpoch = dumpTimeForBackEndValidation(timeRangeFromScreen, MRXConstants.TIMEZONEOFFSET)
+    query['starttime'] = str(startTimeEpoch)
+    query['endtime'] = str(endTimeEpoch)
 
-    if len(timeRange) == 1:
-        startTime = str(str(timeRange[0]).strip().split('(')[0]).strip() + " 00:00"
-        query['starttime'] = str(getepoch(startTime, tOffset=MRXConstants.TIMEZONEOFFSET))
-        query['endtime'] = str(getepoch(startTime, tOffset=MRXConstants.TIMEZONEOFFSET) + 86400)
-    else:
-
-        if len(str(timeRange[0]).strip().split(' ')) == 3:
-            query['starttime'] = str(
-                getepoch(str(timeRange[0]).strip() + " 00:00", tOffset=MRXConstants.TIMEZONEOFFSET))
-        else:
-            query['starttime'] = str(getepoch(str(timeRange[0]).strip(), tOffset=MRXConstants.TIMEZONEOFFSET))
-
-        if len(str(str(timeRange[1]).strip().split('(')[0]).strip().split(' ')) == 3:
-            query['endtime'] = str(getepoch(str(str(timeRange[1]).strip().split('(')[0]).strip() + " 00:00",tOffset=MRXConstants.TIMEZONEOFFSET) + 86400)
-        else:
-            query['endtime'] = str(
-                getepoch(str(str(timeRange[1]).strip().split('(')[0]).strip(), tOffset=MRXConstants.TIMEZONEOFFSET))
+    # timeRange = timeRangeFromScreen.split(Constants.TimeRangeSpliter)
+    #
+    # if len(timeRange) == 1:
+    #     startTime = str(str(timeRange[0]).strip().split('(')[0]).strip() + " 00:00"
+    #     query['starttime'] = str(getepoch(startTime, tOffset=MRXConstants.TIMEZONEOFFSET))
+    #     query['endtime'] = str(getepoch(startTime, tOffset=MRXConstants.TIMEZONEOFFSET) + 86400)
+    # else:
+    #
+    #     if len(str(timeRange[0]).strip().split(' ')) == 3:
+    #         query['starttime'] = str(
+    #             getepoch(str(timeRange[0]).strip() + " 00:00", tOffset=MRXConstants.TIMEZONEOFFSET))
+    #     else:
+    #         query['starttime'] = str(getepoch(str(timeRange[0]).strip(), tOffset=MRXConstants.TIMEZONEOFFSET))
+    #
+    #     if len(str(str(timeRange[1]).strip().split('(')[0]).strip().split(' ')) == 3:
+    #         query['endtime'] = str(getepoch(str(str(timeRange[1]).strip().split('(')[0]).strip() + " 00:00",tOffset=MRXConstants.TIMEZONEOFFSET) + 86400)
+    #     else:
+    #         query['endtime'] = str(
+    #             getepoch(str(str(timeRange[1]).strip().split('(')[0]).strip(), tOffset=MRXConstants.TIMEZONEOFFSET))
 
     query['dimension'] = [selectedMethodDimension]
     query['count'] = row_Count
