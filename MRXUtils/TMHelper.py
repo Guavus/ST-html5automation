@@ -5,6 +5,7 @@ from selenium.webdriver import ActionChains
 from MRXUtils import UDHelper
 from dateutil.parser import parse
 import json
+import time
 
 
 def measureAndDimensionAfterMapping(timeRangeFromScreen, measureFromScreen, breakDownFromScreen, screenTooltipData,tableMap):
