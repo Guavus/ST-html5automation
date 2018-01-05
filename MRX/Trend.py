@@ -16,6 +16,7 @@ try:
     tm_Click_Flag=wfstart.launchScreen("Trend",getHandle(setup,MRXConstants.WFSTARTSCREEN))
     checkEqualAssert(True,tm_Click_Flag,message="Verify that user can open the T&M screen from the worflows tab",testcase_id="MKR-3757")
     TMScreenInstance = TrendingMonitoringPageClass(setup.d)
+    time.sleep(MRXConstants.SleepForTNMScreen)
 
     actualDefaultValue =[]
     switcherHandle=getHandle(setup, MRXConstants.TMSCREEN, "trend-main")
@@ -32,7 +33,7 @@ try:
     actualDefaultValue.append(len(h['trend-slider']['expand-btn']))
     checkEqualAssert(MRXConstants.ExpectedDefaultValueOnTM,actualDefaultValue,message="Verify the default functionality of the T& M screen",testcase_id="MKR-3759")
 
-    availableView={MRXConstants.BarChartIndex:'BarChart',MRXConstants.LineChartIndex:'LineChart',MRXConstants.TableViewIndex:'Grid'}
+    availableView={MRXConstants.BarChartIndex:'Bar Chart',MRXConstants.LineChartIndex:'Line Chart',MRXConstants.TableViewIndex:'Grid'}
     for view in availableView.keys():
         viewFlag=TMScreenInstance.switcher.measureChangeSwitcher(view,switcherHandle,parent="trend-main")
         checkEqualAssert(True,viewFlag,message="Verify the functionality of the switcher by click on "+availableView[view]+" Icon",testcase_id="MKR-3758")
@@ -103,10 +104,21 @@ try:
                 numberofmainchart = TMScreenInstance.quicktrends.getChartsCount(getHandle(setup, MRXConstants.TMSCREEN, "trend-main"))
                 numberofcomparechart = TMScreenInstance.quicktrends.getChartsCount(getHandle(setup, MRXConstants.TMSCREEN,"trend-compare"), parent="trend-compare")
                 checkEqualAssert(7, numberofmainchart + numberofcomparechart, selectedQuicklink, selectedMeasure, "Verify total number of Chart")
-                main_chart_text = TMScreenInstance.quicktrends.getHoverText(getHandle(setup, MRXConstants.TMSCREEN, "trend-header"))
-                comparechartIndex = TMScreenInstance.quicktrends.getSelectedCompareChartIndex_MRX(getHandle(setup, MRXConstants.TMSCREEN, "trend-compare"))
-                compare_chart_text = TMScreenInstance.quicktrends.getHoverText(getHandle(setup, MRXConstants.TMSCREEN, "trend-compare"),parent="trend-compare",index=comparechartIndex)
-                checkEqualValueAssert(str(compare_chart_text), str(main_chart_text), selectedQuicklink,selectedMeasure, "Verify Compare Chart value with Main Chart Value",testcase_id="MKR-3770")
+
+                l1 = TMScreenInstance.quicktrends.getLegends_tm(getHandle(setup, MRXConstants.TMSCREEN, "trend-legend"))
+                checkEqualAssert(True, len(l1) <= MuralConstants.Maximum_Trend_Legend, selectedQuicklink,selectedMeasure, "Verify Maximum number of legand")
+
+                if not (selectedMeasure in MRXConstants.Non_Aggregable_Measure):
+                    main_chart_text = TMScreenInstance.quicktrends.getHoverText(getHandle(setup, MRXConstants.TMSCREEN, "trend-header"))
+                    comparechartIndex = TMScreenInstance.quicktrends.getSelectedCompareChartIndex_MRX(getHandle(setup, MRXConstants.TMSCREEN, "trend-compare"))
+                    compare_chart_text = TMScreenInstance.quicktrends.getHoverText(getHandle(setup, MRXConstants.TMSCREEN, "trend-compare"),parent="trend-compare",index=comparechartIndex)
+                    checkEqualAssert(str(compare_chart_text), str(main_chart_text), selectedQuicklink,selectedMeasure, "Verify Compare Chart value with Main Chart Value",testcase_id="MKR-3770")
+
+                    active_legend_value_before_clicking=getTotalActiveLegendValue(l1)
+                    main_chart_value=UnitSystem().getRawValueFromUI(main_chart_text)
+                    compare_chart_value=UnitSystem().getRawValueFromUI(compare_chart_text)
+                    checkEqualValueAssert(str(active_legend_value_before_clicking),str(main_chart_value),selectedQuicklink,selectedMeasure,"Verify value from legend with main chart value")
+                    checkEqualValueAssert(str(active_legend_value_before_clicking),str(compare_chart_value),selectedQuicklink,selectedMeasure, "Verify value from legend with compare chart value")
 
                 # TMScreenInstance.switcher.measureChangeSwitcher(MRXConstants.TableViewIndex,getHandle(setup, MRXConstants.TMSCREEN, "trend-main"),parent="trend-main")
                 # TMScreenInstance.table.scrollUpTable(setup)
@@ -128,14 +140,12 @@ try:
                 #     checkEqualDict(main_chart_dict,main_bar_chart_dict,message="Verify synch between line and bar chart")
                 #     TMScreenInstance.switcher.measureChangeSwitcher(MRXConstants.LineChartIndex,getHandle(setup, MRXConstants.TMSCREEN, "trend-main"),parent="trend-main")
 
-                l1 = TMScreenInstance.quicktrends.getLegends_tm(getHandle(setup, MRXConstants.TMSCREEN,"trend-legend"))
-                checkEqualAssert(True, len(l1)<= MuralConstants.Maximum_Trend_Legend, selectedQuicklink, selectedMeasure,"Verify Maximum number of legand")
-                active_legend_value_before_clicking=getTotalActiveLegendValue(l1)
-                main_chart_value=UnitSystem().getRawValueFromUI(main_chart_text)
-                compare_chart_value=UnitSystem().getRawValueFromUI(compare_chart_text)
+                #active_legend_value_before_clicking=getTotalActiveLegendValue(l1)
+                #main_chart_value=UnitSystem().getRawValueFromUI(main_chart_text)
+                #compare_chart_value=UnitSystem().getRawValueFromUI(compare_chart_text)
 
-                checkEqualValueAssert(str(active_legend_value_before_clicking),str(main_chart_value),selectedQuicklink,selectedMeasure,"Verify value from active legend with main chart value")
-                checkEqualValueAssert(str(active_legend_value_before_clicking),str(compare_chart_value),selectedQuicklink,selectedMeasure, "Verify value from active legend with compare chart value")
+                #checkEqualValueAssert(str(active_legend_value_before_clicking),str(main_chart_value),selectedQuicklink,selectedMeasure,"Verify value from active legend with main chart value")
+                #checkEqualValueAssert(str(active_legend_value_before_clicking),str(compare_chart_value),selectedQuicklink,selectedMeasure, "Verify value from active legend with compare chart value")
                 # checkEqualValueAssert(valueformtable, active_legend_value_before_clicking, selectedQuicklink, selectedMeasure,"Verify value from active legend with Table")
 
                 chartIndex = TMScreenInstance.quicktrends.getSelectedCompareChartIndex_MRX(getHandle(setup, MRXConstants.TMSCREEN, "trend-compare"))
@@ -160,12 +170,12 @@ try:
                         p1 = TMScreenInstance.quicktrends.getPaths_MRX(getHandle(setup, MRXConstants.TMSCREEN,"trend-main"))
                         c1 = TMScreenInstance.quicktrends.clickLegendByIndex_tm(i, getHandle(setup, MRXConstants.TMSCREEN,"trend-legend"))
 
-                        main_chart_text = TMScreenInstance.quicktrends.getHoverText(getHandle(setup, MRXConstants.TMSCREEN, "trend-header"))
-                        main_chart_value = UnitSystem().getRawValueFromUI(main_chart_text)
+                        #main_chart_text = TMScreenInstance.quicktrends.getHoverText(getHandle(setup, MRXConstants.TMSCREEN, "trend-header"))
+                        #main_chart_value = UnitSystem().getRawValueFromUI(main_chart_text)
 
                         l2 = TMScreenInstance.quicktrends.getLegends_tm(getHandle(setup, MRXConstants.TMSCREEN, "trend-legend"))
-                        active_legend_value_after_clicking=getTotalActiveLegendValue(l2)
-                        checkEqualValueAssert(active_legend_value_after_clicking, main_chart_value, selectedQuicklink,selectedMeasure, "Verify value from active legend with main chart value")
+                        #active_legend_value_after_clicking=getTotalActiveLegendValue(l2)
+                        #checkEqualValueAssert(active_legend_value_after_clicking, main_chart_value, selectedQuicklink,selectedMeasure, "Verify value from active legend with main chart value")
                         checkEqualAssert(True, str(c1).upper() in p1, selectedQuicklink, selectedMeasure, "Checking disabled color in previous view. Color = " + c1)
 
                         p2 = TMScreenInstance.quicktrends.getPaths_MRX(getHandle(setup, MuralConstants.TMSCREEN,"trend-main"))

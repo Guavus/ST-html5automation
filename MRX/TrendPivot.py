@@ -22,15 +22,20 @@ try:
     qs = setup.cM.getNodeElements("wizardquicklinks1", "wizardquicklink")
     quicklink = setup.cM.getAllNodeElements("wizardquicklinks1", "wizardquicklink")
 
-    pivotHeaderFlag=True
-    for i in range(0,MRXConstants.NUMBEROFFILTERSCENARIOFORTM):
+
+    FilterScenarioForPivot= 4 if MRXConstants.NUMBEROFFILTERSCENARIOFORTM>4 else MRXConstants.NUMBEROFFILTERSCENARIOFORTM
+    pivotHeaderFlag = True
+
+    for j in range(0,FilterScenarioForPivot):
         try:
+            i=random.randint(0,MRXConstants.NUMBEROFFILTERSCENARIOFORTM) if MRXConstants.NUMBEROFFILTERSCENARIOFORTM>4 else j
             TMScreenInstance.switcher.measureChangeSwitcher(MRXConstants.TableViewIndex,getHandle(setup, MRXConstants.TMSCREEN, "trend-main"),parent="trend-main")
             TMScreenInstance.timeBar.setQuickLink(qs[random.choice(quicklink)]['locatorText'],getHandle(setup, MRXConstants.TMSCREEN, "ktrs"))
             selectedMeasure = TMScreenInstance.dropdown.doSelectionOnVisibleDropDownByIndex(getHandle(setup, MRXConstants.TMSCREEN, "trend-header"), random.randint(0, len(mes) - 1), index=0,parent="trend-header")
+            sleep(MRXConstants.SleepForTNMScreen)
             isError(setup)
-            selectedTimeRange = TMScreenInstance.timeBar.getLabel(getHandle(setup, MRXConstants.TMSCREEN, "ktrs"))
 
+            selectedTimeRange = TMScreenInstance.timeBar.getLabel(getHandle(setup, MRXConstants.TMSCREEN, "ktrs"))
             UDHelper.clearFilter(setup, MRXConstants.UDSCREEN)
             SegmentHelper.clickOnfilterIcon(setup, MRXConstants.UDSCREEN, 'nofilterIcon')
 
@@ -40,19 +45,33 @@ try:
 
             # apply global filters
             TMScreenInstance.clickButton("Apply", getHandle(setup, MRXConstants.UDPPOPUP, MuralConstants.ALLBUTTONS))
+            time.sleep(MRXConstants.SleepForTNMScreen)
             response=isError(setup)
+
             if response[0]:
                 logger.error("Got error after apply filter =%s",str(popUpTooltipData))
                 resultlogger.error("Got error after apply filter =%s <br>",str(popUpTooltipData))
                 continue
 
-            time.sleep(MRXConstants.SleepForTNMScreen)
 
             tableHandle = getHandle(setup, MRXConstants.TMSCREEN,"table")
             if tableHandle['table']['ROWS'] == []:
                 msg1 = getNoDataMsg(setup, MRXConstants.TMSCREEN)
                 checkEqualAssert(Constants.NODATA,msg1,measure='Verify that the meaningful message should be shown on the UI when no data is on screen.',testcase_id='')
                 continue
+
+            if pivotHeaderFlag:
+                exploreScreenInstance.cm.activate(getHandle(setup, MRXConstants.TMSCREEN, "trend-header"), parent='trend-header')
+                exploreScreenInstance.cm.goto("Apply as filter and pivot",getHandle(setup, MRXConstants.TMSCREEN, "trend-header"),parent='trend-header')
+                flag,pivotToScreenName=pivotToScreen(setup,MRXConstants.PIVOTPOPUP,TMScreenInstance,selectedTimeRange,selectedMeasure,random.choice([0,1]),button="Cancel")
+                screenName=TMScreenInstance.cm.getSelectedScreenNameFromBreadCrumb(getHandle(setup,MRXConstants.TMSCREEN,'breadcrumb'))
+                checkEqualAssert(MRXConstants.TrendsScreen,screenName.strip(),message="Cancel button functionality on Pivot Popup")
+
+                exploreScreenInstance.cm.activate(getHandle(setup, MRXConstants.TMSCREEN, "trend-header"), parent='trend-header')
+                exploreScreenInstance.cm.goto("Apply as filter and pivot",getHandle(setup, MRXConstants.TMSCREEN, "trend-header"),parent='trend-header')
+                flag,pivotToScreenName=pivotToScreen(setup,MRXConstants.PIVOTPOPUP,TMScreenInstance,selectedTimeRange,selectedMeasure,random.choice([0,1]),button="Cross")
+                screenName = TMScreenInstance.cm.getSelectedScreenNameFromBreadCrumb(getHandle(setup, MRXConstants.TMSCREEN, 'breadcrumb'))
+                checkEqualAssert(MRXConstants.TrendsScreen,screenName.strip(),message="Cross (X) button functionality on Pivot Popup")
 
             exploreScreenInstance.cm.activate(getHandle(setup, MRXConstants.TMSCREEN, "trend-header"), parent='trend-header')
             exploreScreenInstance.cm.goto("Apply as filter and pivot",getHandle(setup, MRXConstants.TMSCREEN, "trend-header"),parent='trend-header')
@@ -79,7 +98,7 @@ try:
 
                 checkEqualDict(popUpTooltipData, screenTooltipData,message="Verify Filters on pivot Screen ="+str(pivotToScreenName),doSortingBeforeCheck=True)
                 checkEqualAssert(selectedMeasure, selectedMeasureOnPivotScreen,message="Verify Measure on pivot Screen =" + str(pivotToScreenName))
-                checkEqualAssert(selectedTimeRange, selectedMeasureOnPivotScreen,message="Verify Timerange on pivot Screen =" + str(pivotToScreenName))
+                checkEqualAssert(selectedTimeRange, selectedTimeRangeOnPivotScreen,message="Verify Timerange on pivot Screen =" + str(pivotToScreenName))
 
                 getHandle(setup, Constants.VALIDATE_HEADER,'leftHeader')['leftHeader']['project_Name'][0].click()
                 exploreScreenInstance.cm.activateWorkFlowDropDown(getHandle(setup, MRXConstants.BREADCRUMB_SCREEN))

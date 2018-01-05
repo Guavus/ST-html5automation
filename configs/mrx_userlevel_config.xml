@@ -1129,18 +1129,109 @@
         <testcase id="1" value=""/>
 
         <segment id ="2" filters = ' '/>
-        <device id = "2" filters = 'E,2:: :: :: '/>
+        <device id = "2" filters = ' ::NE,2:: :: '/>
         <network id = "2" filters = ' :: ::No_Selection_On_Tree:: :: :: '/>
         <content id = "2" filters = 'No_Selection_On_Tree::No_Selection_On_Tree:: :: ::No_Input' inputvalue="guavus.com,facebook.com"/>
         <usage id ="2" filters = ' '/>
         <testcase id="2" value=""/>
 
         <segment id ="3" filters = ' '/>
-        <device id = "3" filters = 'E,2:: :: :: '/>
+        <device id = "3" filters = ' :: ::E,3,4:: '/>
         <network id = "3" filters = ' :: ::No_Selection_On_Tree:: :: :: '/>
         <content id = "3" filters = 'No_Selection_On_Tree::No_Selection_On_Tree:: :: ::No_Input' inputvalue="guavus.com,facebook.com"/>
         <usage id ="3" filters = ' '/>
         <testcase id="3" value=""/>
+
+        <segment id ="4" filters = ' '/>
+        <device id = "4" filters = ' :: :: ::NE,3,4'/>
+        <network id = "4" filters = ' :: ::No_Selection_On_Tree:: :: :: '/>
+        <content id = "4" filters = 'No_Selection_On_Tree::No_Selection_On_Tree:: :: ::No_Input' inputvalue="guavus.com,facebook.com"/>
+        <usage id ="4" filters = ' '/>
+        <testcase id="4" value=""/>
+
+        <segment id ="5" filters = ' '/>
+        <device id = "5" filters = ' :: :: :: '/>
+        <network id = "5" filters = '2,4:: ::No_Selection_On_Tree:: :: :: '/>
+        <content id = "5" filters = 'No_Selection_On_Tree::No_Selection_On_Tree:: :: ::No_Input' inputvalue="guavus.com,facebook.com"/>
+        <usage id ="5" filters = ' '/>
+        <testcase id="5" value=""/>
+
+        <segment id ="6" filters = ' '/>
+        <device id = "6" filters = ' :: :: :: '/>
+        <network id = "6" filters = ' ::3::No_Selection_On_Tree:: :: :: '/>
+        <content id = "6" filters = 'No_Selection_On_Tree::No_Selection_On_Tree:: :: ::No_Input' inputvalue="guavus.com,facebook.com"/>
+        <usage id ="6" filters = ' '/>
+        <testcase id="6" value=""/>
+
+        <segment id ="7" filters = ' '/>
+        <device id = "7" filters = ' :: :: :: '/>
+        <network id = "7" filters = ' :: ::Do_Selection_On_Tree:: :: :: '/>
+        <content id = "7" filters = 'No_Selection_On_Tree::No_Selection_On_Tree:: :: ::No_Input' inputvalue="guavus.com,facebook.com"/>
+        <usage id ="7" filters = ' '/>
+        <testcase id="7" value=""/>
+
+        <segment id ="8" filters = ' '/>
+        <device id = "8" filters = ' :: :: :: '/>
+        <network id = "8" filters = ' :: ::No_Selection_On_Tree::E,2:: :: '/>
+        <content id = "8" filters = 'No_Selection_On_Tree::No_Selection_On_Tree:: :: ::No_Input' inputvalue="guavus.com,facebook.com"/>
+        <usage id ="8" filters = ' '/>
+        <testcase id="8" value=""/>
+
+        <segment id ="9" filters = ' '/>
+        <device id = "9" filters = ' :: :: :: '/>
+        <network id = "9" filters = ' :: ::No_Selection_On_Tree:: ::NE,2:: '/>
+        <content id = "9" filters = 'No_Selection_On_Tree::No_Selection_On_Tree:: :: ::No_Input' inputvalue="guavus.com,facebook.com"/>
+        <usage id ="9" filters = ' '/>
+        <testcase id="9" value=""/>
+
+        <segment id ="10" filters = ' '/>
+        <device id = "10" filters = ' :: :: :: '/>
+        <network id = "10" filters = ' :: ::No_Selection_On_Tree:: :: ::E,2,5'/>
+        <content id = "10" filters = 'No_Selection_On_Tree::No_Selection_On_Tree:: :: ::No_Input' inputvalue="guavus.com,facebook.com"/>
+        <usage id ="10" filters = ' '/>
+        <testcase id="10" value=""/>
+
+        <segment id ="11" filters = ' '/>
+        <device id = "11" filters = ' :: :: :: '/>
+        <network id = "11" filters = ' :: ::No_Selection_On_Tree:: :: :: '/>
+        <content id = "11" filters = 'Do_Selection_On_Tree::No_Selection_On_Tree:: :: ::No_Input' inputvalue="guavus.com,facebook.com"/>
+        <usage id ="11" filters = ' '/>
+        <testcase id="11" value=""/>
+
+        <segment id ="12" filters = ' '/>
+        <device id = "12" filters = ' :: :: :: '/>
+        <network id = "12" filters = ' :: ::No_Selection_On_Tree:: :: :: '/>
+        <content id = "12" filters = 'No_Selection_On_Tree::Do_Selection_On_Tree:: :: ::No_Input' inputvalue="guavus.com,facebook.com"/>
+        <usage id ="12" filters = ' '/>
+        <testcase id="12" value=""/>
+
+        <segment id ="13" filters = ' '/>
+        <device id = "13" filters = ' :: :: :: '/>
+        <network id = "13" filters = ' :: ::No_Selection_On_Tree:: :: :: '/>
+        <content id = "13" filters = 'No_Selection_On_Tree::No_Selection_On_Tree::E,3:: ::No_Input' inputvalue="guavus.com,facebook.com"/>
+        <usage id ="13" filters = ' '/>
+        <testcase id="13" value=""/>
+
+        <segment id ="14" filters = ' '/>
+        <device id = "14" filters = ' :: :: :: '/>
+        <network id = "14" filters = ' :: ::No_Selection_On_Tree:: :: :: '/>
+        <content id = "14" filters = 'No_Selection_On_Tree::No_Selection_On_Tree:: ::NE,3,4::No_Input' inputvalue="guavus.com,facebook.com"/>
+        <usage id ="14" filters = ' '/>
+        <testcase id="14" value=""/>
+
+        <segment id ="15" filters = ' '/>
+        <device id = "15" filters = ' :: :: :: '/>
+        <network id = "15" filters = ' :: ::No_Selection_On_Tree:: :: :: '/>
+        <content id = "15" filters = 'No_Selection_On_Tree::No_Selection_On_Tree:: :: ::Input' inputvalue="guavus.com,facebook.com"/>
+        <usage id ="15" filters = ' '/>
+        <testcase id="15" value=""/>
+
+        <segment id ="16" filters = ' '/>
+        <device id = "16" filters = ' :: :: :: '/>
+        <network id = "16" filters = ' :: ::No_Selection_On_Tree:: :: :: '/>
+        <content id = "16" filters = 'No_Selection_On_Tree::No_Selection_On_Tree:: :: ::No_Input' inputvalue="guavus.com,facebook.com"/>
+        <usage id ="16" filters = 'E,3'/>
+        <testcase id="16" value=""/>
 
     </tmScreenFilters>
 

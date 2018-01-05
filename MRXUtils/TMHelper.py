@@ -7,6 +7,77 @@ from dateutil.parser import parse
 import json
 
 
+def measureAndDimensionAfterMapping(timeRangeFromScreen, measureFromScreen, breakDownFromScreen, screenTooltipData,tableMap):
+    query = {}
+    count = 0
+    query['table_header'] = tableMap['header']
+    query['data'] = []
+
+    if tableMap['rows'] != Constants.NODATA:
+        for row_value in tableMap['rows']:
+            query['data'].append(tableMap['rows'][row_value])
+            count = count + 1
+
+    query['count'] = count
+    query['measure'] = []
+    query['dimension'] = []
+
+    measures = ConfigManager().getNodeElements("measure_Mapping", "measure")
+    dimensions = ConfigManager().getNodeElements("brokendown_Dimension_Mapping", "dimension")
+
+    for k, measure in measures.iteritems():
+        if str(k) == str(measureFromScreen):
+            query['measure'].append(measure['backEnd_ID'])
+
+    for k, dimension in dimensions.iteritems():
+        if str(k) == str(breakDownFromScreen):
+            query['dimension'].append(dimension['backEnd_ID'])
+
+    filters = ConfigManager().getNodeElements("filter_Mapping", "filter")
+    for k, filter in filters.iteritems():
+        if str(k) in screenTooltipData.keys() and screenTooltipData[k] != [] and str(
+                screenTooltipData[k][0]).lower() != 'ALL'.lower():
+            query[filter['backEnd_ID']] = screenTooltipData[k]
+
+    # timeRange=timeRangeFromScreen.split(Constants.TimeRangeSpliter)
+    #
+    # if len(timeRange)==1:
+    #     startTime=str(str(timeRange[0]).strip().split('(')[0]).strip()+" 00:00"
+    #     query['starttime']=str(getepoch(startTime,tOffset=MRXConstants.TIMEZONEOFFSET))
+    #     query['endtime'] =str(getepoch(startTime,tOffset=MRXConstants.TIMEZONEOFFSET)+86400)
+    # else:
+    #
+    #     if len(str(timeRange[0]).strip().split(' '))==3:
+    #         query['starttime'] =str(getepoch(str(timeRange[0]).strip()+" 00:00",tOffset=MRXConstants.TIMEZONEOFFSET))
+    #     else:
+    #         query['starttime'] = str(getepoch(str(timeRange[0]).strip(), tOffset=MRXConstants.TIMEZONEOFFSET))
+    #
+    #     if len(str(str(timeRange[1]).strip().split('(')[0]).strip().split(' ')) == 3:
+    #         query['endtime'] = str(getepoch(str(str(timeRange[1]).strip().split('(')[0]).strip() + " 00:00", tOffset=MRXConstants.TIMEZONEOFFSET)+86400)
+    #     else:
+    #         query['endtime'] =str(getepoch(str(str(timeRange[1]).strip().split('(')[0]).strip(),tOffset=MRXConstants.TIMEZONEOFFSET))
+
+    startTimeEpoch, endTimeEpoch = dumpTimeForBackEndValidation(timeRangeFromScreen, MRXConstants.TIMEZONEOFFSET)
+
+    query['starttime'] = str(startTimeEpoch)
+    query['endtime'] = str(endTimeEpoch)
+
+    return query
+
+
+def fireBV(query, method, table_name, testcase=''):
+    sleep(1)
+    query['method'] = method
+    query['table_name'] = table_name
+    query['testcase'] = testcase
+    import time
+    query['id'] = str(time.time()).split('.')[0]
+
+    logger.info("Going to dump info from UI for Backend Data validation ::" + str(query))
+    with open("TNMDumpFile.txt", mode='a') as fs:
+        fs.write(json.dumps(query))
+        fs.write(" __DONE__" + "\n")
+
 def button_Status(condition,request,screenInstance,setup,screen=MRXConstants.POPUPSCREEN,button_label="OK",testcase_id=''):
     logger.info("Method Called :button_Status ")
     button_status=screenInstance.cm.isButtonEnabled(button_label,getHandle(setup, screen,"allbuttons"))
@@ -39,9 +110,23 @@ def verifySynchBetweenTablaAndChart(tableData, legends, chartData, screenInstanc
     logger.info("Method Called :: verfiySynchBetweenTablaAndChart")
     try:
         for timestamp_key in legends:
+            Year_From_Legends=datetime.datetime.fromtimestamp(long(timestamp_key)).strftime('%Y')
             KEYFLAG = False
             for key_table in tableData['rows']:
-                if str(parse(str(key_table).strip()).strftime("%s")).strip() == str(timestamp_key).strip():
+                Year_From_Tables = parse(str(key_table).strip()).strftime("%Y")
+
+                if Year_From_Legends.strip()!=Year_From_Tables.strip() and Year_From_Tables.strip()==time.strftime("%Y"):
+                    key_table_list=str(key_table).split(' ')
+                    if len(key_table_list)==2:
+                        key_table_list.append(Year_From_Legends.strip())
+                    elif len(key_table_list)==3:
+                        key_table_list.insert(2,Year_From_Legends.strip())
+
+                    key_table_with_year=' '.join(key_table_list)
+                else:
+                    key_table_with_year = key_table
+
+                if str(parse(str(key_table_with_year).strip()).strftime("%s")).strip() == str(timestamp_key).strip():
                     KEYFLAG = True
                     for key in legends[timestamp_key]:
                         colIndex=screenInstance.table.getIndexForValueInArray(tableData['header'],key)
@@ -61,7 +146,7 @@ def verifySynchBetweenTablaAndChart(tableData, legends, chartData, screenInstanc
 def verifyTotalOnTable(screenInstance,tableData,selectedMeasure):
     logger.info("Method Called :: verifyTotalOnTable")
     try:
-        if selectedMeasure!='# User':
+        if not (selectedMeasure in MRXConstants.Non_Aggregable_Measure):
             colIndex=screenInstance.table.getIndexForValueInArray(tableData['header'],selectedMeasure)
             for key in tableData['rows']:
                 rowValue = []
@@ -233,14 +318,14 @@ def pivotToScreen(setup,screenName,screenInstance,selectedTimeRange,selectedMeas
     checkEqualAssert(selectedMeasure, measureOnPopup, message="Verify measure on Pivot Popup")
 
 
-    button_Status(False,"Without selection on radio button",screenInstance,setup,screen=screenName,button_label='OK')
-    button_Status(True,"Without selection on radio button",screenInstance,setup,screen=screenName,button_label='Cancel')
+    if screenInstance.multiDropdown.getSelectedRadioButtonText(h)==False:
+        button_Status(False,"Without selection on radio button",screenInstance,setup,screen=screenName,button_label='OK')
+        button_Status(True,"Without selection on radio button",screenInstance,setup,screen=screenName,button_label='Cancel')
 
     logger.info('Pivot to : =%s', str(drillIndex))
-
     selectedScreenOnPivotPopup=screenInstance.multiDropdown.selectRadioButtonByIndex(drillIndex,h,"label")
+    okButtonStatusAfterSelection=button_Status(True,"With selection on radio button",screenInstance,setup,screen=screenName,button_label='OK')
 
-    okButtonStatusAfterSelection=button_Status(True,"Without selection on radio button",screenInstance,setup,screen=screenName,button_label='OK')
 
     logger.info('Going to Click on %s Button ', str(button))
     if button == 'OK' and okButtonStatusAfterSelection :

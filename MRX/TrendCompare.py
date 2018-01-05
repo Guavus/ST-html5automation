@@ -43,12 +43,14 @@ try:
         TMScreenInstance.dropdown.customClick(getHandle(setup, MRXConstants.TMSCREEN, "trend-compare")["trend-compare"]["trendchart"][i])
         selectedMeasure = TMScreenInstance.dropdown.doSelectionOnVisibleDropDownByIndex(getHandle(setup, MRXConstants.TMSCREEN,"trend-header"), random.randint(0,len(mes)-1), index=0, parent="trend-header")
         isError(setup)
+        sleep(MRXConstants.SleepForTNMScreen)
         if selectNone:
             selectedDimension = TMScreenInstance.dropdown.doSelectionOnVisibleDropDown(getHandle(setup, MRXConstants.TMSCREEN, "trend-header"), "__", index=1,parent="trend-header")
             selectNone=False
         else:
             selectedDimension = TMScreenInstance.dropdown.doSelectionOnVisibleDropDown(getHandle(setup, MRXConstants.TMSCREEN,"trend-header"), random.choice(dim),index=1, parent="trend-header")
         isError(setup)
+        sleep(MRXConstants.SleepForTNMScreen)
         availablView=[MRXConstants.BarChartIndex,MRXConstants.LineChartIndex]
 
         TMScreenInstance.switcher.measureChangeSwitcher(random.choice(availablView), getHandle(setup, MRXConstants.TMSCREEN, "trend-main"),parent="trend-main")

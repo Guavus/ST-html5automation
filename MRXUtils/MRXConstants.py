@@ -49,6 +49,8 @@ class MRXConstants(Constants):
     NUMBEROFFILTERSCENARIOFORDE=2
     NUMBEROFFILTERSCENARIOFORCB=2
     NUMBEROFFILTERSCENARIOFORTM = 2
+    RANDOM_SELECTION_FOR_HOVER_ON_TNM = True
+
     SleepForComparativeScreen=20
     SleepForTNMScreen = 20
     ChangePassword ='Change Password'
@@ -105,8 +107,14 @@ class MRXConstants(Constants):
     # measureListForHover=['Volume (Upload)', 'Volume (Download)', 'Volume', '# Network Session', '# Web Domain Session', '# IAB Session', '# Contextual Session', '# User']
     # quickLinkListForHover=['Last 6 Months', 'Last Month', 'Last 7 days', 'Yesterday', 'Today','CustomClick_0']
 
-    dimensionListForHover = ['Radio Access Type']
-    measureListForHover = ['Volume']
+    dimensionListForTNM=['Radio Access Type']
+    measureListForTNM=['Volume (Upload)','# Network Session']
+    quickLinkListForTNM=['Yesterday']
+
+    Non_Aggregable_Measure=['# Network Session', '# Web Domain Session', '# IAB Session', '# Contextual Session', '# User']
+
+    dimensionListForHover = ['Radio Access Type','Category']
+    measureListForHover = ['Volume','# Web Domain Session']
     quickLinkListForHover = ['Last 7 days','CustomClick_0']
 
     ExpectedDefaultValueOnTM=[[0],'Last 7 days','Volume',1]
