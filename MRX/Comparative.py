@@ -18,6 +18,8 @@ try:
     UD_Flag=cbScreenInstance.wfstart.launchScreen("Comparative", getHandle(setup, MRXConstants.WFSCREEN))
     checkEqualAssert(True,UD_Flag,message="Verify that user can open the Comparative breakdown Screen from the Workflows tab",testcase_id='MKR-3534')
 
+
+
     ####################### Get all possible value for drop down from xml ##############################################
 
     compare_dim = setup.cM.getNodeElements("compare_dim", "dimension")
@@ -36,22 +38,34 @@ try:
     for k, brokendownDim in brokendown_dim.iteritems():
         brokendownDimList.append(brokendownDim['locatorText'])
 
-
-    ######################################## Default value on CB Screen ################################################
-    dafaultSelectionOnScreen=[]
+    '''
+    ######################################## Default values on CB Screen ################################################
+    defaultSelectionOnScreen=[]
     defaultQuicklink = cbScreenInstance.timeBar.getSelectedQuickLink(getHandle(setup, MRXConstants.COMPARATIVESCREEN, "ktrs"))
-    dafaultSelectionOnScreen.append(defaultQuicklink)
+    defaultSelectionOnScreen.append(defaultQuicklink)
 
     defaultCompareDim = cbScreenInstance.dropdown.getSelectionOnVisibleDropDown(getHandle(setup, MRXConstants.COMPARATIVESCREEN, "allselects"),index=0)
-    dafaultSelectionOnScreen.append(defaultCompareDim)
+    defaultSelectionOnScreen.append(defaultCompareDim)
 
     defaultCompareMes = cbScreenInstance.dropdown.getSelectionOnVisibleDropDown(getHandle(setup, MRXConstants.COMPARATIVESCREEN, "allselects"), index=1)
-    dafaultSelectionOnScreen.append(defaultCompareMes)
+    defaultSelectionOnScreen.append(defaultCompareMes)
 
     defaultBrokenDown = cbScreenInstance.dropdown.getSelectionOnVisibleDropDown(getHandle(setup, MRXConstants.COMPARATIVESCREEN, "allselects"), index=2)
-    dafaultSelectionOnScreen.append(defaultBrokenDown)
+    defaultSelectionOnScreen.append(defaultBrokenDown)
 
-    checkEqualAssert(MRXConstants.DefaultSelectionOnCBScreen,dafaultSelectionOnScreen,message="Verify the default values of the Comparative breakdown Screen from the Workflows tab",testcase_id="MKR-3536")
+    defaultChartHeader = CBHelper.getChartLegendheaders(getHandle(setup, MRXConstants.COMPARATIVESCREEN, 'chart_legend_headers'))
+    defaultSelectionOnScreen.append(defaultChartHeader)
+
+    defaultLegendHeader = CBHelper.getChartLegendheaders(getHandle(setup, MRXConstants.COMPARATIVESCREEN, 'chart_legend_headers'),child='text_over_legend')
+    defaultSelectionOnScreen.append(defaultLegendHeader)
+
+    defaultInitalMsgOnChart = CBHelper.getMsgOnNoData(getHandle(setup, MRXConstants.COMPARATIVESCREEN, 'cb_no_data_msg'))
+    defaultSelectionOnScreen.append(defaultInitalMsgOnChart)
+
+    defaultInitalMsgOnLegend = CBHelper.getMsgOnNoData(getHandle(setup, MRXConstants.COMPARATIVESCREEN, 'cb_no_data_msg'),child='msgOnLegend')
+    defaultSelectionOnScreen.append(defaultInitalMsgOnLegend)
+
+    checkEqualAssert(MRXConstants.DefaultSelectionOnCBScreen,defaultSelectionOnScreen,message="Verify the default values of the Comparative breakdown Screen from the Workflows tab",testcase_id="MKR-3536,3508")
 
     ######################################### Available Quicklinks on CB screen ###########################################################################
 
@@ -72,43 +86,49 @@ try:
     cbScreenInstance.cm.activateWorkFlowDropDown(getHandle(setup, MRXConstants.COMPARATIVESCREEN, "breadcrumb"))
     workFlowOption = cbScreenInstance.cm.availableOptionOnWorkFlowDrop(getHandle(setup, MRXConstants.COMPARATIVESCREEN, "breadcrumb"))
     checkEqualAssert(MRXConstants.ExpectedOptionForWorkFlow,workFlowOption,message="Verify available option for workflows drop down menu",testcase_id="MKR-3540")
-
+    '''
     ###################################### Match Color sequence in bar and table, Table data order(Measure) should be Desc   ##################################################
 
-    for cd in range(len(compareDimList)):
-        selectedCompareDim = cbScreenInstance.dropdown.doSelectionOnVisibleDropDown(getHandle(setup, MRXConstants.COMPARATIVESCREEN, "allselects"), str(compareDimList[cd]), index=0, parent="allselects")
-        isError(setup)
-        for cm in range(len(compareMesList)):
-            selectedCompareMes = cbScreenInstance.dropdown.doSelectionOnVisibleDropDown(getHandle(setup, MRXConstants.COMPARATIVESCREEN, "allselects"), str(compareMesList[cm]), index=1,parent="allselects")
+    quickLinks_listFromXML = setup.cM.getNodeElements("quickLinkTableTestCaseMapping_CB", 'quicklink')
+
+    quickLink_list = quickLinks_listFromXML.keys()
+
+    for ql in quickLink_list:
+        ql = "Last 7 days"
+        for cd in range(len(compareDimList)):
+            selectedCompareDim = cbScreenInstance.dropdown.doSelectionOnVisibleDropDown(getHandle(setup, MRXConstants.COMPARATIVESCREEN, "allselects"), str(compareDimList[cd]), index=0, parent="allselects")
             isError(setup)
-            for bd in range(len(brokendownDimList)):
-                selectedBrokenDown = cbScreenInstance.dropdown.doSelectionOnVisibleDropDown(getHandle(setup, MRXConstants.COMPARATIVESCREEN, "allselects"), str(brokendownDimList[bd]), index=2,parent="allselects")
+            for cm in range(len(compareMesList)):
+                selectedCompareMes = cbScreenInstance.dropdown.doSelectionOnVisibleDropDown(getHandle(setup, MRXConstants.COMPARATIVESCREEN, "allselects"), str(compareMesList[cm]), index=1,parent="allselects")
                 isError(setup)
-                sleep(MRXConstants.SleepForComparativeScreen)
-                tableData=cbScreenInstance.table.getTableData1WithColumnHavingColor(getHandle(setup, MRXConstants.COMPARATIVESCREEN,'table'))
-                chartHandle = getHandle(setup, MRXConstants.COMPARATIVESCREEN, 'trend-main')
-                chartData = cbScreenInstance.trend.hoverOverTicksGetMainHorizontalBarChartText(setup, chartHandle,MRXConstants.COMPARATIVESCREEN)
+                for bd in range(len(brokendownDimList)):
+                    selectedBrokenDown = cbScreenInstance.dropdown.doSelectionOnVisibleDropDown(getHandle(setup, MRXConstants.COMPARATIVESCREEN, "allselects"), str(brokendownDimList[bd]), index=2,parent="allselects")
+                    isError(setup)
+                    sleep(MRXConstants.SleepForComparativeScreen)
+                    tableData=cbScreenInstance.table.getTableData1WithColumnHavingColor(getHandle(setup, MRXConstants.COMPARATIVESCREEN,'table'))
+                    chartHandle = getHandle(setup, MRXConstants.COMPARATIVESCREEN, 'trend-main')
+                    chartData = cbScreenInstance.trend.hoverOverTicksGetMainHorizontalBarChartText(setup, chartHandle,MRXConstants.COMPARATIVESCREEN)
 
-                if tableData['rows']!=Constants.NODATA and chartData!={}:
-                    CBHelper.validateSortingInTable(cbScreenInstance,tableData,"",selectedCompareMes)
-                    color_List=cbScreenInstance.trend.getAllColorOnHorizontalBar_DCT(setup,chartHandle)
-                    yAxisPointList = CBHelper.getAxisPoint(getHandle(setup, MRXConstants.COMPARATIVESCREEN, 'trend-main'), child='yaxis')
-                    barColorDict = CBHelper.map_YAxisWithColorList(yAxisPointList,color_List)
-                    flag=CBHelper.validateColorSequence(barColorDict,tableData)
-                    checkEqualAssert(True,flag,message="Verify the colour sequence of the table and bar",testcase_id="MKR-3563")
-                    flag=CBHelper.validateColorOnTooltipWithBar(chartData,barColorDict)
+                    if tableData['rows']!=Constants.NODATA and chartData!={}:
+                        CBHelper.validateSortingInTable(cbScreenInstance,tableData,"",selectedCompareMes)
+                        color_List=cbScreenInstance.trend.getAllColorOnHorizontalBar_DCT(setup,chartHandle)
+                        yAxisPointList = CBHelper.getAxisPoint(getHandle(setup, MRXConstants.COMPARATIVESCREEN, 'trend-main'), child='yaxis')
+                        barColorDict = CBHelper.map_YAxisWithColorList(yAxisPointList,color_List)
+                        flag=CBHelper.validateColorSequence(barColorDict,tableData)
+                        checkEqualAssert(True,flag,message="Verify the colour sequence of the table and bar",testcase_id="MKR-3563")
+                        flag=CBHelper.validateColorOnTooltipWithBar(chartData,barColorDict)
 
-                elif tableData['rows']== Constants.NODATA:
-                    msg1 = CBHelper.getNoDataMsg(setup, MRXConstants.COMPARATIVESCREEN, child='msgOnLegend')
-                    checkEqualAssert(MRXConstants.NODATAMSG, msg1,
+                    elif tableData['rows']== Constants.NODATA:
+                        msg1 = CBHelper.getNoDataMsg(setup, MRXConstants.COMPARATIVESCREEN, child='msgOnLegend')
+                        checkEqualAssert(MRXConstants.NODATAMSG, msg1,
                                      measure='Verify that the meaningful message should be shown on the Table view when no data is on screen.',
                                      testcase_id='')
 
-                    r = "issue_" + str(random.randint(0, 9999999)) + ".png"
-                    setup.d.save_screenshot(r)
-                    logger.debug("No Table Data for selected compare = %s, measure = %s,brokendownvalue = %s :: Screenshot with name = %s is saved"
+                        r = "issue_" + str(random.randint(0, 9999999)) + ".png"
+                        setup.d.save_screenshot(r)
+                        logger.debug("No Table Data for selected compare = %s, measure = %s,brokendownvalue = %s :: Screenshot with name = %s is saved"
                                  ,selectedCompareDim,selectedCompareMes,brokendownDimList, r)
-                    resultlogger.info("No Table Data for selected compare = %s, measure = %s,brokendownvalue = %s :: Screenshot with name = %s is saved"
+                        resultlogger.info("No Table Data for selected compare = %s, measure = %s,brokendownvalue = %s :: Screenshot with name = %s is saved"
                                  ,selectedCompareDim,selectedCompareMes,brokendownDimList, r)
 
 

@@ -13,16 +13,16 @@ class Constants(object):
     if PROJECT == "MRX":
         byteUnits = ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"]
         TimeRangeSpliter='-'
-        #ConfigXMLFile=['../configs/mural_coreconfig.xml', '../configs/mrx_solutionconfig.xml','../configs/mrx_userlevel_config.xml']
-        ConfigXMLFile=['../configs/mural_coreconfig.xml', '../configs/mrx_solutionconfig.xml','../configs/mrx_userlevel_config.xml','../configs/dummy.xml']
+        ConfigXMLFile=['../configs/mural_coreconfig.xml', '../configs/mrx_solutionconfig.xml','../configs/mrx_userlevel_config.xml']
+        #ConfigXMLFile=['../configs/mural_coreconfig.xml', '../configs/mrx_solutionconfig.xml','../configs/mrx_userlevel_config.xml','../configs/dummy.xml']
     else:
         byteUnits = ["", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"]
         TimeRangeSpliter = 'to'
         ConfigXMLFile=['../configs/mural_coreconfig.xml', '../configs/mural_solutionconfig.xml', '../configs/mural_userlevel_config.xml']
 
 
-    BROWSER = "chrome"
-    # BROWSER = "ff"
+    # BROWSER = "chrome"
+    BROWSER = "ff"
     isOffline = False
     if isOffline:
         URL = 'localhost:3333'
@@ -33,19 +33,38 @@ class Constants(object):
         #URL = "https://ucsd.cisco.com:7443"
         #URL="http://192.168.174.71:9080"
         #URL="http://192.168.113.191:9080/app/user-distribution"
-        URL="http://192.168.195.144:9080"
+        #URL="http://192.168.195.144:9080"
         MRX_UM_URL = "http://192.168.104.190/um/"
-        #URL="https://funupgrade.guavus.com:6443"
+        #URLURL="https://funupgrade.guavus.com:6443"
         #URL="http://192.168.192.204:28080/"
         #URL="http://192.168.195.57:28080/"
         #URL="http://192.168.162.33:9080/"
+        #URL="http://192.168.115.11/mrx/app/"    ### --- New with data
+        #URL = "http://192.168.195.144:9080"   #### Old without data
+
+
+        #URL = "http://localhost:2016/"
+        #URL = "http://192.168.195.144/mrx/"
+        URL = "http://192.168.192.251/mrx/"
+
     # URL = 'http://10.71.3.77/'
     # URL = 'https://nrmca.nmcc.sprintspectrum.com:6443/'
     # URL = 'https://nrmca-upgrade-setup.sprintspectrum.com:6443/'
     # URL = 'https://nrmca-perf.guavus.com:44710/'
-    USERNAME = 'admin'
-    PASSWORD = 'admin123'
-    #PASSWORD = 'New@1234'
+
+    ## --- for 115.11/mrx/app/
+    #USERNAME = 'admin'
+    #PASSWORD = 'abc125'
+
+    ## --- for 195.144/mrx
+    USERNAME = "admin"
+    PASSWORD = "abc125"
+
+    ## --- for offline mode
+    #USERNAME = 'admin'
+    #PASSWORD = 'admin123'
+
+
     SITES = 'site_Screen'
 
     # SITES = 'SITES'
@@ -90,11 +109,12 @@ class Constants(object):
     localserver = "http://localhost:3333/index2.html"
 
     chromedriverpath = "/Users/praveen.garg1/html5automation/chromedriver/chromedriver"
-    # chromedriverpath = "C:\Users\Administrator\Downloads\chromedriver_win32\chromedriver.exe"
-    chromdownloadpath= "C:\Users\Administrator\csvdownload"
+    #chromedriverpath = "C:\Users\Administrator\Downloads\chromedriver_win32\chromedriver.exe"
+    #chromdownloadpath= "C:\Users\Administrator\csvdownload"
     #chromedriverpath = "/Users/mayank.mahajan/PycharmProjects/html5automation/chromedriver/chromedriver228"
-    firefoxdriverpath = "/Users/praveen.garg1/Downloads/geckodriver"
-    firefoxdownloadpath = "/Users/praveen.garg1/html5automation/download"
+    firefoxdriverpath = "/usr/local/bin/geckodriver"
+    firefoxdownloadpath = "/Users/kritika.saxena/UI_Auto/Downloads"
+
 
     # common components
     ALLBUTTONS = "allbuttons"

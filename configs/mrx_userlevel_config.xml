@@ -37,7 +37,7 @@
                    profilePicFlag="True"
                    helpIconFlag="True"
                    switcherIconFlag="True"
-                   testcaseID="MKR-1646,MKR-3537"
+                   testcaseID="MKR-1646,3537"
         />
     </headerComponent>
 

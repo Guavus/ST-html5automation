@@ -47,10 +47,13 @@ class MRXConstants(Constants):
     TimeRangeSpliter='-'
     NUMBEROFFILTERSCENARIO = 3
     NUMBEROFFILTERSCENARIOFORDE=2
-    NUMBEROFFILTERSCENARIOFORCB=2
+
+    NUMBEROFFILTERSCENARIOFORCB=6
     NUMBEROFFILTERSCENARIOFORTM = 2
-    SleepForComparativeScreen=20
+
+    SleepForComparativeScreen=30
     SleepForTNMScreen = 20
+
     ChangePassword ='Change Password'
     UMHeader="User Management"
 
@@ -86,7 +89,7 @@ class MRXConstants(Constants):
     DE_TABLE_HEADER=['Method','Description','Last Extraction Date']
     Button_On_DEPOPUP=['Extract Data Set','Cancel']
     MaximumValueForTopRowInput=1000
-    DefaultSelectionOnCBScreen=['Last 7 days','__','Volume (Download)','__']
+    DefaultSelectionOnCBScreen=['Last 7 days','__','Volume (Download)','__','__ by Volume (Download)','__: Volume (Download) for All','Select data to compare','Select data to breakdown']
     ExpectedCompareValue=['__', 'Segment','Category', 'Manufacturer', 'OS', 'Model', 'Serving Node', 'Packet GW','Level 1', 'Level 2', 'Level 3', 'APN']
     ExpectedMeasureOnCB=['Volume (Upload)', 'Volume (Download)', 'Volume', '# Network Session', '# Web Domain Session', '# IAB Session', '# Contextual Session', '# User']
     ExpectedBrokenDownValue=['__','Radio Access Type', 'Roaming', 'Tier 1', 'Tier 2','Level 1', 'Level 2', 'Level 3','Category', 'Name', 'Web Domain', 'Global Data Service']

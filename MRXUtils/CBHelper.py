@@ -329,3 +329,24 @@ def setQuickLink_Compare_Measure_BreakDown_forDV(setup, screenInstance, quicklin
 
 
     return  timeRangeFromScreen, selectedCompareDim, selectedCompareMes, selectedBrokenDown
+
+def getChartLegendheaders(h,parent='chart_legend_headers',child='text_over_chart'):
+    logger.info("Method Called : getChartLegendheaders")
+
+    if len(h[parent][child]) > 0:
+        headerText = str(h[parent][child][0].text)
+        logger.info("Text returned: " +headerText)
+        return headerText
+    else:
+        logger.info("No element found for Child: " + child + " and Parent: " + parent)
+
+
+def getMsgOnNoData(h,parent='cb_no_data_msg',child='msgOnChart'):
+    logger.info("Method Called : getMsgOnNoData")
+
+    if len(h[parent][child]) > 0:
+        msgDisplayed = str(h[parent][child][0].text)
+        logger.info("Text returned: " + msgDisplayed)
+        return msgDisplayed
+    else:
+        logger.info("No element found for Child: " + child + " and Parent: " + parent)

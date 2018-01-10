@@ -150,8 +150,7 @@
             <component id ="trend-main" selector="css selector" locator="div[class*=chart][class*=section]" parent="True"/>
             <component id = "qttooltip" selector="css selector" locator="div[class*=tool][class*=tip][class*=div]" parent="True"/>
             <component id="cb_no_data_msg" selector="css selector" locator="div.cb-container" parent="True"/>
-            <component id="cb_chart_header" selector="css selector" locator="div[class*=chart][class*=section]" parent="Tue"/>
-            <component id="cb_legend_header" selector="css selector" locator="div[class*=legend][class*=section]" parent="Tue"/>
+            <component id="chart_legend_headers" selector="css selector" locator="div[class*=cb][class*=chart][class*=header]" parent="Tue"/>-->
             <component id = "breadcrumb" selector="css selector" locator="nav.BreadcrumbsArea" parent="True"/>
             <component id="expand_more" selector="css selector" locator="div.cb-container" parent="True"/>
             <component id ='dropdown_open' selector="class name" locator="dropdown" parent="True"/>
@@ -566,8 +565,9 @@
         </componentConfig>
 
 
-        <componentConfig id="cb_chart_header">
-            <component id="text" selector="css selector" locator="label[class*=cb][class*=chart][class*=header]"/>
+        <componentConfig id="chart_legend_headers">
+            <component id="text_over_chart" selector="css selector" locator="label.cb-chart-label"/>
+            <component id="text_over_legend" selector="css selector" locator="label.cb-legend-label"/>
         </componentConfig>
 
         <componentConfig id="cb_legend_header">
