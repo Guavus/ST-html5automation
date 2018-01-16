@@ -510,7 +510,10 @@ class QuickTrendsComponentClass(BaseComponentClass):
         hoverPointHandle=[]
         try:
             for el_index in range(numberofBar):
-                hoverPointHandle.append(handle[el_index].find_elements_by_tag_name("rect")[0])
+                if len(handle[el_index].find_elements_by_tag_name("rect"))>0:
+                    hoverPointHandle.append(handle[el_index].find_elements_by_tag_name("rect")[0])
+                else:
+                    hoverPointHandle.append("None")
             return len(hoverPointHandle),hoverPointHandle
 
         except Exception as e:

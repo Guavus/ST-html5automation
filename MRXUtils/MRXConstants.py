@@ -51,7 +51,7 @@ class MRXConstants(Constants):
     NUMBEROFFILTERSCENARIOFORCB=6
     NUMBEROFFILTERSCENARIOFORTM = 2
 
-    SleepForComparativeScreen=30
+    SleepForComparativeScreen=60
     SleepForTNMScreen = 20
 
     ChangePassword ='Change Password'
@@ -89,11 +89,12 @@ class MRXConstants(Constants):
     DE_TABLE_HEADER=['Method','Description','Last Extraction Date']
     Button_On_DEPOPUP=['Extract Data Set','Cancel']
     MaximumValueForTopRowInput=1000
-    DefaultSelectionOnCBScreen=['Last 7 days','__','Volume (Download)','__','__ by Volume (Download)','__: Volume (Download) for All','Select data to compare','Select data to breakdown']
+    DefaultSelectionOnCBScreen=['Last 7 days','__','Volume','__','__ by Volume','__: Volume for All','Select data to compare','Select data to breakdown']
     ExpectedCompareValue=['__', 'Segment','Category', 'Manufacturer', 'OS', 'Model', 'Serving Node', 'Packet GW','Level 1', 'Level 2', 'Level 3', 'APN']
     ExpectedMeasureOnCB=['Volume (Upload)', 'Volume (Download)', 'Volume', '# Network Session', '# Web Domain Session', '# IAB Session', '# Contextual Session', '# User']
+    AggreagableMeasureOnCB=['Volume (Upload)', 'Volume (Download)', 'Volume']
     ExpectedBrokenDownValue=['__','Radio Access Type', 'Roaming', 'Tier 1', 'Tier 2','Level 1', 'Level 2', 'Level 3','Category', 'Name', 'Web Domain', 'Global Data Service']
-    ExpectedOptionForWorkFlow=['User Distribution','Trending & Monitoring','Comparative Breakdown']
+    ExpectedOptionForWorkFlow=['User Distribution','Behavior Trending','Comparative Breakdown']
     ExpectedOptionForNewUser=['Username*', 'First Name*', 'Last Name*', 'Email*', 'Password*', 'Confirm Password*', 'User Image', 'Role*','Network Data Privileges','Device Data Privileges','Timezone*']
     #Disabled_User_Login_Msg="Invalid credentials, please enter correct username and password."
     Passoword_Not_Matched='Passwords do not match.'

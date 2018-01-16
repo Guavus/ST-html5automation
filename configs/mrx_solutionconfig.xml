@@ -77,11 +77,11 @@
          
 
     <compare_mes>
-        <measure id = "volumeD" locatorText="Volume (Download)"/> 
+        <measure id = "volumeD" locatorText="Volume (Download)" /> 
         <measure id = "volumeU" locatorText="Volume (Upload)" /> 
         <measure id = "volume" locatorText="Volume" />  
         <measure id ="network_session" locatorText="# Network Session" />
-        <measure id ="web_domain_session" locatorText="# Web Domain Session" />
+        <measure id ="web_domain_session" locatorText="# Web Domain Session"/>
         <measure id ="iab_session" locatorText="# IAB Session" />
         <measure id ="contextual_session" locatorText="# Contextual Session" />
         <measure id = "user" locatorText="# User" />

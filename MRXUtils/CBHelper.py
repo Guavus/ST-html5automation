@@ -23,6 +23,7 @@ def getHeader(setup,screen,parent='cb_chart_header',child='text'):
         return "Header Text Not Found"
 
 
+
 def getAxisPoint(h,parent='trend-main',child='xaxis'):
     logger.info("Method Called : getAxisPoint")
     point=[]
@@ -52,14 +53,14 @@ def validateSortingInTable(cbScreenInstance,data,selectedQuicklink, selectedMeas
     unitFlagForSession = False
     if 'Session' in selectedMeasure:
         for i in range(len(selectedMeasure_value_list)):
-            if len(re.findall(r'[a-zA-Z]+', selectedMeasure_value_list[i])) != 0:
+            if len(re.findall(r'[a-zA-Z]+', selectedMeasure_value_list[i])) != 0 and selectedMeasure_value_list[i]!="NA":
                 unitFlagForSession = True
                 break
         checkEqualAssert(False, unitFlagForSession, selectedQuicklink, selectedMeasure,message='Validate that no unit is seen for the session(Table View)', testcase_id='MKR-3092')
 
     l = []
     for i in range(len(selectedMeasure_value_list)):
-        if str(selectedMeasure_value_list[i]).strip()!='':
+        if str(selectedMeasure_value_list[i]).strip()!='' and str(selectedMeasure_value_list[i]).strip()!='NA':
             l.append(UnitSystem().getRawValueFromUI(selectedMeasure_value_list[i]))
 
     sorting_Flag = verifySortingWithSomeDifference(l)
@@ -350,3 +351,5 @@ def getMsgOnNoData(h,parent='cb_no_data_msg',child='msgOnChart'):
         return msgDisplayed
     else:
         logger.info("No element found for Child: " + child + " and Parent: " + parent)
+
+

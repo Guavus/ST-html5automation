@@ -38,7 +38,7 @@ try:
     for k, brokendownDim in brokendown_dim.iteritems():
         brokendownDimList.append(brokendownDim['locatorText'])
 
-    '''
+
     ######################################## Default values on CB Screen ################################################
     defaultSelectionOnScreen=[]
     defaultQuicklink = cbScreenInstance.timeBar.getSelectedQuickLink(getHandle(setup, MRXConstants.COMPARATIVESCREEN, "ktrs"))
@@ -86,7 +86,7 @@ try:
     cbScreenInstance.cm.activateWorkFlowDropDown(getHandle(setup, MRXConstants.COMPARATIVESCREEN, "breadcrumb"))
     workFlowOption = cbScreenInstance.cm.availableOptionOnWorkFlowDrop(getHandle(setup, MRXConstants.COMPARATIVESCREEN, "breadcrumb"))
     checkEqualAssert(MRXConstants.ExpectedOptionForWorkFlow,workFlowOption,message="Verify available option for workflows drop down menu",testcase_id="MKR-3540")
-    '''
+
     ###################################### Match Color sequence in bar and table, Table data order(Measure) should be Desc   ##################################################
 
     quickLinks_listFromXML = setup.cM.getNodeElements("quickLinkTableTestCaseMapping_CB", 'quicklink')
@@ -96,18 +96,21 @@ try:
     for ql in quickLink_list:
         ql = "Last 7 days"
         for cd in range(len(compareDimList)):
+            #compareDimList[cd] = "Category"
             selectedCompareDim = cbScreenInstance.dropdown.doSelectionOnVisibleDropDown(getHandle(setup, MRXConstants.COMPARATIVESCREEN, "allselects"), str(compareDimList[cd]), index=0, parent="allselects")
             isError(setup)
             for cm in range(len(compareMesList)):
+                #compareMesList[cm] = "# Contextual Session"
                 selectedCompareMes = cbScreenInstance.dropdown.doSelectionOnVisibleDropDown(getHandle(setup, MRXConstants.COMPARATIVESCREEN, "allselects"), str(compareMesList[cm]), index=1,parent="allselects")
                 isError(setup)
                 for bd in range(len(brokendownDimList)):
+                    #brokendownDimList[bd] = "Tier 2"
                     selectedBrokenDown = cbScreenInstance.dropdown.doSelectionOnVisibleDropDown(getHandle(setup, MRXConstants.COMPARATIVESCREEN, "allselects"), str(brokendownDimList[bd]), index=2,parent="allselects")
                     isError(setup)
                     sleep(MRXConstants.SleepForComparativeScreen)
                     tableData=cbScreenInstance.table.getTableData1WithColumnHavingColor(getHandle(setup, MRXConstants.COMPARATIVESCREEN,'table'))
                     chartHandle = getHandle(setup, MRXConstants.COMPARATIVESCREEN, 'trend-main')
-                    chartData = cbScreenInstance.trend.hoverOverTicksGetMainHorizontalBarChartText(setup, chartHandle,MRXConstants.COMPARATIVESCREEN)
+                    chartData = cbScreenInstance.trend.hoverOverTicksGetMainHorizontalBarChartText(setup, chartHandle,MRXConstants.COMPARATIVESCREEN,selectedCompareMes=selectedCompareMes)
 
                     if tableData['rows']!=Constants.NODATA and chartData!={}:
                         CBHelper.validateSortingInTable(cbScreenInstance,tableData,"",selectedCompareMes)

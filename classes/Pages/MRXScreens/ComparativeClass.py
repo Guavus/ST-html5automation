@@ -6,7 +6,7 @@ from classes.Pages.GlobalFiltersPopClass import *
 from classes.Components.TreeComponentClass import *
 from classes.Components.TimeRangeComponentClass import *
 from classes.Components.WorkflowStartComponent import *
-from classes.Components.QuickTrendsComponentClass import *
+from classes.Components.CBComponentClass import *
 
 class ComparativeClass(BasePopClass):
     def __init__(self,driver):
@@ -22,6 +22,6 @@ class ComparativeClass(BasePopClass):
         self.tree = TreeComponentClass(driver)
         self.timeBar = TimeRangeComponentClass()
         self.wfstart=WorkflowStartComponentClass()
-        self.trend=QuickTrendsComponentClass()
+        self.trend=CBComponentClass()
         # Common Components
         BasePopClass.__init__(self,driver)

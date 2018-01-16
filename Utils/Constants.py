@@ -21,8 +21,8 @@ class Constants(object):
         ConfigXMLFile=['../configs/mural_coreconfig.xml', '../configs/mural_solutionconfig.xml', '../configs/mural_userlevel_config.xml']
 
 
-    # BROWSER = "chrome"
-    BROWSER = "ff"
+    BROWSER = "chrome"
+    #BROWSER = "ff"
     isOffline = False
     if isOffline:
         URL = 'localhost:3333'
@@ -33,9 +33,12 @@ class Constants(object):
         #URL = "https://ucsd.cisco.com:7443"
         #URL="http://192.168.174.71:9080"
         #URL="http://192.168.113.191:9080/app/user-distribution"
-        #URL="http://192.168.195.144:9080"
-        MRX_UM_URL = "http://192.168.104.190/um/"
-        #URLURL="https://funupgrade.guavus.com:6443"
+
+
+        URL="http://192.168.192.251/mrx"
+        MRX_UM_URL = "http://192.168.192.251/um"
+        #URL="https://funupgrade.guavus.com:6443"
+
         #URL="http://192.168.192.204:28080/"
         #URL="http://192.168.195.57:28080/"
         #URL="http://192.168.162.33:9080/"
@@ -52,18 +55,10 @@ class Constants(object):
     # URL = 'https://nrmca-upgrade-setup.sprintspectrum.com:6443/'
     # URL = 'https://nrmca-perf.guavus.com:44710/'
 
-    ## --- for 115.11/mrx/app/
-    #USERNAME = 'admin'
-    #PASSWORD = 'abc125'
 
-    ## --- for 195.144/mrx
-    USERNAME = "admin"
-    PASSWORD = "abc125"
-
-    ## --- for offline mode
-    #USERNAME = 'admin'
-    #PASSWORD = 'admin123'
-
+    USERNAME = 'admin'
+    PASSWORD = 'abc125'
+    #PASSWORD = 'New@1234'
 
     SITES = 'site_Screen'
 
@@ -108,9 +103,11 @@ class Constants(object):
     FLAGHOURLY = 1
     localserver = "http://localhost:3333/index2.html"
 
-    chromedriverpath = "/Users/praveen.garg1/html5automation/chromedriver/chromedriver"
-    #chromedriverpath = "C:\Users\Administrator\Downloads\chromedriver_win32\chromedriver.exe"
-    #chromdownloadpath= "C:\Users\Administrator\csvdownload"
+
+    chromedriverpath = "/Users/deepanshu.ahuja/html5automation/chromedriver/chromedriver"
+    # chromedriverpath = "C:\Users\Administrator\Downloads\chromedriver_win32\chromedriver.exe"
+    chromdownloadpath= "/Users/deepanshu.ahuja/html5automation/download"
+
     #chromedriverpath = "/Users/mayank.mahajan/PycharmProjects/html5automation/chromedriver/chromedriver228"
     firefoxdriverpath = "/usr/local/bin/geckodriver"
     firefoxdownloadpath = "/Users/kritika.saxena/UI_Auto/Downloads"
