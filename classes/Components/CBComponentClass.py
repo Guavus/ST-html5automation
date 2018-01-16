@@ -16,6 +16,9 @@ class CBComponentClass(QuickTrendsComponentClass):
         try:
             totalbar, barHandle = self.getPointsOnHorizontalBarForHover_DCT(h1, parent=parent, child=child)
             yAxisPointList = self.getAxisPoint(self.util.utility.getHandle(setup, screenName,parent),child='yaxis')
+            for el in barHandle:
+                logger.info("Is handle visible =%s",str(el.is_displayed()))
+
             tooltipText = {}
             for index,el in enumerate(barHandle):
                 if el=="None":
