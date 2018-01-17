@@ -514,6 +514,7 @@ class QuickTrendsComponentClass(BaseComponentClass):
                     hoverPointHandle.append(handle[el_index].find_elements_by_tag_name("rect")[0])
                 else:
                     hoverPointHandle.append("None")
+                    logger.info("Got no bar to hover, hence setting handler to NONE")
             return len(hoverPointHandle),hoverPointHandle
 
         except Exception as e:

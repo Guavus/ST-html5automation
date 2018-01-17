@@ -96,15 +96,15 @@ try:
     for ql in quickLink_list:
         ql = "Last 7 days"
         for cd in range(len(compareDimList)):
-            #compareDimList[cd] = "Category"
+            compareDimList[cd] = "Category"
             selectedCompareDim = cbScreenInstance.dropdown.doSelectionOnVisibleDropDown(getHandle(setup, MRXConstants.COMPARATIVESCREEN, "allselects"), str(compareDimList[cd]), index=0, parent="allselects")
             isError(setup)
             for cm in range(len(compareMesList)):
-                #compareMesList[cm] = "# Contextual Session"
+                compareMesList[cm] = "Volume"
                 selectedCompareMes = cbScreenInstance.dropdown.doSelectionOnVisibleDropDown(getHandle(setup, MRXConstants.COMPARATIVESCREEN, "allselects"), str(compareMesList[cm]), index=1,parent="allselects")
                 isError(setup)
                 for bd in range(len(brokendownDimList)):
-                    #brokendownDimList[bd] = "Tier 2"
+                    brokendownDimList[bd] = "Level 1"
                     selectedBrokenDown = cbScreenInstance.dropdown.doSelectionOnVisibleDropDown(getHandle(setup, MRXConstants.COMPARATIVESCREEN, "allselects"), str(brokendownDimList[bd]), index=2,parent="allselects")
                     isError(setup)
                     sleep(MRXConstants.SleepForComparativeScreen)
@@ -134,7 +134,9 @@ try:
                         resultlogger.info("No Table Data for selected compare = %s, measure = %s,brokendownvalue = %s :: Screenshot with name = %s is saved"
                                  ,selectedCompareDim,selectedCompareMes,brokendownDimList, r)
 
-
+                    chartData={}
+                    chartHandle={}
+                    color_List=[]
     setup.d.close()
     import MRX.test_Header
     import MRX.test_Footer

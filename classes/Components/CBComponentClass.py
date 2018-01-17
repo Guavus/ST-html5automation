@@ -16,18 +16,26 @@ class CBComponentClass(QuickTrendsComponentClass):
         try:
             totalbar, barHandle = self.getPointsOnHorizontalBarForHover_DCT(h1, parent=parent, child=child)
             yAxisPointList = self.getAxisPoint(self.util.utility.getHandle(setup, screenName,parent),child='yaxis')
+
+            ## will be deleted
             for el in barHandle:
-                logger.info("Is handle visible =%s",str(el.is_displayed()))
+                try:
+                    logger.info("Is handle visible =%s",str(el.is_displayed()))
+                except Exception as e:
+                    logger.error("got exception %s", str(e))
+            ###
 
             tooltipText = {}
             for index,el in enumerate(barHandle):
                 if el=="None":
                     tooltipText[yAxisPointList[index]]=[]
+                    logger.info("Got no bar to hover with yAxis label = %s and index = %s ",yAxisPointList[index],index)
                 else:
                     setup.d.execute_script("return arguments[0].scrollIntoView();", el)
                     logger.info("Going to perform Hover Action")
-                    time.sleep(2)
+                    #time.sleep(2)
                     ActionChains(setup.d).move_to_element(el).perform()
+                    time.sleep(2)
                     flag,text=self.getTooltipTextAfterHover(setup,screenName,tooltipParent,selectedCompareMes=selectedCompareMes)
                     if not flag:
                         logger.info('Not able to Perform Hover Action')
@@ -71,12 +79,13 @@ class CBComponentClass(QuickTrendsComponentClass):
                             toolTipText[dim].append([self.rgb_to_hex(
                                 tooltipHandle[tooltipParent]['color_Box'][i].value_of_css_property('background-color')),
                                                      valueArray[i + 1]])
+                        logger.info("Found aggregable measure %s",selectedCompareMes)
                 else:
                     if len(tooltipHandle[tooltipParent]['color_Box']) == len(valueArray) - 3:  # for Color on Tooltip
                         for i in range(len(tooltipHandle[tooltipParent]['color_Box'])):
                             toolTipText[dim].append([self.rgb_to_hex(
                                 tooltipHandle[tooltipParent]['color_Box'][i].value_of_css_property('background-color')),valueArray[i + 2]])
-
+                        logger.info("Found non aggregable measure %s",selectedCompareMes)
 
                 logger.info("Tootltip found with value = %s",str(toolTipText))
             else:
