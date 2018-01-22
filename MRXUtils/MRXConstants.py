@@ -51,7 +51,7 @@ class MRXConstants(Constants):
     NUMBEROFFILTERSCENARIOFORCB=6
     NUMBEROFFILTERSCENARIOFORTM = 2
 
-    SleepForComparativeScreen=60
+    SleepForComparativeScreen=40
     SleepForTNMScreen = 20
 
     ChangePassword ='Change Password'
@@ -81,6 +81,7 @@ class MRXConstants(Constants):
     ALLTITLES="alltitles"
     ADMIN='admin'
     NODATAMSG='No Rows To Show'
+    NODATAMSGCB='No Data'
     NewUser="New User"
     ColumnHeadeForRole_UM="Application Role"
     ExpectedUser_MRX=['Admin,AppUser,SegmentManager']

@@ -24,6 +24,7 @@ try:
 
     timeRangeFromScreen, dimBeforeApplyFilter, measureBeforeApplyFilter, breakDownBeforeApplyFilter = CBHelper.setQuickLink_Compare_Measure_BreakDown(
         setup, cbScreenInstance, str(0))
+    time.sleep(MRXConstants.SleepForComparativeScreen)
 
     exportDropDownHandle = getHandle(setup, MRXConstants.COMPARATIVESCREEN,"dropdown_open")
     try:
@@ -36,6 +37,7 @@ try:
     except Exception as e:
         logger.info("Exception on Clicking export data dropdown:  " +str(e))
 
+    time.sleep(MRXConstants.SleepForComparativeScreen)
     num_of_files_downoaded = len([name for name in os.listdir(Constants.firefoxdownloadpath) if not name.startswith('.') and os.path.isfile(os.path.join(Constants.firefoxdownloadpath, name))])
     checkEqualAssert(1, num_of_files_downoaded, message='Verify CSV gets successfully downloaded on clicking Export data',testcase_id='MKR-3557')
 
@@ -57,8 +59,8 @@ try:
     ######################################  Verify Calendar functionality / Quicklink Label /  Different combinations of CB filter and quicklink scenarios  ####################################################
 
     testcase_IdList = setup.cM.getNodeElements("cbScreenFilters", 'testcase').keys()
-    for x in range(0, MRXConstants.NUMBEROFFILTERSCENARIOFORCB):
-        #k = testcase_IdList[x]
+    for k in testcase_IdList:
+    #for x in range(0, MRXConstants.NUMBEROFFILTERSCENARIOFORCB):
         #k = "testCalender"   tested for time range startTime="2017 March 08 12 00" endTime="2017 March 08 04 00"
         #k= "0"  ## ====> last 7 days  correct behaviour  tested for available time range 2016-01-01 00:00  to 2017-03-15 13:00, Segmentation filter
         #k = "1" ##====> Yesterday     correct behaviour  "   Device filter
@@ -66,7 +68,7 @@ try:
         #k ="3" ##====> Last Month  correct behaviour  "  Content filter
         #k = "4"  ###====> last 6 months   correct behaviour  " Usage filter
         #k= "multiFilters"  ###===> combo of all 5 filter categories
-        k="performanceScenario" ### ===> select 'All' and then deselct first element for dropdowns. Input fields  given. Trees not selected.
+        #k="performanceScenario" ### ===> select 'All' and then deselct first element for dropdowns. Input fields  given. Trees not selected.
 
         try:
             timeRangeFromScreen, dimBeforeApplyFilter, measureBeforeApplyFilter, breakDownBeforeApplyFilter = CBHelper.setQuickLink_Compare_Measure_BreakDown(setup,cbScreenInstance,str(k))
@@ -100,13 +102,13 @@ try:
             tableHandle = getHandle(setup, MRXConstants.COMPARATIVESCREEN, "table")
             if tableHandle['table']['ROWS'] == []:
                 msg1 = CBHelper.getNoDataMsg(setup, MRXConstants.COMPARATIVESCREEN, child='msgOnLegend')
-                checkEqualAssert(MRXConstants.NODATAMSG, msg1,measure='Verify that the meaningful message should be shown on the Table view when no data is on screen.',testcase_id='')
+                checkEqualAssert(MRXConstants.NODATAMSGCB, msg1,measure='Verify that the meaningful message should be shown on the Table view when no data is on screen.',testcase_id='')
 
                 r = "issue_" + str(random.randint(0, 9999999)) + ".png"
                 setup.d.save_screenshot(r)
                 logger.debug("No Table Data for globalfilter=%s :: Screenshot with name = %s is saved",screenTooltipData, r)
                 resultlogger.info("No Table Data for globalfilter=%s :: Screenshot with name = %s is saved",screenTooltipData, r)
-
+                UDHelper.clearFilter(setup, MRXConstants.COMPARATIVESCREEN)
             else:
                 tableData = cbScreenInstance.table.getTableData1WithColumnHavingColor(tableHandle)
                 chartHandle = getHandle(setup, MRXConstants.COMPARATIVESCREEN, 'trend-main')

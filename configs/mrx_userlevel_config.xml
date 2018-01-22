@@ -2,14 +2,14 @@
 <data>
      <availabletimerange>
 
-        <time id="starttime" year="2016" month ="03" day="26" hour="12" min="00"/>
-        <time id ="endtime" year="2016" month ="09" day="26" hour="00" min="00"/>
+        <time id="starttime" year="2017" month ="09" day="01" hour="01" min="00"/>
+        <time id ="endtime" year="2017" month ="11" day="04" hour="18" min="00"/>
 
 
         <!--<starttime id="0" year="2017" month ="05" day="07" hour="00" min="00"/>-->
 
-        <starttime id="0" year="2017" month ="07" day="01" hour="00" min="00"/>
-        <endtime id ="0" year="2017" month ="09" day="12" hour="13" min="00"/>
+        <starttime id="0" year="2017" month ="09" day="01" hour="01" min="00"/>
+        <endtime id ="0" year="2017" month ="11" day="04" hour="18" min="00"/>
 
 
         <starttime id="1" year="2017" month ="02" day="10" hour="19" min="00"/>
