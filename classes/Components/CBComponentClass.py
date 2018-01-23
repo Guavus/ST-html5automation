@@ -14,16 +14,9 @@ class CBComponentClass(QuickTrendsComponentClass):
 
     def hoverOverTicksGetMainHorizontalBarChartText(self,setup,h1,screenName,parent="trend-main",child="trendchart",tooltipParent="qttooltip",selectedCompareMes=""):
         try:
-            totalbar, barHandle = self.getPointsOnHorizontalBarForHover_DCT(h1, parent=parent, child=child)
-            yAxisPointList = self.getAxisPoint(self.util.utility.getHandle(setup, screenName,parent),child='yaxis')
 
-            ## will be deleted
-            for el in barHandle:
-                try:
-                    logger.info("Is handle visible =%s",str(el.is_displayed()))
-                except Exception as e:
-                    logger.error("got exception %s", str(e))
-            ###
+            yAxisPointList = self.getAxisPoint(self.util.utility.getHandle(setup, screenName,parent),child='yaxis')
+            totalbar, barHandle = self.getPointsOnHorizontalBarForHover_DCT(h1, parent=parent, child=child)
 
             tooltipText = {}
             for index,el in enumerate(barHandle):
@@ -33,9 +26,11 @@ class CBComponentClass(QuickTrendsComponentClass):
                 else:
                     setup.d.execute_script("return arguments[0].scrollIntoView();", el)
                     logger.info("Going to perform Hover Action")
-                    #time.sleep(2)
-                    ActionChains(setup.d).move_to_element(el).perform()
-                    time.sleep(2)
+                    # time.sleep(2)
+                    javaScript_str = "var evObj = document.createEvent('MouseEvents');" + "evObj.initMouseEvent(\"mouseover\",true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);" + "arguments[0].dispatchEvent(evObj);"
+                    setup.d.execute_script(javaScript_str, el)
+                    #ActionChains(setup.d).move_to_element(el).perform()
+                    time.sleep(1)
                     flag,text=self.getTooltipTextAfterHover(setup,screenName,tooltipParent,selectedCompareMes=selectedCompareMes)
                     if not flag:
                         logger.info('Not able to Perform Hover Action')
