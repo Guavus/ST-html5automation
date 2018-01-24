@@ -48,7 +48,20 @@ def map_YAxisWithColorList(yAxisPointList,color_List):
 
 def validateSortingInTable(cbScreenInstance,data,selectedQuicklink, selectedMeasure):
     index = cbScreenInstance.table.getIndexForValueInArray(data['header'], selectedMeasure)
-    selectedMeasure_value_list = [element[index] for element in data['rows']]
+
+    # for i in range(data['rows']):
+    #     if 'Others' in data['rows'][i][1]:
+    #         data['rows'] = data['rows'][:-1]
+    tmp_List=[]
+    for key in data['rows']:
+        print key
+        if 'Others' in key[1]:
+            print True
+            tmp_List = data['rows'][:-1]
+
+    # if 'Others' in data['rows']:
+    #     data['rows'] = data['rows'][:-1]
+    selectedMeasure_value_list = [element[index] for element in tmp_List]
 
     unitFlagForSession = False
     if 'Session' in selectedMeasure:

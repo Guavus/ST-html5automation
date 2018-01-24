@@ -43,12 +43,15 @@ try:
     checkShowOthers =True ### To check show others functionality only for the itertaion when it is set True
     checkShowMoreCount = 0  ### To check bar-table color sequence only for the first itertation with show others functinality test
     for cd in range(len(compareDimList)):
+        #compareDimList[cd] = "Manufacturer"
         selectedCompareDim = cbScreenInstance.dropdown.doSelectionOnVisibleDropDown(getHandle(setup, MRXConstants.COMPARATIVESCREEN, "allselects"), str(compareDimList[cd]), index=0, parent="allselects")
         isError(setup)
         for cm in range(len(compareMesList)):
+            #compareMesList[cm] = "Volume"
             selectedCompareMes = cbScreenInstance.dropdown.doSelectionOnVisibleDropDown(getHandle(setup, MRXConstants.COMPARATIVESCREEN, "allselects"), str(compareMesList[cm]), index=1,parent="allselects")
             isError(setup)
             for bd in range(len(brokendownDimList)):
+                #brokendownDimList[bd] = "Tier 1"
                 selectedBrokenDown = cbScreenInstance.dropdown.doSelectionOnVisibleDropDown(getHandle(setup, MRXConstants.COMPARATIVESCREEN, "allselects"), str(brokendownDimList[bd]), index=2,parent="allselects")
                 isError(setup)
                 sleep(MRXConstants.SleepForComparativeScreen)
@@ -61,6 +64,8 @@ try:
                     if not checkLoadMore and checkLoadMoreCount==0:
                         CBHelper.validateSortingInTable(cbScreenInstance,tableData,"",selectedCompareMes)
                         color_List=cbScreenInstance.trend.getAllColorOnHorizontalBar_DCT(setup,chartHandle)
+                        chartHandle = getHandle(setup, MRXConstants.COMPARATIVESCREEN, 'trend-main')
+                        chartData = cbScreenInstance.trend.hoverOverTicksGetMainHorizontalBarChartText(setup,chartHandle,MRXConstants.COMPARATIVESCREEN)
                         yAxisPointList = CBHelper.getAxisPoint(getHandle(setup, MRXConstants.COMPARATIVESCREEN, 'trend-main'), child='yaxis')
                         barColorDict = CBHelper.map_YAxisWithColorList(yAxisPointList,color_List)
                         flag=CBHelper.validateColorSequence(barColorDict,tableData)
@@ -73,6 +78,8 @@ try:
                     if not checkShowOthers and checkShowMoreCount == 0:
                         CBHelper.validateSortingInTable(cbScreenInstance, tableData, "", selectedCompareMes)
                         color_List = cbScreenInstance.trend.getAllColorOnHorizontalBar_DCT(setup, chartHandle)
+                        chartHandle = getHandle(setup, MRXConstants.COMPARATIVESCREEN, 'trend-main')
+                        chartData = cbScreenInstance.trend.hoverOverTicksGetMainHorizontalBarChartText(setup,chartHandle,MRXConstants.COMPARATIVESCREEN)
                         yAxisPointList = CBHelper.getAxisPoint(getHandle(setup, MRXConstants.COMPARATIVESCREEN, 'trend-main'), child='yaxis')
                         barColorDict = CBHelper.map_YAxisWithColorList(yAxisPointList, color_List)
                         flag = CBHelper.validateColorSequence(barColorDict, tableData)

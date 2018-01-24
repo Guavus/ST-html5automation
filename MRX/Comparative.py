@@ -92,11 +92,13 @@ try:
     quickLinks_listFromXML = setup.cM.getNodeElements("quickLinkTableTestCaseMapping_CB", 'quicklink')
 
     quickLink_list = quickLinks_listFromXML.keys()
-
+    checkLoadMore = True    ### To check load more functionality only for the itertaion when it is set True
+    checkShowOthers = True  ### To check show others functionality only for the itertaion when it is set True
     for ql in quickLink_list:
         ql = "Last 7 days"
         for cd in range(len(compareDimList)):
             #compareDimList[cd] = "Category"
+            #compareDimList[cd] = "Manufacturer"
             selectedCompareDim = cbScreenInstance.dropdown.doSelectionOnVisibleDropDown(getHandle(setup, MRXConstants.COMPARATIVESCREEN, "allselects"), str(compareDimList[cd]), index=0, parent="allselects")
             isError(setup)
             for cm in range(len(compareMesList)):
@@ -105,6 +107,7 @@ try:
                 isError(setup)
                 for bd in range(len(brokendownDimList)):
                     #brokendownDimList[bd] = "Level 1"
+                    # brokendownDimList[bd] = "Tier 1"
                     selectedBrokenDown = cbScreenInstance.dropdown.doSelectionOnVisibleDropDown(getHandle(setup, MRXConstants.COMPARATIVESCREEN, "allselects"), str(brokendownDimList[bd]), index=2,parent="allselects")
                     isError(setup)
                     sleep(MRXConstants.SleepForComparativeScreen)
@@ -120,6 +123,49 @@ try:
                         flag=CBHelper.validateColorSequence(barColorDict,tableData)
                         checkEqualAssert(True,flag,message="Verify the colour sequence of the table and bar",testcase_id="MKR-3563")
                         flag=CBHelper.validateColorOnTooltipWithBar(chartData,barColorDict)
+                        #######################  Check load more functionality  ##############################################
+                        checkLoadMore = CBHelper.expandMoreOnCB(setup, cbScreenInstance, MRXConstants.COMPARATIVESCREEN,
+                                                                checkLoadMore=checkLoadMore)
+                        if not checkLoadMore:
+                            CBHelper.validateSortingInTable(cbScreenInstance, tableData, "", selectedCompareMes)
+                            color_List = cbScreenInstance.trend.getAllColorOnHorizontalBar_DCT(setup, chartHandle)
+                            chartHandle = getHandle(setup, MRXConstants.COMPARATIVESCREEN, 'trend-main')
+                            chartData = cbScreenInstance.trend.hoverOverTicksGetMainHorizontalBarChartText(setup,
+                                                                                                           chartHandle,
+                                                                                                           MRXConstants.COMPARATIVESCREEN)
+                            yAxisPointList = CBHelper.getAxisPoint(
+                                getHandle(setup, MRXConstants.COMPARATIVESCREEN, 'trend-main'), child='yaxis')
+                            barColorDict = CBHelper.map_YAxisWithColorList(yAxisPointList, color_List)
+                            flag = CBHelper.validateColorSequence(barColorDict, tableData)
+                            checkEqualAssert(True, flag,
+                                             message="Verify the colour sequence of the table and bar with load more functionality",
+                                             testcase_id="MKR-3563")
+                            CBHelper.validateColorOnTooltipWithBar(chartData, barColorDict)
+                            #checkLoadMoreCount = checkLoadMoreCount + 1
+                        ###########################  Load More functionality ends ###############################
+
+
+                        #######################  Check show others functionality  ##############################################
+                        checkShowOthers = CBHelper.expandMoreOnCBTable(setup, cbScreenInstance,
+                                                                       MRXConstants.COMPARATIVESCREEN,
+                                                                       checkShowOther=checkShowOthers)
+                        if not checkShowOthers:
+                            CBHelper.validateSortingInTable(cbScreenInstance, tableData, "", selectedCompareMes)
+                            color_List = cbScreenInstance.trend.getAllColorOnHorizontalBar_DCT(setup, chartHandle)
+                            chartHandle = getHandle(setup, MRXConstants.COMPARATIVESCREEN, 'trend-main')
+                            chartData = cbScreenInstance.trend.hoverOverTicksGetMainHorizontalBarChartText(setup,
+                                                                                                           chartHandle,
+                                                                                                           MRXConstants.COMPARATIVESCREEN)
+                            yAxisPointList = CBHelper.getAxisPoint(
+                                getHandle(setup, MRXConstants.COMPARATIVESCREEN, 'trend-main'), child='yaxis')
+                            barColorDict = CBHelper.map_YAxisWithColorList(yAxisPointList, color_List)
+                            flag = CBHelper.validateColorSequence(barColorDict, tableData)
+                            checkEqualAssert(True, flag,
+                                             message="Verify the colour sequence of the table and bar with Show others functionality",
+                                             testcase_id="MKR-3563")
+                            CBHelper.validateColorOnTooltipWithBar(chartData, barColorDict)
+                            #checkShowMoreCount = checkShowMoreCount + 1
+                        ########################### Show others functionality ends ############################
 
                     elif tableData['rows']== Constants.NODATA:
                         msg1 = CBHelper.getNoDataMsg(setup, MRXConstants.COMPARATIVESCREEN, child='msgOnLegend')
@@ -134,9 +180,8 @@ try:
                         resultlogger.info("No Table Data for selected compare = %s, measure = %s,brokendownvalue = %s :: Screenshot with name = %s is saved"
                                  ,selectedCompareDim,selectedCompareMes,brokendownDimList, r)
 
-                    chartData={}
-                    chartHandle={}
-                    color_List=[]
+
+
     setup.d.close()
     import MRX.test_Header
     import MRX.test_Footer
