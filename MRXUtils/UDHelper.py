@@ -282,10 +282,13 @@ def setQuickLink_Measure(setup,udScreenInstance,i='0'):
 def setFilters(setup,udpScreenInstance,tab_name,k ="0",toggleStateFlag=False,screen=MRXConstants.UDSCREEN):
     if screen==MRXConstants.TMSCREEN:
         udp_filter= parseFilters(setup.cM.getNodeElements("tmScreenFilters",tab_name))
+        screenName = "tmScreenFilters"
     elif screen==MRXConstants.COMPARATIVESCREEN:
         udp_filter= parseFilters(setup.cM.getNodeElements("cbScreenFilters",tab_name))
+        screenName = "cbScreenFilters"
     else:
         udp_filter = parseFilters(setup.cM.getNodeElements("udpScreenFilters", tab_name))
+        screenName = "udpScreenFilters"
 
     udpfilters= setup.cM.getNodeElements("udpfilters","filter")
     udpScreenInstance.clickLink(udpfilters[tab_name]['locatorText'],getHandle(setup,MRXConstants.UDPPOPUP,MRXConstants.ALLLINKS))
@@ -328,7 +331,7 @@ def setFilters(setup,udpScreenInstance,tab_name,k ="0",toggleStateFlag=False,scr
 
 
         elif len(udp_filter[k][i]) ==1 and udp_filter[k][i][0] == 'Input':
-            input_value=setup.cM.getNodeElements("udpScreenFilters",tab_name)[k]['inputvalue']
+            input_value=setup.cM.getNodeElements(screenName,tab_name)[k]['inputvalue']
             inputvalue=str(udpScreenInstance.cm.sendkeys_input(input_value, getHandle(setup,MRXConstants.UDPPOPUP,'allinputs'), inputFieldIndex))
             inputFieldIndex = inputFieldIndex + 1
 
