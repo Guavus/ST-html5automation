@@ -261,16 +261,15 @@ class TableComponentClass(BaseComponentClass):
     def getRows1(self,colcount,h,length,driver,colIndex=0,scroll=False,ForTableData=False):
 
         if scroll:
-            if len(h['ROWS']) > 7*colcount:
-                driver.d.execute_script("return arguments[0].scrollIntoView();", h['ROWS'][len(h['ROWS'])-6*colcount])
-            else:
-                driver.d.execute_script("return arguments[0].scrollIntoView();", h['ROWS'][len(h['ROWS']) - 1 * colcount])
-
+            max=0
+            for cell in h['ROWS']:
+                if cell.location['y']>=max and cell.text!='':
+                    maxCell=cell
+                    max = cell.location['y']
+            # We assume that atleast one cell in a row have some text
+            driver.d.execute_script("return arguments[0].scrollIntoView();", maxCell)
             sleep(4)
             h = self.utility.utility.getHandle(driver,"TableDummy_Screen","table")["table"]
-
-
-
 
         elHandle=h['ROWS']
 
@@ -308,13 +307,25 @@ class TableComponentClass(BaseComponentClass):
     def getRow_WithRowHandle(self,colcount,h,driver,colIndex=0,scroll=False):
 
         if scroll:
-            if len(h['ROWS']) > 7:
-                driver.d.execute_script("return arguments[0].scrollIntoView();", h['ROWS'][len(h['ROWS'])-6*colcount])
-            else:
-                driver.d.execute_script("return arguments[0].scrollIntoView();", h['ROWS'][len(h['ROWS']) - 1 * colcount])
+            max = 0
+            for cell in h['ROWS']:
+                if cell.location['y'] >= max and cell.text != '':
+                    maxCell = cell
+                    max = cell.location['y']
+            # We assume that atleast one cell in a row have some text
+
+            driver.d.execute_script("return arguments[0].scrollIntoView();", maxCell)
 
             sleep(4)
-            h = self.utility.utility.getHandle(driver,"TableDummy_Screen","table")["table"]
+            h = self.utility.utility.getHandle(driver, "TableDummy_Screen", "table")["table"]
+
+            # if len(h['ROWS']) > 7:
+            #     driver.d.execute_script("return arguments[0].scrollIntoView();", h['ROWS'][len(h['ROWS'])-6*colcount])
+            # else:
+            #     driver.d.execute_script("return arguments[0].scrollIntoView();", h['ROWS'][len(h['ROWS']) - 1 * colcount])
+            #
+            # sleep(4)
+            # h = self.utility.utility.getHandle(driver,"TableDummy_Screen","table")["table"]
 
         elHandle=h['ROWSWITHSCROLL']
 
