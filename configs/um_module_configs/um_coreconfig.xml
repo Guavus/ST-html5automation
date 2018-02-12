@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<data>
+
+
+    <screenConfigs>
+    <screenConfig id = "mrxUserPopUp_Screen">
+            <component id = "allinputs" selector="css selector" locator="gvs-popup.add-edit-user-popup" parent="True"/>
+            <component id = "allcheckboxes" selector="css selector" locator="gvs-popup.add-edit-user-popup" parent="True"/>
+            <component id ="allbuttons" selector="css selector" locator="gvs-popup.add-edit-user-popup" parent="True"/>
+            <component id ="allselects" selector="css selector" locator="gvs-popup.add-edit-user-popup" parent="True"/>
+            <component id ="icons" selector="css selector" locator="gvs-popup.add-edit-user-popup" parent="True"/>
+            <component id ="allsliders" selector="css selector" locator="gvs-popup.add-edit-user-popup" parent="True"/>
+            <component id="errorMsgContainer" selector="css selector" locator="gvs-popup.add-edit-user-popup" parent="True"/>
+            <component id="alllabels" selector="css selector" locator="div[class*=add][class*=User],div[class*=add][class*=Edit]" parent="True"/>
+        </screenConfig>
+    </screenConfigs>
+
+
+    <componentConfigs>
+
+        <componentConfig id="username">
+            <component id = "username" value = "admin" selector = 'name' locator = 'username' action="sendKeys" />
+        </componentConfig>
+
+        <componentConfig id="password">
+            <component id = "password" value = "Admin@123" selector = 'name' locator = 'password' action="sendKeys"/>
+        </componentConfig>
+
+        <componentConfig id="signin">
+            <component id = "signin" selector="xpath" locator='//*[contains(text(), "Sign in")]' action="click"/>
+            <!--<component id = "signin" selector="css selector" locator='[translate="login.form.button"]' action="click"/>-->
+        </componentConfig>
+
+    </componentConfigs>
+
+</data>

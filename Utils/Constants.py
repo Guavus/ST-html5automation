@@ -8,13 +8,19 @@ class Constants(object):
     # URL = "https://scrum.jalapeno.com:6443"
     # URL = "https://uiscrummural.cisco.com:6443/"
 
-    PROJECT = "MRX"
+    PROJECT = "UM"
     #PROJECT = "MURAL"
+
     if PROJECT == "MRX":
         byteUnits = ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"]
         TimeRangeSpliter='-'
-        #ConfigXMLFile=['../configs/mural_coreconfig.xml', '../configs/mrx_solutionconfig.xml','../configs/mrx_userlevel_config.xml']
-        ConfigXMLFile=['../configs/mural_coreconfig.xml', '../configs/mrx_solutionconfig.xml','../configs/mrx_userlevel_config.xml','../configs/dummy.xml']
+        ConfigXMLFile=['../configs/mural_coreconfig.xml', '../configs/mrx_solutionconfig.xml','../configs/mrx_userlevel_config.xml']
+        # ConfigXMLFile=['../configs/mural_coreconfig.xml', '../configs/mrx_solutionconfig.xml','../configs/mrx_userlevel_config.xml','../configs/dummy.xml']
+    elif PROJECT == "UM":
+        byteUnits = ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"]
+        TimeRangeSpliter='-'
+        ConfigXMLFile=['../configs/mural_coreconfig.xml', '../configs/mrx_solutionconfig.xml','../configs/mrx_userlevel_config.xml', '../configs/um_module_configs/um_coreconfig.xml']
+
     else:
         byteUnits = ["", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"]
         TimeRangeSpliter = 'to'
@@ -33,7 +39,8 @@ class Constants(object):
         #URL = "https://ucsd.cisco.com:7443"
         #URL="http://192.168.174.71:9080"
         #URL="http://192.168.113.191:9080/app/user-distribution"
-        URL="http://192.168.195.144:9080"
+        URL="http://192.168.104.179:8080/um/"
+        # URL="http://192.168.195.144:9080"
         MRX_UM_URL = "http://192.168.104.190/um/"
         #URL="https://funupgrade.guavus.com:6443"
         #URL="http://192.168.192.204:28080/"
@@ -44,7 +51,7 @@ class Constants(object):
     # URL = 'https://nrmca-upgrade-setup.sprintspectrum.com:6443/'
     # URL = 'https://nrmca-perf.guavus.com:44710/'
     USERNAME = 'admin'
-    PASSWORD = 'admin123'
+    PASSWORD = 'abc125'
     #PASSWORD = 'New@1234'
     SITES = 'site_Screen'
 
@@ -89,10 +96,10 @@ class Constants(object):
     FLAGHOURLY = 1
     localserver = "http://localhost:3333/index2.html"
 
-    chromedriverpath = "/Users/praveen.garg1/html5automation/chromedriver/chromedriver"
+    # chromedriverpath = "/Users/praveen.garg1/html5automation/chromedriver/chromedriver"
     # chromedriverpath = "C:\Users\Administrator\Downloads\chromedriver_win32\chromedriver.exe"
     chromdownloadpath= "C:\Users\Administrator\csvdownload"
-    #chromedriverpath = "/Users/mayank.mahajan/PycharmProjects/html5automation/chromedriver/chromedriver228"
+    chromedriverpath = "/Users/mayank.mahajan/PycharmProjects/html5automation/chromedriver/chromedriver7"
     firefoxdriverpath = "/Users/praveen.garg1/Downloads/geckodriver"
     firefoxdownloadpath = "/Users/praveen.garg1/html5automation/download"
 
