@@ -3,6 +3,7 @@ from Utils.utility import *
 from MRXUtils.MRXConstants import *
 from classes.Pages.MRXScreens.SegmentScreenClass import *
 
+from dateutil.parser import parse
 
 
 def findPropertyColor(screenInstance,h,property,parent="allinputs",child="input",index=0):
@@ -64,7 +65,29 @@ def sortTable(setup,insatnce,columnName="Name"):
     for i in range(len(data2['rows'])):
         col.append(data2['rows'][i][columnIndex])
 
-    checkEqualAssert(sorted(col,key=lambda s: s.lower(),reverse=True), col,message="Verify Sorting For ColumnName ="+columnName,testcase_id='MKR-1691')
+    if len(col)!=0:
+        try:
+            if type(int(col[0]))==int:
+                tmp_col=[]
+                for elem in col:
+                    tmp_col.append(int(elem))
+                checkEqualAssert(sorted(tmp_col,reverse=True),tmp_col,message="Verify Sorting For ColumnName ="+columnName,testcase_id='MKR-1691')
+        except:
+            try:
+
+                if parse(str(col[0]).strip()).strftime("%s"):
+                    newColumn = []
+                    for val in col:
+                        newColumn.append(parse(str(val).strip()).strftime("%s"))
+
+                    checkEqualAssert(sorted(newColumn,reverse=True), newColumn,message="Verify Sorting For ColumnName =" + columnName, testcase_id='MKR-1691')
+
+            except:
+                checkEqualAssert(sorted(col, key=lambda s: s.lower(), reverse=True), col,message="Verify Sorting For ColumnName =" + columnName, testcase_id='MKR-1691')
+    else:
+        checkEqualAssert(sorted(col, key=lambda s: s.lower(), reverse=True), col,message="Verify Sorting For ColumnName =" + columnName, testcase_id='MKR-1691')
+
+
     logger.info("Sorted")
     cdata2 = insatnce.table.convertDataToDictWithKeyAsRow(data2)
     return cdata2

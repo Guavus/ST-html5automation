@@ -6,6 +6,7 @@ from MRXUtils import SegmentHelper
 from MRXUtils import UDHelper
 from Utils.AvailableMethod import *
 from classes.Pages.ExplorePageClass import *
+from classes.Components.WorkflowStartComponent import *
 import json
 
 
@@ -59,12 +60,13 @@ def fireBV(dataFromUI,method,table_name,sort_property,testcase=''):
 
 
 try:
-
     setup = SetUp()
     login(setup,Constants.USERNAME,Constants.PASSWORD)
     segmentScreenInstance = SegmentScreenClass(setup.d)
     exploreHandle = getHandle(setup, MRXConstants.ExploreScreen)
-    segmentScreenInstance.explore.exploreList.launchModule(exploreHandle, "USER DISTRIBUTION")
+    exploreScreenInstance = ExplorePageClass(setup.d)
+    exploreScreenInstance.exploreList.launchModule(exploreHandle, "WORKFLOWS")
+    WorkflowStartComponentClass().launchScreen("Distribution", getHandle(setup, MRXConstants.WFSCREEN))
     UDHelper.clearFilter(setup, MRXConstants.UDSCREEN)
     udpFilterFromUDRScreenWithoutAnyFilter = UDHelper.getUDPFiltersFromScreen(MRXConstants.UDSCREEN, setup)
 
