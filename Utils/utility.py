@@ -34,6 +34,7 @@ import glob
 from classes.Pages.GenerateReportsPopClass import *
 from classes.Pages.ReportsModuleClass import *
 from classes.Pages.GlobalFiltersPopClass import *
+from dateutil.parser import parse
 from classes.Objects.Report import *
 
 # def setUp():
@@ -1121,6 +1122,13 @@ def getepoch(datestring,tOffset=Constants.TIMEZONEOFFSET,tPattern=Constants.TIME
     else:
         epoch = int(calendar.timegm(time.strptime(datestring.strip(),tPattern)))
         return epoch - tOffset*3600
+
+
+def getepoch_Using_Dateutil(datestring):
+    logger.info("Method called :: getepoch_Using_Dateutil for DateString =%s",str(datestring))
+    epochValue=int((parse(datestring.strip()) - datetime.datetime(1970, 1, 1)).total_seconds())
+    logger.info("Got epoch = %s for date = %s",str(epochValue),str(datestring))
+    return epochValue
 
 def getDateString(epoch,tOffset=Constants.TIMEZONEOFFSET,tPattern=Constants.TIMEPATTERN):
     tuple = time.gmtime(epoch+tOffset*3600)

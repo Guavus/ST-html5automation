@@ -74,11 +74,10 @@ def sortTable(setup,insatnce,columnName="Name"):
                 checkEqualAssert(sorted(tmp_col,reverse=True),tmp_col,message="Verify Sorting For ColumnName ="+columnName,testcase_id='MKR-1691')
         except:
             try:
-
-                if parse(str(col[0]).strip()).strftime("%s"):
+                if getepoch_Using_Dateutil(col[0]):
                     newColumn = []
                     for val in col:
-                        newColumn.append(parse(str(val).strip()).strftime("%s"))
+                        newColumn.append(getepoch_Using_Dateutil(val))
 
                     checkEqualAssert(sorted(newColumn,reverse=True), newColumn,message="Verify Sorting For ColumnName =" + columnName, testcase_id='MKR-1691')
 

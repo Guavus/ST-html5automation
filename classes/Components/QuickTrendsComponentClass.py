@@ -236,7 +236,8 @@ class QuickTrendsComponentClass(BaseComponentClass):
                 headerhandles = self.util.utility.getHandle(setup,screenName,parent_tooltip)
                 #time.sleep(1) # only to show in demo
 
-                key=parse(str(tempHandlers[parent][child_tooltip][0].text).split("-")[0].strip()).strftime("%s")
+                #key=parse(str(tempHandlers[parent][child_tooltip][0].text).split("-")[0].strip()).strftime("%s")
+                key=self.util.utility.getepoch_Using_Dateutil(str(tempHandlers[parent][child_tooltip][0].text).split("-")[0].strip())
                 tooltipText[key] = str(headerhandles[parent_tooltip][child_tooltip][0].text)
                 compareTooltipText[key] = str(compareHandlers[compare_parent][child_tooltip][active_compare_chart].text)
 

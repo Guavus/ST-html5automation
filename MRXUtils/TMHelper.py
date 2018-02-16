@@ -127,7 +127,8 @@ def verifySynchBetweenTablaAndChart(tableData, legends, chartData, screenInstanc
                 else:
                     key_table_with_year = key_table
 
-                if str(parse(str(key_table_with_year).strip()).strftime("%s")).strip() == str(timestamp_key).strip():
+                #if str(parse(str(key_table_with_year).strip()).strftime("%s")).strip() == str(timestamp_key).strip():
+                if str(getepoch_Using_Dateutil(str(key_table_with_year).strip())).strip() == str(timestamp_key).strip():
                     KEYFLAG = True
                     for key in legends[timestamp_key]:
                         colIndex=screenInstance.table.getIndexForValueInArray(tableData['header'],key)
