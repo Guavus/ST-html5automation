@@ -543,7 +543,7 @@
             <component id = "view" selector="class name" locator='viewGridIcon' wait = 'skip'/>
             <component id = "info_edit" selector="css selector" locator='[class*=info_RejectedIcon],[class*=edit_GridIcon]' wait = 'skip'/>
             <component id = "checkbox" selector="class name" locator="ag-selection-checkbox" wait="skip"/>
-            <component id = "no_data_msg" selector="id" locator="overlay"/>
+            <component id = "no_data_msg" selector="css selector" locator="[ref=overlay]"/>
         </componentConfig>
 
         <componentConfig id="qttooltip">
