@@ -3,17 +3,53 @@
 
 
     <screenConfigs>
-    <screenConfig id = "mrxUserPopUp_Screen">
-            <component id = "allinputs" selector="css selector" locator="gvs-popup.add-edit-user-popup" parent="True"/>
-            <component id = "allcheckboxes" selector="css selector" locator="gvs-popup.add-edit-user-popup" parent="True"/>
-            <component id ="allbuttons" selector="css selector" locator="gvs-popup.add-edit-user-popup" parent="True"/>
-            <component id ="allselects" selector="css selector" locator="gvs-popup.add-edit-user-popup" parent="True"/>
-            <component id ="icons" selector="css selector" locator="gvs-popup.add-edit-user-popup" parent="True"/>
-            <component id ="allsliders" selector="css selector" locator="gvs-popup.add-edit-user-popup" parent="True"/>
-            <component id="errorMsgContainer" selector="css selector" locator="gvs-popup.add-edit-user-popup" parent="True"/>
+        <screenConfig id = "explore_Screen">
+            <component id = "alllabels" selector="css selector" locator="div.umMenu" parent="True"/>
+            <component id = "alllinks" selector="css selector" locator="li.dropDown" parent="True"/>
+        </screenConfig>
+
+        <screenConfig id = "roleManagement_Screen">
+            <!--<component id = "allspans" selector="css selector" locator="div.search-bar" parent="True"/>-->
+            <component id = "newRoleIcon" selector="css selector" locator="div.search-bar" parent="True"/>
+            <!--<component id = "allinputs" selector="css selector" locator="div.search-bar" parent="True"/>-->
+            <component id ="alllabels" selector="css selector" locator="div.search-bar" parent="True"/>
+            <component id = "table" selector="tag name" locator="div.grid-container" parent="True"/>
+            <!--<component id = 'umalert' selector="class name" locator="confirmationContainer" parent="True"/>-->
+        </screenConfig>
+
+        <screenConfig id = "newRolePopUp_Screen">
+            <component id = "allinputs" selector="css selector" locator="div.addEditRoleFormDiv" parent="True"/>
+            <!--<component id = "allinputs" selector="css selector" locator="gvs-popup.add-edit-role-popup" parent="True"/>-->
+            <!--&lt;!&ndash;<component id = "allcheckboxes" selector="css selector" locator="gvs-popup.add-edit-user-popup" parent="True"/>&ndash;&gt;-->
+            <component id ="allbuttons" selector="css selector" locator="div.gvs-deep-ocean buttons" parent="True"/>-->
+            <component id ="popupIcons" selector="css selector" locator="gvs-popup.add-edit-role-popup" parent="True"/>
+            <!--<component id="errorMsgContainer" selector="css selector" locator="gvs-popup.add-edit-user-popup" parent="True"/>-->
+            <component id="alllabels" selector="css selector" locator="div.addEditRoleFormContainer" parent="True"/>
+            <component id="tree" selector ="css selector" locator="div.tree" parent="True"/>
+            <component id="content" selector ="css selector" locator="div.basePopupView" parent="True"/>
+            <component id="errorMsgRolePopup" selector ="css selector" locator="div.elementWidth" parent="True"/>
+        </screenConfig>
+
+        <screenConfig id = "deletePopUp_Screen">
+            <component id ="allbuttons" selector="css selector" locator="div.gvs-deep-ocean buttons" parent="True"/>-->
+            <!--<component id ="popupIcons" selector="css selector" locator="gvs-popup.add-edit-role-popup" parent="True"/>-->
+            <!--<component id="alllabels" selector="css selector" locator="div.addEditRoleFormContainer" parent="True"/>-->
+        </screenConfig>
+
+        <screenConfig id = "newUserPopUp_Screen">
+            <component id = "allinputs" selector="css selector" locator="div.modal-content" parent="True"/>
+            <component id = "allcheckboxes" selector="css selector" locator="div.modal-content" parent="True"/>
+            <component id ="allbuttons" selector="css selector" locator="div.modal-content" parent="True"/>
+            <component id ="allselects" selector="css selector" locator="div.modal-content" parent="True"/>
+            <component id ="icons" selector="css selector" locator="div.modal-content" parent="True"/>
+            <component id ="allsliders" selector="css selector" locator="div.modal-content" parent="True"/>
+            <component id="errorMsgContainer" selector="css selector" locator="div.modal-content" parent="True"/>
             <component id="alllabels" selector="css selector" locator="div[class*=add][class*=User],div[class*=add][class*=Edit]" parent="True"/>
         </screenConfig>
+
     </screenConfigs>
+
+
 
 
     <componentConfigs>
@@ -31,6 +67,37 @@
             <!--<component id = "signin" selector="css selector" locator='[translate="login.form.button"]' action="click"/>-->
         </componentConfig>
 
+        <componentConfig id="newRoleIcon">
+            <component id="icon" selector="css selector" locator="span[class*=new][class*=role][class*=icon]"/>
+        </componentConfig>
+
+        <componentConfig id="tree">
+            <component id="treeCollapser" selector="css selector" locator="span.toggle-children-wrapper.toggle-children-wrapper-collapsed"/>
+            <component id = "checkboxes" selector="css selector" locator="input[class*=leaf-checkbox]"/>
+        </componentConfig>
+
+         <componentConfig id="content">
+            <component id="requiredFieldLabel" selector="css selector" locator="div.requiredLabel"/>
+        </componentConfig>
+
+        <componentConfig id="errorMsgRolePopup">
+            <component id="errorMsg" selector="tag name" locator="label"/>
+        </componentConfig>
+
+         <componentConfig id="popupIcons">
+             <component id="helpIcon" selector="css selector" locator="a.gvs-help-button"/>
+             <component id="closeIcon" selector="css selector" locator="div.close.gvs-close-button"/>
+        </componentConfig>
+
+
     </componentConfigs>
+
+
+    <rolesorttablecolumn>
+        <column id="roleName" locatorText="Role Name"/>
+        <column id="defaultPrivileges" locatorText="Default Privileges"/>
+    </rolesorttablecolumn>
+
+
 
 </data>

@@ -1,5 +1,6 @@
 from Utils.utility import *
 from MRXUtils.MRXConstants import *
+from Utils.UMConstants import *
 
 
 def findPropertyColor(screenInstance,h,property,parent="allinputs",child="input",index=0):
@@ -19,7 +20,7 @@ def isColorValid(screenInstance, h, property, parent="allinputs", child='input',
 
 def dumpResultForButton(condition,request,screenInstance,setup,button_label="Create",screen=MRXConstants.MRXUMPOPUP,testcase_id=""):
     button_status=screenInstance.cm.isButtonEnabled(button_label,getHandle(setup,screen,"allbuttons"))
-    checkEqualAssert(condition,button_status,message="Checking State of Create/Submit Button for Fields entered : "+str(request),testcase_id=testcase_id)
+    checkEqualAssert(condition,button_status,message="Checking State of Button '" + button_label + "' for Fields entered : "+str(request),testcase_id=testcase_id)
     return button_status
 
 
@@ -355,21 +356,21 @@ def editUserDetail(setup,screenInstance,screenName,userDetail,button='Create'):
     return detail
 
 
-def verifySortingOnTable(setup,screenInstance,screenName,parent='table'):
-    columns = setup.cM.getNodeElements("umsorttablecolumn", "column")
+def verifySortingOnTable(setup,screenInstance,screenName,sortTableColumnTag,sortTableColumnInnerTag,parent='table',testcase_id=""):
+    columns = setup.cM.getNodeElements(sortTableColumnTag, sortTableColumnInnerTag)
     column_names = []
     for k, column in columns.iteritems():
         column_names.append(column['locatorText'])
 
     tableHandle = getHandle(setup,screenName, parent)
-    tableMap = screenInstance.table.getTableDataMap(tableHandle, driver=setup,colIndex=1)
+    tableMap = screenInstance.table.getTableDataMap(tableHandle, driver=setup,colIndex=-1)
 
     if tableMap['rows'] == Constants.NODATA:
         logger.info("*********Table Data Not Present************")
         return
 
     for columnname in column_names:
-        sortedData = sortTable(setup, screenInstance,screenName,columnName=columnname)
+        sortedData = sortTable(setup, screenInstance,screenName,columnName=columnname,testcase_id=testcase_id)
         resultlogger.debug('<br>*********** Logging Results for checkSortTable on Column %s ***********<br><br>',columnname)
 
         for k, v in sortedData.iteritems():
@@ -379,7 +380,7 @@ def verifySortingOnTable(setup,screenInstance,screenName,parent='table'):
                 logger.info("********table not contain row with key********* : " + k)
 
 
-def sortTable(setup,instance,screenName,columnName="Name"):
+def sortTable(setup,instance,screenName,columnName="Name",testcase_id=""):
     tableHandle = getHandle(setup,screenName, "table")
     instance.table.sortTable1(tableHandle,columnName)
     tableHandle = getHandle(setup,screenName, "table")
@@ -391,9 +392,9 @@ def sortTable(setup,instance,screenName,columnName="Name"):
     for i in range(len(data2['rows'])):
         col.append(data2['rows'][i][columnIndex])
 
-    checkEqualAssert(sorted(col,key=lambda s: s.lower(),reverse=True),col,message="Verify Sorting on Column: " + columnName,testcase_id="MKR-3491")
+    checkEqualAssert(sorted(col,key=lambda s: s.lower(),reverse=True),col,message="Verify Sorting on Column: " + columnName,testcase_id=testcase_id)
     logger.info("Sorted")
-    cdata2 = instance.table.convertDataToDict(data2,key='Username')
+    cdata2 = instance.table.convertDataToDictWithKeyAsRow(data2)
     return cdata2
 
 # def verifyChangePasswordAndUserPrivileges(setup,screenInstance,handle,usersDetail,listOfPrivilegesFromTable,button='Change'):
@@ -573,3 +574,129 @@ def checkComplusoryField(setup,screenInstance,screenName,userDetail,button='Crea
     dumpResultForButton(False, "Blank Confirm Password (Verifing complusory Field)", screenInstance, setup,testcase_id="MKR-3481")
     cpasswordFromUI = screenInstance.cm.sendkeys_input(userDetail['cpassword'], h,1,child="password")
     return
+
+
+
+
+def setRoleDetails(screenInstance, setup, k='0',screen=UMConstants.UMPOPUP_ADDROLE,values={},button1='Create',button2='Cancel',condition1=False,condition2=True):
+    logger.info("Method Called : setRoleDetails")
+    createBtnStatus = False
+    dumpResultForButton(condition2, " When no property is set", button_label=button2, screenInstance=screenInstance, setup=setup,screen=screen,testcase_id='Reflex-UM-12')
+
+
+    #################### Enter Role Name
+    handle = getHandle(setup, screen, 'allinputs')
+    logger.info("Going to set Role Name =" +values['rolename'])
+    roleNameToBeEntered = str(values['rolename'])
+    screenInstance.cm.sendkeys_input(roleNameToBeEntered, handle, index=0)
+    createBtnStatus = dumpResultForButton(condition1,"Role Name", button_label=button1,screenInstance=screenInstance, setup=setup,screen=screen,testcase_id='Reflex-UM-11')
+    dumpResultForButton(condition2, "Role Name", button_label=button2, screenInstance=screenInstance, setup=setup, screen=screen,testcase_id='Reflex-UM-12')
+
+
+    #################### Set Privileges
+    # Expand tree if collapsed
+    handle = getHandle(setup, screen, "tree")
+    if len(handle['tree']['treeCollapser']) > 0:
+        logger.debug("Tree Toggle buttons are in collapsed state under privileges section on add role popup")
+        for x in range(len(handle['tree']['treeCollapser'])):
+            screenInstance.click(handle['tree']['treeCollapser'][x])
+
+    else:
+        logger.debug("Tree Toggle buttons are already in expanded state under privileges section on add role popup")
+
+
+    ## Clear selection if any
+    handle = getHandle(setup, screen, "tree")
+    for x in range(len(handle['tree']['checkboxes'])):
+        if handle['tree']['checkboxes'][x].is_selected():
+            screenInstance.click(handle['tree']['checkboxes'][x])
+
+    # Set selection
+    checkBoxesListToBeChecked =[]
+    applicationPrivilegesDict = setup.cM.getNodeElements("applicationPrivileges", "privilege")
+    checkBoxIndexListToBeChecked  = [int(index.strip()) for index in values['applicationprivileges'].split(",")]
+    for index in checkBoxIndexListToBeChecked:
+        screenInstance.click(getHandle(setup, screen,'tree')['tree']['checkboxes'][index])
+        checkBoxesListToBeChecked += [applicationPrivilegesDict[str(index)]['name'].strip()]
+
+    createBtnStatus = dumpResultForButton(condition2, "Application Privileges", button_label=button1, screenInstance=screenInstance, setup=setup,screen=screen,testcase_id='Reflex-UM-11')
+    dumpResultForButton(condition2, "Application Privileges", button_label=button2, screenInstance=screenInstance, setup=setup, screen=screen,testcase_id='Reflex-UM-12')
+
+    return roleNameToBeEntered, checkBoxesListToBeChecked , createBtnStatus
+
+
+def getRoleDetails(screenInstance, setup,screen=UMConstants.UMPOPUP_ADDROLE):
+    handle = getHandle(setup, screen, 'allinputs')
+    roleNameFromUI = str(screenInstance.cm.getValue_input(handle, 0))
+
+    handle = getHandle(setup, screen, "tree")
+    checkedCheckBoxesListFromUI = []
+    for x in range(len(handle['tree']['checkboxes'])):
+        if handle['tree']['checkboxes'][x].is_selected():
+            checkedCheckBoxesListFromUI += [str(handle['tree']['checkboxes'][x].find_element_by_xpath("..").text)]
+
+
+    return roleNameFromUI , checkedCheckBoxesListFromUI
+
+
+def clickOnPopupIcon(setup,h,screen,parent='filterArea',child='icon'):
+    logger.info("Clicking on FilterIcon")
+    try:
+        javaScript_str = "var evObj = document.createEvent('MouseEvents');" + "evObj.initMouseEvent(\"mouseover\",true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);" + "arguments[0].dispatchEvent(evObj);"
+        setup.d.execute_script(javaScript_str, h[parent][child][0])
+        time.sleep(2)
+        h[parent][child][0].click()
+    except:
+        logger.info('Not able to click on = %s',child)
+        resultlogger.info('Not able to click on = %s', child)
+        return False
+    return True
+
+
+
+
+def editRole(setup,tableHandle,screenInstance,screen,columnValueInRowToBeEdited,roleDetail,k='0', colIndex=0):
+    expectedRoleName, expectedCheckedCheckBoxesList, createBtnStatus = "","",""
+
+    column_ValuesFromTable = screenInstance.table.getColumnValueFromTable(colIndex, tableHandle)
+    if columnValueInRowToBeEdited in column_ValuesFromTable:
+        for header in tableHandle['table']['HEADERROW']:
+            if str(header.text) == "Edit":
+                indexForColumnEdit = tableHandle['table']['HEADERROW'].index(header)
+                break
+        for value in column_ValuesFromTable:
+            if value == columnValueInRowToBeEdited:
+                indexColumnValueForRowToBeEdited = screenInstance.table.getIndexForValueInArray1(column_ValuesFromTable,value)
+                elem = tableHandle['table']['ROWS'][indexColumnValueForRowToBeEdited * len(tableHandle['table']['HEADERROW']) + indexForColumnEdit]
+                screenInstance.click(elem)
+                break
+        expectedRoleName, expectedCheckedCheckBoxesList, createBtnStatus = setRoleDetails(screenInstance=screenInstance,setup=setup, k=k,screen=UMConstants.UMPOPUP_ADDROLE,values=roleDetail,button1='Update',condition1=True)
+    else:
+        logger.info("Input Column value for row to be edited not found at column index " +str(colIndex) + " under manage roles table")
+
+
+    return expectedRoleName, expectedCheckedCheckBoxesList, createBtnStatus
+
+
+def deleteRole(setup,tableHandle,screenInstance,columnValueInRowToBeDeleted,parentScreen=UMConstants.UMSCREEN_MANAGEROLES,screen=UMConstants.UMPOPUP_DELETEROLE,colIndex=0):
+    column_ValuesFromTable = screenInstance.table.getColumnValueFromTable(colIndex, tableHandle)
+    if columnValueInRowToBeDeleted in column_ValuesFromTable:
+        for header in tableHandle['table']['HEADERROW']:
+            if str(header.text) == "Delete":
+                indexForColumnEdit = tableHandle['table']['HEADERROW'].index(header)
+                break
+        for value in column_ValuesFromTable:
+            if value == columnValueInRowToBeDeleted:
+                indexColumnValueForRowToBeDeleted = screenInstance.table.getIndexForValueInArray1(column_ValuesFromTable,value)
+                elem = tableHandle['table']['ROWS'][indexColumnValueForRowToBeDeleted * len(tableHandle['table']['HEADERROW']) + indexForColumnEdit]
+                screenInstance.click(elem)
+                dumpResultForButton(True, "Delete role", button_label="Cancel",screenInstance=screenInstance, setup=setup, screen=screen,testcase_id='Reflex-UM-185')
+                dumpResultForButton(True, "Delete role", button_label="Ok",screenInstance=screenInstance, setup=setup, screen=screen,testcase_id='Reflex-UM-186')
+                handle = getHandle(setup, screen, 'allbuttons')
+                logger.debug("Going to click on 'Ok' buttton on delete role popup ")
+                screenInstance.hoverAndClickButton(setup, "Ok", handle)
+                break
+    else:
+        logger.info("Input Column value for row to be deleted not found at column index " +str(colIndex) + " under manage roles table")
+
+

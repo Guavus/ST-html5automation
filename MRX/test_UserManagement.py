@@ -69,7 +69,7 @@ try:
     # Verify basic table functionality (sorting)
 
     logger.debug("Verify Basic Table functionality")
-    MRX_UMHelper.verifySortingOnTable(setup,userScreenInstance,MRXConstants.MRXUMSCREEN)
+    MRX_UMHelper.verifySortingOnTable(setup,userScreenInstance,screenName=MRXConstants.MRXUMSCREEN, parent='table', sortTableColumnTag='umsorttablecolumn',sortTableColumnInnerTag='column')
 
     usersDetailsNegativeScenario = setup.cM.getNodeElements("userdetail_NegativeScenario", "user")
     for k, usersDetail in usersDetailsNegativeScenario.iteritems():
