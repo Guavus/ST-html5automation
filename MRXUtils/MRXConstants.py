@@ -117,7 +117,7 @@ class MRXConstants(Constants):
     measureListForHover = ['Volume','# Web Domain Session']
     quickLinkListForHover = ['Last 7 days','CustomClick_0']
 
-    ExpectedDefaultValueOnTM=[[0],'Last 7 days','Volume',1]
+    ExpectedDefaultValueOnTM=[[1],'Last 7 days','Volume',1]
     ExpectedDrillDownOptionOnTM=['Create Segment','Apply as filter and pivot','Export data']
     AvailableOptionOnPivotPopup=['Workflow / Comparative Breakdown','Workflow / User Distribution']
     BaselinePath=['#000000']
