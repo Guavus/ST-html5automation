@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+<data>
+
+    <manageRoleScenarios>
+        <!--role_create-->
+        <!--<scenario id="1" rolename="kr_role0" applicationprivileges="3,4" operation="role_create" actionuser="superadmin" roleExists="No"/>-->
+        <scenario id="2" rolename="kr_role1" applicationprivileges="3,4" operation="role_create" actionuser="adminuser1" roleExists="No"/>
+        <!--<scenario id="3" rolename="kr_role1" applicationprivileges="2,4" operation="role_create" actionuser="superadmin" roleExists="Yes"/>-->
+        <scenario id="4" rolename="kr_role1" applicationprivileges="2,3,4" operation="role_create" actionuser="adminuser1" roleExists="Yes"/>
+        <!--role_edit-->
+        <!--<scenario id="5" rolenamevalue_tobe_edited="kr_role1" rolename="kr_role3" applicationprivileges="2,3,4" operation="role_edit" actionuser="superadmin" />-->
+        <!--<scenario id="6" rolenamevalue_tobe_edited="Admin" rolename="kr_role4" applicationprivileges="2,4" operation="role_edit" actionuser="superadmin" />-->
+        <scenario id="7" rolenamevalue_tobe_edited="kr_role2" rolename="kr_role5" applicationprivileges="4" operation="role_edit" actionuser="adminuser1" />
+        <!--<scenario id="8" rolenamevalue_tobe_edited="Admin" rolename="kr_role6" applicationprivileges="3,4" operation="role_edit" actionuser="adminuser1" />-->
+        <!--role_delete-->
+        <!--<scenario id="9" rolenamevalue_tobe_deleted="kr_role7"  operation="role_delete" actionuser="superadmin" />-->
+        <!--<scenario id="10" rolenamevalue_tobe_deleted="Admin"  operation="role_delete" actionuser="superadmin" />-->
+        <scenario id="11" rolenamevalue_tobe_deleted="kr_role8"  operation="role_delete" actionuser="adminuser1" />
+        <!--<scenario id="12" rolenamevalue_tobe_deleted="Admin"  operation="role_delete" actionuser="adminuser1" />-->
+        <scenario id="13" rolenamevalue_tobe_deleted="krrole1"  operation="role_delete" actionuser="adminuser1" />
+        <!--user_create_assign_role-->
+        <!--<scenario id="13" username="autokriti0" firstname="Kritika0" lastname="Saxena0" email="praveen10@guavus.com"  password="New@12345"  cpassword="New@12345" currentpassword='New@12345' newpassword="New@13245"  newcpassword="New@13245" userrole="uu" timezone="UTC" value= "" enabled="1" operation="user_create_assign_role" actionuser="superadmin" />-->
+        <!--<scenario id="14" username="autokriti1" firstname="Kritika1" lastname="Saxena1" email="praveen11@guavus.com"  password="New@12345"  cpassword="New@12345" currentpassword='New@12345' newpassword="New@13245"  newcpassword="New@13245" userrole="Admin" timezone="UTC" value= "" enabled="1" operation="user_create_assign_role" actionuser="superadmin" />-->
+        <!--<scenario id="15" username="autokriti2" firstname="Kritika2" lastname="Saxena2" email="praveen12@guavus.com"  password="New@12345"  cpassword="New@12345" currentpassword='New@12345' newpassword="New@13245"  newcpassword="New@13245" userrole="uu" timezone="UTC" value= "" enabled="1" operation="user_create_assign_role" actionuser="adminuser1" />-->
+        <scenario id="16" username="autokriti3" firstname="Kritika3" lastname="Saxena3" email="praveen13@guavus.com"  password="New@12345"  cpassword="New@12345" currentpassword='New@12345' newpassword="New@13245"  newcpassword="New@13245" userrole="Admin" timezone="UTC" value= "" enabled="1" operation="user_create_assign_role" actionuser="adminuser1" />
+        <!--<scenario id="17" rolenamevalue_tobe_deleted="krrole1"  operation="role_delete" actionuser="normaluser1" />-->
+        <!--user_edit-->
+        <!--<scenario id="18" username="autokritiedit0" firstname="Kritikaedit0" lastname="Saxenaedit0" email="praveenedit0@guavus.com"  password="New@12345"  cpassword="New@12345" currentpassword='New@12345' newpassword="New@13245"  newcpassword="New@13245" userrole="uu"  timezone="UTC" value= "" enabled="1" operation="user_edit" actionuser="superadmin"  targetuser="superadmin"/>-->
+        <!--<scenario id="19" username="autokritiedit1" firstname="Kritikaedit1" lastname="Saxenaedit1" email="praveenedit0@guavus.com"  password="New@12345"  cpassword="New@12345" currentpassword='New@12345' newpassword="New@13245"  newcpassword="New@13245" userrole="Admin" timezone="UTC" value= "" enabled="1" operation="user_edit" actionuser="superadmin"  targetuser="adminuser1"/>-->
+        <!--<scenario id="20" username="autokritiedit2" firstname="Kritikaedit2" lastname="Saxenaedit2" email="praveenedit0@guavus.com"  password="New@12345"  cpassword="New@12345" currentpassword='New@12345' newpassword="New@13245"  newcpassword="New@13245" userrole="uu" timezone="UTC" value= "" enabled="1" operation="user_edit" actionuser="superadmin"  targetuser="normaluser1"/>-->
+        <!--<scenario id="21" username="autokritiedit3" firstname="Kritikaedit3" lastname="Saxenaedit3" email="praveenedit0@guavus.com"  password="New@12345"  cpassword="New@12345" currentpassword='New@12345' newpassword="New@13245"  newcpassword="New@13245" userrole="uu" timezone="UTC" value= "" enabled="1" operation="user_edit" actionuser="adminuser1"  targetuser="superadmin"/>-->
+        <scenario id="22" username="autokritiedit4" firstname="Kritikaedit4" lastname="Saxenaedit4" email="praveenedit0@guavus.com"  password="New@12345"  cpassword="New@12345" currentpassword='New@12345' newpassword="New@13245"  newcpassword="New@13245" userrole="Admin" timezone="UTC" value= "" enabled="1" operation="user_edit" actionuser="adminuser1"  targetuser="adminuser1"/>
+        <scenario id="23" username="autokritiedit5" firstname="Kritikaedit5" lastname="Saxenaedit5" email="praveenedit0@guavus.com"  password="New@12345"  cpassword="New@12345" currentpassword='New@12345' newpassword="New@13245"  newcpassword="New@13245" userrole="uu" timezone="UTC" value= "" enabled="1" operation="user_edit" actionuser="adminuser1"  targetuser="adminuser2"/>
+        <scenario id="24" username="autokritiedit6" firstname="Kritikaedit6" lastname="Saxenaedit6" email="praveenedit0@guavus.com"  password="New@12345"  cpassword="New@12345" currentpassword='New@12345' newpassword="New@13245"  newcpassword="New@13245" userrole="uu" timezone="UTC" value= "" enabled="1" operation="user_edit" actionuser="adminuser1"  targetuser="normaluser1"/>
+        <!--user_delete-->
+        <!--<scenario id="25" operation="user_delete" actionuser="superadmin"  targetuser="superadmin"/>-->
+        <!--<scenario id="26" operation="user_delete" actionuser="superadmin" targetuser="adminuser1"/>-->
+        <!--<scenario id="27" operation="user_delete" actionuser="superadmin" targetuser="normaluser1"/>-->
+        <!--<scenario id="28" operation="user_delete" actionuser="adminuser1" targetuser="superadmin"/>-->
+        <scenario id="29" operation="user_delete" actionuser="adminuser1" targetuser="adminuser1"/>
+        <scenario id="30" operation="user_delete" actionuser="adminuser1" targetuser="adminuser2"/>
+        <scenario id="31" operation="user_delete" actionuser="adminuser1" targetuser="normaluser1"/>
+    </manageRoleScenarios>
+
+    <umUserLoginDetailsForManageRoles>
+        <user id="superadmin" name="ankur singhal6293" username="admin6293" password="abc125"/>
+        <user id="adminuser1" name="cvsaascsac cssac" username="trial1" password="Jellyfish@1"/>
+        <user id="adminuser2" name="vsh1 cds" username="trial2" password="Jellyfish@1"/>
+        <user id="normaluser1" name="cs b b" username="norm1" password="Jellyfish@1"/>
+    </umUserLoginDetailsForManageRoles>
+
+    <!--<applicationPrivileges>-->
+        <!--<privilege id ="0" name="User Management" />-->
+        <!--<privilege id ="1" name="Workflow/UserDistribution"  />-->
+        <!--<privilege id ="2" name="Workflow/DataExtraction" />-->
+        <!--<privilege id ="3" name="Workflow/Trending Monitoring" />-->
+        <!--<privilege id ="4" name="Workflow/Compareon" />-->
+        <!--<privilege id ="5" name="Segments/Import" />-->
+        <!--<privilege id ="6" name="Segments/Export" />-->
+        <!--<privilege id ="7" name="Reports"/>-->
+    <!--</applicationPrivileges>-->
+
+    <!--<applicationPrivileges>-->
+        <!--<privilege id ="0" name="User Management" />-->
+        <!--<privilege id ="1" name="SRX_USER"  />-->
+        <!--<privilege id ="2" name="SRX_HEALTH" />-->
+        <!--<privilege id ="3" name="SRX_TTS_MGR" />-->
+        <!--<privilege id ="4" name="SRX_AUTO_REF" />-->
+    <!--</applicationPrivileges>-->
+
+    <applicationPrivileges>
+        <privilege id ="0" name="User Management" />
+        <privilege id ="1" name="Export"  />
+        <privilege id ="2" name="Import" />
+        <privilege id ="3" name="Workflow/UserDistribution" />
+        <privilege id ="4" name="Workflow/DataExtraction" />
+    </applicationPrivileges>
+
+
+</data>

@@ -11,7 +11,7 @@
         <screenConfig id = "roleManagement_Screen">
             <!--<component id = "allspans" selector="css selector" locator="div.search-bar" parent="True"/>-->
             <component id = "newRoleIcon" selector="css selector" locator="div.search-bar" parent="True"/>
-            <!--<component id = "allinputs" selector="css selector" locator="div.search-bar" parent="True"/>-->
+            <component id = "allinputs" selector="css selector" locator="div.manage-roles-container" parent="True"/>
             <component id ="alllabels" selector="css selector" locator="div.search-bar" parent="True"/>
             <component id = "table" selector="tag name" locator="div.grid-container" parent="True"/>
             <!--<component id = 'umalert' selector="class name" locator="confirmationContainer" parent="True"/>-->
@@ -27,17 +27,30 @@
             <component id="alllabels" selector="css selector" locator="div.addEditRoleFormContainer" parent="True"/>
             <component id="tree" selector ="css selector" locator="div.tree" parent="True"/>
             <component id="content" selector ="css selector" locator="div.basePopupView" parent="True"/>
-            <component id="errorMsgRolePopup" selector ="css selector" locator="div.elementWidth" parent="True"/>
+            <component id="roleErrorMsgContainer" selector ="css selector" locator="div.elementWidth" parent="True"/>
         </screenConfig>
 
         <screenConfig id = "deletePopUp_Screen">
             <component id ="allbuttons" selector="css selector" locator="div.gvs-deep-ocean buttons" parent="True"/>-->
-            <!--<component id ="popupIcons" selector="css selector" locator="gvs-popup.add-edit-role-popup" parent="True"/>-->
-            <!--<component id="alllabels" selector="css selector" locator="div.addEditRoleFormContainer" parent="True"/>-->
+        </screenConfig>
+
+        <screenConfig id = "loginErrorPopup_Screen">
+            <component id ="allbuttons" selector="css selector" locator="div.content" parent="True"/>
+            <component id ="loginErrorMsgContainer" selector="css selector" locator="div.content" parent="True"/>
+        </screenConfig>
+
+        <screenConfig id = "userManagement_Screen">
+            <component id = "allspans" selector="css selector" locator="div.search-bar" parent="True"/>
+            <component id = "newUserIcon" selector="css selector" locator="div.search-bar" parent="True"/>
+            <component id = "allinputs" selector="css selector" locator="div.search-bar" parent="True"/>
+            <component id ="alllabels" selector="css selector" locator="div.search-bar" parent="True"/>
+            <component id = "table" selector="tag name" locator="div.grid-container" parent="True"/>
+            <component id = 'umalert' selector="class name" locator="confirmationContainer" parent="True"/>
         </screenConfig>
 
         <screenConfig id = "newUserPopUp_Screen">
-            <component id = "allinputs" selector="css selector" locator="div.modal-content" parent="True"/>
+            <!--<component id = "allinputs" selector="css selector" locator="div.modal-content" parent="True"/>-->
+            <component id = "allinputs" selector="css selector" locator="div.addEditUserFormDiv" parent="True"/>
             <component id = "allcheckboxes" selector="css selector" locator="div.modal-content" parent="True"/>
             <component id ="allbuttons" selector="css selector" locator="div.modal-content" parent="True"/>
             <component id ="allselects" selector="css selector" locator="div.modal-content" parent="True"/>
@@ -80,8 +93,12 @@
             <component id="requiredFieldLabel" selector="css selector" locator="div.requiredLabel"/>
         </componentConfig>
 
-        <componentConfig id="errorMsgRolePopup">
-            <component id="errorMsg" selector="tag name" locator="label"/>
+        <componentConfig id="roleErrorMsgContainer">
+            <component id="msg" selector="tag name" locator="label"/>
+        </componentConfig>
+
+        <componentConfig id="loginErrorMsgContainer">
+            <component id="msg" selector="css selector" locator="p.gvs-alert-message"/>
         </componentConfig>
 
          <componentConfig id="popupIcons">
@@ -89,6 +106,18 @@
              <component id="closeIcon" selector="css selector" locator="div.close.gvs-close-button"/>
         </componentConfig>
 
+        <componentConfig id="newUserIcon">
+            <component id="icon" selector="css selector" locator="span[class*=new][class*=user][class*=icon]"/>
+        </componentConfig>
+
+        <componentConfig id="allinputs">
+            <component id = "password" selector="css selector" locator='input[type="password"]' />
+            <component id = "email" selector="css selector" locator='input[type="email"]'/>
+            <component id ='updatePwd' selector="css selector" locator='label.updatePwd'/>
+            <component id ='timezone' selector="css selector" locator='input.textInput.singleTimezoneLabel.ng-untouched.ng-pristine.ng-valid'/>
+
+
+        </componentConfig>
 
     </componentConfigs>
 
@@ -97,6 +126,8 @@
         <column id="roleName" locatorText="Role Name"/>
         <column id="defaultPrivileges" locatorText="Default Privileges"/>
     </rolesorttablecolumn>
+
+
 
 
 
