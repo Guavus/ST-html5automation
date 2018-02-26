@@ -16,7 +16,7 @@ try:
     roleScreenInstance=RoleManagementScreenClass(setup.d)
     roleScreenInstance.click(handle['alllabels']['label'][1])
 
-    '''
+
 
     ################### Verify New Role label on UM Role Management screen
     tableHandle = getHandle(setup, UMConstants.UMSCREEN_MANAGEROLES, 'table')
@@ -87,7 +87,7 @@ try:
     roleScreenInstance.hoverAndClickButton(setup, "Cancel", handle)
 
 
-    '''
+
 
 
 
@@ -454,7 +454,7 @@ try:
 
 
 
-    '''
+    
 
     ############## Verify help/close(X) icon on add role popup
     handle = getHandle(setup, "explore_Screen", "alllabels")
@@ -474,7 +474,7 @@ try:
     click_status = UMHelper.clickOnPopupIcon(setup, h=handle, screen=UMConstants.UMPOPUP_ADDROLE,parent='popupIcons', child='helpIcon')
     checkEqualAssert(True, click_status, message='Verify Help icon on Add Role Popup is clickable',testcase_id="Reflex-UM-191")
 
-    '''
+
     setup.d.close()
 
 
