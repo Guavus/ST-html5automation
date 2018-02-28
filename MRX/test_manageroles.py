@@ -17,7 +17,6 @@ try:
     roleScreenInstance.click(handle['alllabels']['label'][1])
 
 
-
     ################### Verify New Role label on UM Role Management screen
     tableHandle = getHandle(setup, UMConstants.UMSCREEN_MANAGEROLES, 'table')
     actualHeader=roleScreenInstance.table.getIterfaceHeaders(tableHandle['table'])
@@ -25,8 +24,8 @@ try:
     newRoleLabel=roleScreenInstance.getScreenNameFromUI(getHandle(setup,UMConstants.UMSCREEN_MANAGEROLES,'alllabels'))
     checkEqualAssert(UMConstants.NEWROLE,newRoleLabel,message="Verify New Role label on UM Role Management screen",testcase_id="Reflex-UM-189")
 
+
     ############## Verify searchbox UM Role Management screen does a valid search on rolenames
-    #tableHandle = getHandle(setup, UMConstants.UMSCREEN_MANAGEROLES, 'table')
     column_ValuesFromTable_withoutSearch = roleScreenInstance.table.getColumnValueFromTable(0, tableHandle)
     searchValue = column_ValuesFromTable_withoutSearch[0][:3]
     expectedSearchList = []
@@ -94,12 +93,14 @@ try:
 
     ################# Verify manage roles operations
     manageRolesScenariosDict = setup.cM.getNodeElements("manageRoleScenarios", "scenario")
+    manageRolesScenariosDict_intKeys = {int(key): value for key, value in manageRolesScenariosDict.items()}
     userLoginDetailsForManageRolesDict = setup.cM.getNodeElements("umUserLoginDetailsForManageRoles", "user")
-    for k,manageRolesScenario in sorted(manageRolesScenariosDict.iteritems()):
-        k = "29"    #************** to be removed
-        manageRolesScenario = manageRolesScenariosDict[k] #******************* to be removed
+    for k,manageRolesScenario in sorted(manageRolesScenariosDict_intKeys.iteritems()):
+        #k = "24"    #************** to be removed
+        #manageRolesScenario = manageRolesScenariosDict[str(k)] #******************* to be removed
 
-        actionUser = manageRolesScenariosDict[k]['actionuser']
+        logger.info("Executing Scenario id ---> " + str(k) )
+        actionUser = manageRolesScenariosDict[str(k)]['actionuser']
         actionUser_Name = userLoginDetailsForManageRolesDict[actionUser]['name']
         actionUser_Username = userLoginDetailsForManageRolesDict[actionUser]['username']
         actionUser_Password = userLoginDetailsForManageRolesDict[actionUser]['password']
@@ -113,20 +114,24 @@ try:
             time.sleep(5)
             username = actionUser_Username
             password = actionUser_Password
-            if "adminuser" in actionUser:
+            if actionUser == 'superadmin':
+                logger.info("Logging in with superadmin user : '" + actionUser_Name)
+                login(setup, username, password)
+                parentLoggedInUser_Name = actionUser_Name
+            elif "adminuser" in actionUser:
                 logger.info("Logging in with some admin user : '" + actionUser_Name)
                 login(setup,username,password)
                 parentLoggedInUser_Name = actionUser_Name
             elif "normaluser" in actionUser:
                 logger.info("Logging in with some normal user : '" +actionUser_Name)
                 login(setup, username, password)
-                erroFlag, msgFromUI = UMHelper.errorMsgOnPopUp(setup,UMConstants.UMPOPUP_ERRORLOGIN,parent='loginErrorMsgContainer',child='msg')
+                erroFlag, msgFromUI = UMHelper.errorMsgOnPopUp(setup,UMConstants.UMPOPUP_ERROR,parent='ErrorMsg',child='msg')
                 checkEqualAssert(str([True,UMConstants.LOGIN_ACCESSDENIED_MSG]),str([erroFlag,msgFromUI]),message="Verify that an Access Denied Error Popup appears when a normal user tries to login in User Management App",testcase_id='Reflex-UM-231')
-                handle = getHandle(setup,UMConstants.UMPOPUP_ERRORLOGIN,'allbuttons')
+                handle = getHandle(setup,UMConstants.UMPOPUP_ERROR,'allbuttons')
                 roleScreenInstance.hoverAndClickButton(setup, "Ok", handle)
                 time.sleep(5)
-                handle = getHandle(setup,UMConstants.UMPOPUP_ERRORLOGIN,'loginErrorMsgContainer')
-                checkEqualAssert(0,len(handle),message="Verify that on clicking on 'Ok' button, Access Denied Error Popup disappears",testcase_id='Reflex-UM-231')
+                handle = getHandle(setup,UMConstants.UMPOPUP_ERROR,'ErrorMsg')
+                checkEqualAssert(0,len(handle['ErrorMsg']['msg']),message="Verify that on clicking on 'Ok' button, Access Denied Error Popup disappears",testcase_id='Reflex-UM-231')
                 parentLoggedInUser_Name = ""
 
 
@@ -135,7 +140,7 @@ try:
 
 
         if parentLoggedInUser_Name != "":
-            if manageRolesScenariosDict[k]['operation'] == "role_create" :
+            if manageRolesScenariosDict[str(k)]['operation'] == "role_create" :
                 handle = getHandle(setup, "explore_Screen", "alllabels")
                 roleScreenInstance.click(handle['alllabels']['label'][1])
                 tableHandle = getHandle(setup, UMConstants.UMSCREEN_MANAGEROLES, 'table')
@@ -160,18 +165,13 @@ try:
                 if createBtnStatus:
                     logger.debug("Going to click on 'Create' buttton on add role popup ")
                     roleScreenInstance.hoverAndClickButton(setup, "Create", handle)
-                    if manageRolesScenariosDict[k]['roleExists'] == 'Yes':
-                        logger.debug("Fetching Role already exists label from add role popup ")
-                        handle = getHandle(setup, UMConstants.UMPOPUP_ADDROLE, 'roleErrorMsgContainer')
-                        roleExistsLabelFromUI = ""
-                        if len(handle['roleErrorMsgContainer']['msg']) > 0:
-                            roleExistsLabelFromUI = str(handle['roleErrorMsgContainer']['msg'][0].text)
-                            logger.debug("Exiting from popup screen through Cancel' button ")
-                            handle = getHandle(setup, UMConstants.UMPOPUP_ADDROLE, 'allbuttons')
-                            roleScreenInstance.hoverAndClickButton(setup, "Cancel", handle)
-                        else:
-                            logger.debug("Role already exists label cound not be fetched from add role popup ")
-                        checkEqualAssert(UMConstants.ROLE_EXISTS_ERROR_MSG, roleExistsLabelFromUI,message="Verify that user '" + parentLoggedInUser_Name + "' can not create role with a role name that already exists.",testcase_id='Reflex-UM-184')
+
+                    logger.debug("Checking if any error message has come up on clicking on 'Create' button on add role popup")
+                    erroFlag, msg = UMHelper.errorMsgOnPopUp(setup, UMConstants.UMPOPUP_ADDROLE)
+
+                    if erroFlag:
+                        logger.debug("Got Error msg: " +  str(msg) + "on clicking on 'Create' button on add role popup")
+                        checkEqualAssert(UMConstants.ROLE_EXISTS_ERROR_MSG, str(msg),message="Verify that user '" + parentLoggedInUser_Name + "' can not create role with a role name that already exists.",testcase_id='Reflex-UM-184')
                         roleScreenInstance.hoverAndClickButton(setup, "Cancel", handle)
                         continue
                 else:
@@ -209,14 +209,14 @@ try:
 
 
 
-            elif manageRolesScenariosDict[k]['operation'] == "role_edit" :
+            elif manageRolesScenariosDict[str(k)]['operation'] == "role_edit" :
                 handle = getHandle(setup, "explore_Screen", "alllabels")
                 roleScreenInstance.click(handle['alllabels']['label'][1])
                 tableHandle = getHandle(setup, UMConstants.UMSCREEN_MANAGEROLES, 'table')
                 tableData_beforeUpdateRole = roleScreenInstance.table.getTableData1(tableHandle)
                 if tableData_beforeUpdateRole['rows'] != Constants.NODATA:
                     numberOfRows_beforeUpdateRole = len(tableData_beforeUpdateRole['rows'])
-                    columnValueInRowToBeEdited = manageRolesScenariosDict[k]['rolenamevalue_tobe_edited']
+                    columnValueInRowToBeEdited = manageRolesScenariosDict[str(k)]['rolenamevalue_tobe_edited']
                     try:
                         click_status, expectedRoleName, expectedCheckedCheckBoxesList, roleNameFromUI, checkedCheckBoxesListFromUI, updateBtnStatus = UMHelper.editRole(setup=setup,tableHandle=tableHandle,screenInstance=roleScreenInstance,parentscreen=UMConstants.UMSCREEN_MANAGEROLES,columnValueInRowToBeEdited=columnValueInRowToBeEdited,screen=UMConstants.UMPOPUP_ADDROLE,k=str(k),roleDetail=manageRolesScenario,colIndex=0)
                         logger.debug("Control came out from editRole method")
@@ -251,57 +251,68 @@ try:
                     else:
                         numberOfRows_afterUpdateRole = 0
                         roleEntry_forTableFromUI = []
+
+
+                    if (actionUser == "superadmin" or "adminuser" in actionUser) and manageRolesScenariosDict[str(k)]['rolenamevalue_tobe_edited'] != 'Admin':
+                        expectedEditClick_status = True
+                        checkEqualAssert(expectedEditClick_status, click_status,message="Verify that user " + parentLoggedInUser_Name + " is able to edit another(non-admin) role ",testcase_id='Reflex-UM-235,Reflex-UM-237')
+                        checkEqualAssert(str(sorted(expected_RoleEntry_forTable)), str(sorted(roleEntry_forTableFromUI)),message="Verify an existing row is successfully updated in manage roles table  by user " + parentLoggedInUser_Name,testcase_id='Reflex-UM-235,Reflex-UM-237')
+                        checkEqualAssert(numberOfRows_beforeUpdateRole, numberOfRows_afterUpdateRole,message="Verify the count of rows after a role is updated in manage roles table by user " + parentLoggedInUser_Name,testcase_id='Reflex-UM-235,Reflex-UM-237')
+                    else:
+                        expectedEditClick_status = False
+                        checkEqualAssert(expectedEditClick_status, click_status,message="Verify that user " + parentLoggedInUser_Name  + " is not able to edit Admin(own) role ",testcase_id='Reflex-UM-239,Reflex-UM-241')
+
                 else:
-                    numberOfRows_beforeUpdateRole = -1
-                    expected_RoleEntry_forTable = []
-
-                if (actionUser == "superadmin" or "adminuser" in actionUser) and manageRolesScenariosDict[k]['rolenamevalue_tobe_edited'] != 'Admin':
-                    expectedEditClick_status = True
-                    checkEqualAssert(expectedEditClick_status, click_status,message="Verify that user " + parentLoggedInUser_Name + " is able to edit another(non-admin) role ",testcase_id='Reflex-UM-235,Reflex-UM-237')
-                    checkEqualAssert(str(sorted(expected_RoleEntry_forTable)), str(sorted(roleEntry_forTableFromUI)),message="Verify an existing row is successfully updated in manage roles table  by user " + parentLoggedInUser_Name,testcase_id='Reflex-UM-235,Reflex-UM-237')
-                    checkEqualAssert(numberOfRows_beforeUpdateRole, numberOfRows_afterUpdateRole,message="Verify the count of rows after a role is updated in manage roles table by user " + parentLoggedInUser_Name,testcase_id='Reflex-UM-235,Reflex-UM-237')
-                else:
-                    expectedEditClick_status = False
-                    checkEqualAssert(expectedEditClick_status, click_status,message="Verify that user " + parentLoggedInUser_Name  + " is not able to edit Admin(own) role ",testcase_id='Reflex-UM-239,Reflex-UM-241')
+                    logger.debug("No data to edit. Table is empty.")
+                    logger.error("Not Run TCs: Reflex-UM-235,Reflex-UM-237,Reflex-UM-239,Reflex-UM-241")
+                    resultlogger.error("Not Run TCs: Reflex-UM-235,Reflex-UM-237,Reflex-UM-239,Reflex-UM-241")
 
 
 
 
 
 
-
-
-            elif manageRolesScenariosDict[k]['operation'] == "role_delete" :
+            elif manageRolesScenariosDict[str(k)]['operation'] == "role_delete" :
                 handle = getHandle(setup, "explore_Screen", "alllabels")
                 roleScreenInstance.click(handle['alllabels']['label'][1])
                 tableHandle = getHandle(setup, UMConstants.UMSCREEN_MANAGEROLES, 'table')
                 tableData_beforeDeleteRole = roleScreenInstance.table.getTableData1(tableHandle)
                 if tableData_beforeDeleteRole['rows'] != Constants.NODATA:
                     numberOfRows_beforeDeleteRole = len(tableData_beforeDeleteRole['rows'])
-                    columnValueInRowToBeDeleted = manageRolesScenariosDict[k]['rolenamevalue_tobe_deleted']
+                    columnValueInRowToBeDeleted = manageRolesScenariosDict[str(k)]['rolenamevalue_tobe_deleted']
                     try:
                         click_status, delete_status, click_status_fromDelPopup, popup_disappear_status = UMHelper.deleteRole(setup=setup, tableHandle=tableHandle, screenInstance=roleScreenInstance,parentScreen=UMConstants.UMSCREEN_MANAGEROLES,screen=UMConstants.UMPOPUP_CONFIRM_DELETEROLE,columnValueInRowToBeDeleted=columnValueInRowToBeDeleted, colIndex=0)
                         logger.debug("Control came out from deleteRole method")
                     except Exception as e:
                         logger.info("Got Exception on deleting a role when executed scenario" + str(k) + " : " + str(e))
                         click_status, delete_status, click_status_fromDelPopup, popup_disappear_status= "","","",""
+
+                    if popup_disappear_status == False:
+                        handle = getHandle(setup, UMConstants.UMPOPUP_ERROR)
+                        checkEqualAssert(UMConstants.ROLE_IN_USE_MSG, str(handle['ErrorMsg']['msg'][0].text),message="Verify that when user '" + parentLoggedInUser_Name + "' clicks on 'Ok' button on delete confirmation popup to delete a role that is already assigned to some user, an error popup comes up with an appropriate error msg",testcase_id='Reflex-UM-255,Reflex-UM-256')
+                        roleScreenInstance.hoverAndClickButton(setup, "Ok", handle)
+                        continue
+
                     tableHandle = getHandle(setup, UMConstants.UMSCREEN_MANAGEROLES, 'table')
                     tableData_afterDeleteRole = roleScreenInstance.table.getTableData1(tableHandle)
                     if tableData_afterDeleteRole['rows'] != Constants.NODATA:
                         numberOfRows_afterDeleteRole = len(tableData_afterDeleteRole['rows'])
                     else:
                         numberOfRows_afterDeleteRole = 0
+
+                    if (actionUser == "superadmin" or "adminuser" in actionUser) and manageRolesScenariosDict[str(k)]['rolenamevalue_tobe_deleted'] != 'Admin':
+                        expectedDeleteClick_status = True
+                        checkEqualAssert(expectedDeleteClick_status, click_status,message="Verify that user " + parentLoggedInUser_Name + " can delete another(non-admin) role ",testcase_id='Reflex-UM-232,Reflex-UM-233')
+                        checkEqualAssert(str([True,True,True]), str([delete_status, click_status_fromDelPopup, popup_disappear_status]), message="Verify that role got deleted successfully",testcase_id='Reflex-UM-232,Reflex-UM-233')
+                        checkEqualAssert(numberOfRows_beforeDeleteRole - 1, numberOfRows_afterDeleteRole,message="Verify the count of rows after deleting a role from manage roles table",testcase_id='Reflex-UM-232,Reflex-UM-233')
+                    else:
+                        expectedDeleteClick_status = False
+                        checkEqualAssert(expectedDeleteClick_status, click_status,message="Verify that user " + parentLoggedInUser_Name + " is not able to delete Admin(own) role ",testcase_id='Reflex-UM-205,Reflex-UM-212')
+
                 else:
-                    numberOfRows_beforeDeleteRole = -1
-
-                if (actionUser == "superadmin" or "adminuser" in actionUser) and manageRolesScenariosDict[k]['rolenamevalue_tobe_deleted'] != 'Admin':
-                    expectedDeleteClick_status = True
-                    checkEqualAssert(expectedDeleteClick_status, click_status,message="Verify that user " + parentLoggedInUser_Name + " is able to delete another(non-admin) role ",testcase_id='Reflex-UM-232,Reflex-UM-233')
-                    checkEqualAssert(str([True,True,True,True]), str([click_status, delete_status, click_status_fromDelPopup, popup_disappear_status]), message="Verify that role got deleted successfully",testcase_id='Reflex-UM-232,Reflex-UM-233')
-                    checkEqualAssert(numberOfRows_beforeDeleteRole - 1, numberOfRows_afterDeleteRole,message="Verify the count of rows after deleting a role from manage roles table",testcase_id='Reflex-UM-232,Reflex-UM-233')
-                else:
-                    expectedDeleteClick_status = False
-                    checkEqualAssert(expectedDeleteClick_status, click_status,message="Verify that user " + parentLoggedInUser_Name + " is not able to delete Admin(own) role ",testcase_id='Reflex-UM-205,Reflex-UM-212')
+                    logger.debug("No data to delete. Table is empty.")
+                    logger.error("Not Run TCs: Reflex-UM-232,Reflex-UM-233,Reflex-UM-205,Reflex-UM-212")
+                    resultlogger.error("Not Run TCs: Reflex-UM-232,Reflex-UM-233,Reflex-UM-205,Reflex-UM-212")
 
 
 
@@ -309,8 +320,7 @@ try:
 
 
 
-
-            elif manageRolesScenariosDict[k]['operation'] == "user_create_assign_role" :
+            elif manageRolesScenariosDict[str(k)]['operation'] == "user_create_assign_role" :
                 handle = getHandle(setup, "explore_Screen", "alllabels")
                 roleScreenInstance.click(handle['alllabels']['label'][0])
                 handle = getHandle(setup, UMConstants.UMSCREEN_MANAGEUSERS, 'newUserIcon')
@@ -357,51 +367,58 @@ try:
 
 
 
-            elif manageRolesScenariosDict[k]['operation'] == "user_edit":
+            elif manageRolesScenariosDict[str(k)]['operation'] == "user_edit":
                 handle = getHandle(setup, "explore_Screen", "alllabels")
                 roleScreenInstance.click(handle['alllabels']['label'][0])
                 tableHandle = getHandle(setup, UMConstants.UMSCREEN_MANAGEUSERS, 'table')
                 tableData_beforeEditUser = roleScreenInstance.table.getTableData1(tableHandle)
-                targetUser = manageRolesScenariosDict[k]['targetuser']
-                targetUser_Username = userLoginDetailsForManageRolesDict[targetUser]['username']
-                try:
-                    click_status, modifiableFieldsDictFromUI,updateBtn_status = UMHelper.editUser(setup,tableHandle=tableHandle,screenInstance=roleScreenInstance,userDetail=manageRolesScenario,k=str(k),targetUser_Username=targetUser_Username,parentscreen=UMConstants.UMSCREEN_MANAGEUSERS,screen=UMConstants.UMPOPUP_ADDUSER,colIndex=1)
-                except Exception as e:
-                    logger.info("Got Exception on editing a user when executed scenario" + str(k) + " : " + str(e))
-                    click_status, modifiableFieldsDictFromUI,updateBtn_status = "", {}, False
+                if tableData_beforeEditUser['rows'] != Constants.NODATA:
+                    targetUser = manageRolesScenariosDict[str(k)]['targetuser']
+                    targetUser_Username = userLoginDetailsForManageRolesDict[targetUser]['username']
+                    try:
+                        click_status, modifiableFieldsDictFromUI,updateBtn_status = UMHelper.editUser(setup,tableHandle=tableHandle,screenInstance=roleScreenInstance,userDetail=manageRolesScenario,k=str(k),targetUser_Username=targetUser_Username,parentscreen=UMConstants.UMSCREEN_MANAGEUSERS,screen=UMConstants.UMPOPUP_ADDUSER,colIndex=1,actionUser=actionUser,targetUser=targetUser)
+                    except Exception as e:
+                        logger.info("Got Exception on editing a user when executed scenario" + str(k) + " : " + str(e))
+                        click_status, modifiableFieldsDictFromUI,updateBtn_status = "", {}, False
 
 
-                if actionUser == "superadmin" and targetUser == 'superadmin':
-                    checkEqualAssert(False, click_status,message="Verify that user'" + parentLoggedInUser_Name + "'  cannot edit user '" + targetUser + "'",testcase_id='Reflex-UM-206')
+                    if actionUser == "superadmin" and targetUser == 'superadmin':
+                        checkEqualAssert(False, click_status,message="Verify that user'" + parentLoggedInUser_Name + "'  cannot edit user '" + targetUser + "'",testcase_id='Reflex-UM-206')
 
 
-                elif actionUser == "superadmin" and "adminuser" in targetUser:
-                    expected_modifiableFieldsDict = sorted(UMConstants.MODIFIABLE_FIELDS_ALL.iteritems())
-                    checkEqualAssert(str([True,expected_modifiableFieldsDict, True]), str([click_status,modifiableFieldsDictFromUI, updateBtn_status]),message="Verify that user '" + parentLoggedInUser_Name + "' can edit user '" + targetUser + "'",testcase_id='Reflex-UM-225')
+                    elif actionUser == "superadmin" and "adminuser" in targetUser:
+                        expected_modifiableFieldsDict = sorted(UMConstants.MODIFIABLE_FIELDS_ALL.iteritems())
+                        checkEqualAssert(str([True,expected_modifiableFieldsDict, True]), str([click_status,modifiableFieldsDictFromUI, updateBtn_status]),message="Verify that user '" + parentLoggedInUser_Name + "' can edit user '" + targetUser + "'",testcase_id='Reflex-UM-225')
 
 
-                elif actionUser == "superadmin" and "normaluser" in targetUser:
-                    expected_modifiableFieldsDict = sorted(UMConstants.MODIFIABLE_FIELDS_ALL.iteritems())
-                    checkEqualAssert(str([True,expected_modifiableFieldsDict, True]), str([click_status,modifiableFieldsDictFromUI, updateBtn_status]),message="Verify that user '" + parentLoggedInUser_Name + "' can edit user '" + targetUser + "'",testcase_id='Reflex-UM-224')
+                    elif actionUser == "superadmin" and "normaluser" in targetUser:
+                        expected_modifiableFieldsDict = sorted(UMConstants.MODIFIABLE_FIELDS_ALL.iteritems())
+                        checkEqualAssert(str([True,expected_modifiableFieldsDict, True]), str([click_status,modifiableFieldsDictFromUI, updateBtn_status]),message="Verify that user '" + parentLoggedInUser_Name + "' can edit user '" + targetUser + "'",testcase_id='Reflex-UM-224')
 
 
-                elif "adminuser" in actionUser and targetUser == "superadmin":
-                    checkEqualAssert(False, click_status,message="Verify that user'" + parentLoggedInUser_Name + "'  cannot edit user '" + targetUser + "'",testcase_id='Reflex-UM-210')
+                    elif "adminuser" in actionUser and targetUser == "superadmin":
+                        checkEqualAssert(False, click_status,message="Verify that user'" + parentLoggedInUser_Name + "'  cannot edit user '" + targetUser + "'",testcase_id='Reflex-UM-210')
 
 
-                elif "adminuser" in actionUser and "adminuser" in targetUser and actionUser == targetUser:
-                    expected_modifiableFieldsDict = sorted(UMConstants.MODIFIABLE_FIELDS_NO_PASS_ROLECHANGE_DISABLE.iteritems())
-                    checkEqualAssert(str([True,expected_modifiableFieldsDict, True]), str([click_status,modifiableFieldsDictFromUI, updateBtn_status]),message="Verify that user '" + parentLoggedInUser_Name + "' can edit user '" + targetUser + "'",testcase_id='Reflex-UM-211')
+                    elif "adminuser" in actionUser and "adminuser" in targetUser and actionUser == targetUser:
+                        expected_modifiableFieldsDict = sorted(UMConstants.MODIFIABLE_FIELDS_NO_PASS_ROLECHANGE_DISABLE.iteritems())
+                        checkEqualAssert(str([True,expected_modifiableFieldsDict, True]), str([click_status,modifiableFieldsDictFromUI, updateBtn_status]),message="Verify that user '" + parentLoggedInUser_Name + "' can edit user '" + targetUser + "'",testcase_id='Reflex-UM-211')
 
 
-                elif "adminuser" in actionUser and "adminuser" in targetUser and actionUser != targetUser:
-                    expected_modifiableFieldsDict = sorted(UMConstants.MODIFIABLE_FIELDS_ALL.iteritems())
-                    checkEqualAssert(str([True,expected_modifiableFieldsDict, True]), str([click_status,modifiableFieldsDictFromUI, updateBtn_status]),message="Verify that user '" + parentLoggedInUser_Name + "' can edit user '" + targetUser + "'",testcase_id='Reflex-UM-209')
+                    elif "adminuser" in actionUser and "adminuser" in targetUser and actionUser != targetUser:
+                        expected_modifiableFieldsDict = sorted(UMConstants.MODIFIABLE_FIELDS_ALL.iteritems())
+                        checkEqualAssert(str([True,expected_modifiableFieldsDict, True]), str([click_status,modifiableFieldsDictFromUI, updateBtn_status]),message="Verify that user '" + parentLoggedInUser_Name + "' can edit user '" + targetUser + "'",testcase_id='Reflex-UM-209')
 
 
-                elif "adminuser" in actionUser and "normaluser" in targetUser:
-                    expected_modifiableFieldsDict = sorted(UMConstants.MODIFIABLE_FIELDS_ALL.iteritems())
-                    checkEqualAssert(str([True,expected_modifiableFieldsDict, True]), str([click_status,modifiableFieldsDictFromUI, updateBtn_status]),message="Verify that user '" + parentLoggedInUser_Name + "' can edit user '" + targetUser + "'",testcase_id='Reflex-UM-208')
+                    elif "adminuser" in actionUser and "normaluser" in targetUser:
+                        expected_modifiableFieldsDict = sorted(UMConstants.MODIFIABLE_FIELDS_ALL.iteritems())
+                        checkEqualAssert(str([True,expected_modifiableFieldsDict, True]), str([click_status,modifiableFieldsDictFromUI, updateBtn_status]),message="Verify that user '" + parentLoggedInUser_Name + "' can edit user '" + targetUser + "'",testcase_id='Reflex-UM-208')
+
+
+                else:
+                    logger.debug("No data to edit user. Table is empty.")
+                    logger.error("Not Run TCs: Reflex-UM-206,Reflex-UM-225,Reflex-UM-224,Reflex-UM-211,Reflex-UM-209,Reflex-UM-208")
+                    resultlogger.error("Not Run TCs: Reflex-UM-206,Reflex-UM-225,Reflex-UM-224,Reflex-UM-211,Reflex-UM-209,Reflex-UM-208")
 
 
 
@@ -411,50 +428,54 @@ try:
 
 
 
-
-
-            elif manageRolesScenariosDict[k]['operation'] == "user_delete":
+            elif manageRolesScenariosDict[str(k)]['operation'] == "user_delete":
                 handle = getHandle(setup, "explore_Screen", "alllabels")
                 roleScreenInstance.click(handle['alllabels']['label'][0])
                 tableHandle = getHandle(setup, UMConstants.UMSCREEN_MANAGEUSERS, 'table')
-                tableData_beforeEditUser = roleScreenInstance.table.getTableData1(tableHandle)
-                targetUser = manageRolesScenariosDict[k]['targetuser']
-                targetUser_Username = userLoginDetailsForManageRolesDict[targetUser]['username']
+                tableData_beforeDeleteUser = roleScreenInstance.table.getTableData1(tableHandle)
+                if tableData_beforeDeleteUser['rows'] != Constants.NODATA:
+                    targetUser = manageRolesScenariosDict[str(k)]['targetuser']
+                    targetUser_Username = userLoginDetailsForManageRolesDict[targetUser]['username']
 
-                try:
-                    click_status, delete_status,click_status_fromDelPopup,popup_disappear_status = UMHelper.deleteUser(setup=setup, tableHandle=tableHandle, screenInstance=roleScreenInstance, k=k, targetUser_Username=targetUser_Username,screen=UMConstants.UMSCREEN_MANAGEUSERS, colIndex=1)
-                except Exception as e:
-                    logger.info("Got Exception on deleting a user when executed scenario " + str(k) + " : " + str(e))
-                    click_status, delete_status, click_status_fromDelPopup, popup_disappear_status = "","","",""
+                    try:
+                        click_status, delete_status,click_status_fromDelPopup,popup_disappear_status = UMHelper.deleteUser(setup=setup, tableHandle=tableHandle, screenInstance=roleScreenInstance, k=str(k), targetUser_Username=targetUser_Username,parentscreen=UMConstants.UMSCREEN_MANAGEUSERS,screen=UMConstants.UMPOPUP_CONFIRM_DELETEROLE, colIndex=1,actionUser=actionUser,targetUser=targetUser)
+                    except Exception as e:
+                        logger.info("Got Exception on deleting a user when executed scenario " + str(k) + " : " + str(e))
+                        click_status, delete_status, click_status_fromDelPopup, popup_disappear_status = "","","",""
 
-                tableHandle = getHandle(setup, UMConstants.UMSCREEN_MANAGEUSERS, 'table')
-                tableData_afterEditUser = roleScreenInstance.table.getTableData1(tableHandle)
+                    tableHandle = getHandle(setup, UMConstants.UMSCREEN_MANAGEUSERS, 'table')
+                    tableData_afterDeleteUser = roleScreenInstance.table.getTableData1(tableHandle)
 
-                if actionUser == "superadmin" and targetUser == 'superadmin':
-                    checkEqualAssert(False, click_status,message="Verify that user'" + parentLoggedInUser_Name + "'  cannot delete user '" + targetUser + "'",testcase_id='Reflex-UM-246')
+                    if actionUser == "superadmin" and targetUser == 'superadmin':
+                        checkEqualAssert(False, click_status,message="Verify that user'" + parentLoggedInUser_Name + "'  cannot delete user '" + targetUser + "'",testcase_id='Reflex-UM-246')
 
-                elif actionUser == "superadmin" and "adminuser" in targetUser:
-                    checkEqualAssert(str([True,True,True,True,len(tableData_beforeEditUser)-1]), str([click_status,delete_status,click_status_fromDelPopup,popup_disappear_status,len(tableData_afterEditUser)]),message="Verify that user '" + parentLoggedInUser_Name + "' can delete user '" + targetUser + "'",testcase_id='Reflex-UM-248')
+                    elif actionUser == "superadmin" and "adminuser" in targetUser:
+                        checkEqualAssert(str([True,True,True,True,len(tableData_beforeDeleteUser['rows'])-1]), str([click_status,delete_status,click_status_fromDelPopup,popup_disappear_status,len(tableData_afterDeleteUser['rows'])]),message="Verify that user '" + parentLoggedInUser_Name + "' can delete user '" + targetUser + "'",testcase_id='Reflex-UM-248')
 
-                elif actionUser == "superadmin" and "normaluser" in targetUser:
-                    checkEqualAssert(str([True,True,True,True,len(tableData_beforeEditUser)-1]), str([click_status,delete_status,click_status_fromDelPopup,popup_disappear_status,len(tableData_afterEditUser)]),message="Verify that user '" + parentLoggedInUser_Name + "' can delete user '" + targetUser + "'",testcase_id='Reflex-UM-249')
+                    elif actionUser == "superadmin" and "normaluser" in targetUser:
+                        checkEqualAssert(str([True,True,True,True,len(tableData_beforeDeleteUser['rows'])-1]), str([click_status,delete_status,click_status_fromDelPopup,popup_disappear_status,len(tableData_afterDeleteUser['rows'])]),message="Verify that user '" + parentLoggedInUser_Name + "' can delete user '" + targetUser + "'",testcase_id='Reflex-UM-249')
 
-                elif "adminuser" in actionUser and targetUser == "superadmin":
-                    checkEqualAssert(False, click_status,message="Verify that user'" + parentLoggedInUser_Name + "'  cannot delete user '" + targetUser + "'",testcase_id='Reflex-UM-252')
+                    elif "adminuser" in actionUser and targetUser == "superadmin":
+                        checkEqualAssert(False, click_status,message="Verify that user'" + parentLoggedInUser_Name + "'  cannot delete user '" + targetUser + "'",testcase_id='Reflex-UM-252')
 
-                elif "adminuser" in actionUser and "adminuser" in targetUser and actionUser == targetUser:
-                    checkEqualAssert(False, click_status,message="Verify that user '" + parentLoggedInUser_Name + "' cannot delete user '" + targetUser + "'",testcase_id='Reflex-UM-253')
+                    elif "adminuser" in actionUser and "adminuser" in targetUser and actionUser == targetUser:
+                        checkEqualAssert(False, click_status,message="Verify that user '" + parentLoggedInUser_Name + "' cannot delete user '" + targetUser + "'",testcase_id='Reflex-UM-253')
 
-                elif "adminuser" in actionUser and "adminuser" in targetUser and actionUser != targetUser:
-                    checkEqualAssert(str([True,True,True,True,len(tableData_beforeEditUser)-1]), str([click_status,delete_status,click_status_fromDelPopup,popup_disappear_status,len(tableData_afterEditUser)]),message="Verify that user '" + parentLoggedInUser_Name + "' can delete user '" + targetUser + "'",testcase_id='Reflex-UM-251')
+                    elif "adminuser" in actionUser and "adminuser" in targetUser and actionUser != targetUser:
+                        checkEqualAssert(str([True,True,True,True,len(tableData_beforeDeleteUser['rows'])-1]), str([click_status,delete_status,click_status_fromDelPopup,popup_disappear_status,len(tableData_afterDeleteUser['rows'])]),message="Verify that user '" + parentLoggedInUser_Name + "' can delete user '" + targetUser + "'",testcase_id='Reflex-UM-251')
 
-                elif "adminuser" in actionUser and "normaluser" in targetUser:
-                    checkEqualAssert(str([True,True,True,True,len(tableData_beforeEditUser)-1]), str([click_status,delete_status,click_status_fromDelPopup,popup_disappear_status,len(tableData_afterEditUser)]),message="Verify that user '" + parentLoggedInUser_Name + "' can delete user '" + targetUser + "'",testcase_id='Reflex-UM-250')
+                    elif "adminuser" in actionUser and "normaluser" in targetUser:
+                        checkEqualAssert(str([True,True,True,True,len(tableData_beforeDeleteUser['rows'])-1]), str([click_status,delete_status,click_status_fromDelPopup,popup_disappear_status,len(tableData_afterDeleteUser['rows'])]),message="Verify that user '" + parentLoggedInUser_Name + "' can delete user '" + targetUser + "'",testcase_id='Reflex-UM-250')
+                else:
+                    logger.debug("No data to delete user. Table is empty.")
+                    logger.error("Not Run TCs: Reflex-UM-246,Reflex-UM-248,Reflex-UM-249,Reflex-UM-252,Reflex-UM-253,Reflex-UM-251,Reflex-UM-250")
+                    resultlogger.error("Not Run TCs: Reflex-UM-246,Reflex-UM-248,Reflex-UM-249,Reflex-UM-252,Reflex-UM-253,Reflex-UM-251,Reflex-UM-250")
+
+
+        #break
 
 
 
-
-    
 
     ############## Verify help/close(X) icon on add role popup
     handle = getHandle(setup, "explore_Screen", "alllabels")

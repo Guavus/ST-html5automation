@@ -23,20 +23,19 @@
             <!--&lt;!&ndash;<component id = "allcheckboxes" selector="css selector" locator="gvs-popup.add-edit-user-popup" parent="True"/>&ndash;&gt;-->
             <component id ="allbuttons" selector="css selector" locator="div.gvs-deep-ocean buttons" parent="True"/>-->
             <component id ="popupIcons" selector="css selector" locator="gvs-popup.add-edit-role-popup" parent="True"/>
-            <!--<component id="errorMsgContainer" selector="css selector" locator="gvs-popup.add-edit-user-popup" parent="True"/>-->
+            <component id="errorMsgContainer" selector="css selector" locator="gvs-popup.add-edit-role-popup" parent="True"/>
             <component id="alllabels" selector="css selector" locator="div.addEditRoleFormContainer" parent="True"/>
             <component id="tree" selector ="css selector" locator="div.tree" parent="True"/>
             <component id="content" selector ="css selector" locator="div.basePopupView" parent="True"/>
-            <component id="roleErrorMsgContainer" selector ="css selector" locator="div.elementWidth" parent="True"/>
         </screenConfig>
 
         <screenConfig id = "deletePopUp_Screen">
             <component id ="allbuttons" selector="css selector" locator="div.gvs-deep-ocean buttons" parent="True"/>-->
         </screenConfig>
 
-        <screenConfig id = "loginErrorPopup_Screen">
+        <screenConfig id = "errorPopup_Screen">
             <component id ="allbuttons" selector="css selector" locator="div.content" parent="True"/>
-            <component id ="loginErrorMsgContainer" selector="css selector" locator="div.content" parent="True"/>
+            <component id ="ErrorMsg" selector="css selector" locator="div.content" parent="True"/>
         </screenConfig>
 
         <screenConfig id = "userManagement_Screen">
@@ -93,11 +92,11 @@
             <component id="requiredFieldLabel" selector="css selector" locator="div.requiredLabel"/>
         </componentConfig>
 
-        <componentConfig id="roleErrorMsgContainer">
-            <component id="msg" selector="tag name" locator="label"/>
+        <componentConfig id="errorMsgContainer">
+            <component id="msg" selector="css selector" locator="label.errorLabel"/>
         </componentConfig>
 
-        <componentConfig id="loginErrorMsgContainer">
+        <componentConfig id="ErrorMsg">
             <component id="msg" selector="css selector" locator="p.gvs-alert-message"/>
         </componentConfig>
 
