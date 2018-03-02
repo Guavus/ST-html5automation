@@ -9,7 +9,7 @@
         </screenConfig>
 
         <screenConfig id = "roleManagement_Screen">
-            <!--<component id = "allspans" selector="css selector" locator="div.search-bar" parent="True"/>-->
+            <component id = "allspans" selector="css selector" locator="div.refresh-button-div" parent="True"/>
             <component id = "newRoleIcon" selector="css selector" locator="div.search-bar" parent="True"/>
             <component id = "allinputs" selector="css selector" locator="div.manage-roles-container" parent="True"/>
             <component id ="alllabels" selector="css selector" locator="div.search-bar" parent="True"/>
