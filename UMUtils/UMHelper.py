@@ -164,7 +164,7 @@ def editRole(setup,tableHandle,screenInstance, columnValueInRowToBeEdited,roleDe
     return click_status, expectedRoleName, expectedCheckedCheckBoxesList, roleNameFromUI, checkedCheckBoxesListFromUI, updateBtnStatus
 
 
-def deleteRole(setup,tableHandle,screenInstance,columnValueInRowToBeDeleted,parentScreen=UMConstants.UMSCREEN_MANAGEROLES,screen=UMConstants.UMPOPUP_CONFIRM_DELETEROLE,colIndex=0,):
+def deleteRole(setup,tableHandle,screenInstance,columnValueInRowToBeDeleted,parentScreen=UMConstants.UMSCREEN_MANAGEROLES,screen=UMConstants.UMPOPUP_CONFIRM_DELETEROLE,colIndex=0):
     click_status = False
     click_status_fromDelPopup = False
     popup_disappear_status = ""
