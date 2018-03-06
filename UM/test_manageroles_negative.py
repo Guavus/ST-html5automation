@@ -21,7 +21,7 @@ try:
     manageRoles_NegativeScenariosDict_intKeys = {int(key): value for key, value in manageRoles_NegativeScenariosDict.items()}
     userLoginDetailsForManageRolesDict = setup.cM.getNodeElements("umUserLoginDetailsForManageRoles", "user")
     for k, manageRolesNegativeScenario in sorted(manageRoles_NegativeScenariosDict_intKeys.iteritems()):
-        #k = "1"  #****************** To be removed
+        #k = "0"  #****************** To be removed
         #manageRolesNegativeScenario = manageRoles_NegativeScenariosDict[str(k)]  #****************** To be removed
 
 
@@ -79,13 +79,14 @@ try:
                 handle = getHandle(setup, "explore_Screen", "alllinks")
                 userScreenInstance.click(handle['alllinks']['a'][2])  ## Click on Logout
                 time.sleep(5)
+                setup.d.execute_script("window.close()")
 
                 setup.d.switch_to.window(setup.d.window_handles[0])
                 handle = getHandle(setup, UMConstants.UMSCREEN_MANAGEROLES, 'newRoleIcon')
                 click_status = UMHelper.clickOnPopupIcon(setup, h=handle, screen=UMConstants.UMSCREEN_MANAGEROLES,parent='newRoleIcon', child='icon')
 
                 erroFlag, msgFromUI = UMHelper.errorMsgOnPopUp(setup, UMConstants.UMPOPUP_ERROR, parent='ErrorMsg', child='msg')
-                checkEqualAssert(UMConstants.SESSION_EXPIRED_MSG, msgFromUI,message=" Verify that a session expire msg appears on all other tabs when same user is logged in multiple tabs of the same browser window and suddenly user logs out from one of the tabs.",testcase_id='Reflex-UM-199')
+                checkEqualAssert(UMConstants.SESSION_EXPIRED_MSG, msgFromUI,message=" Verify that a session expire msg appears on all other windows when same user is logged in multiple windows of the same browser  and suddenly user logs out from one of the windows.",testcase_id='Reflex-UM-199')
 
                 if erroFlag:
                     handle = getHandle(setup, UMConstants.UMPOPUP_ERROR, 'allbuttons')
@@ -367,6 +368,7 @@ try:
 
 
     setup.d.close()
+
 
 
 except Exception as e:

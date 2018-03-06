@@ -527,6 +527,7 @@ try:
 
 
     setup.d.close()
+    import UM.test_manageroles_negative
 
 
 except Exception as e:
