@@ -45,7 +45,7 @@
     </manageRoleScenarios>
 
     <manageRoleScenarios_Negative>
-        <scenario id="0" operation="multiple_loggedIn_tabs" actionuser="superadmin"/>
+        <scenario id="0" operation="multiple_loggedIn_windows" actionuser="superadmin"/>
         <scenario id="1" operation="enable_disabled_userEdit" firstname="aaa_neg"  newpassword="Jellyfish@1new" newcpassword="Jellyfish@1new" actionuser="superadmin" targetuser="superadmin"/>
         <scenario id="2" operation="enable_disabled_userDelete" actionuser="adminuser_neg_1" targetuser="adminuser_neg_1"/>
         <!--<scenario id="3" operation="enable_disabled_roleEdit" rolenamevalue_tobe_edited="Admin"  rolename="Adminaaa" actionuser="superadmin"/>-->

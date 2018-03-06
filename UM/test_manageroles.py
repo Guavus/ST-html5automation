@@ -526,6 +526,9 @@ try:
     checkEqualAssert(True, click_status, message='Verify Help icon on Add Role Popup is clickable',testcase_id="Reflex-UM-191")
 
 
+    setup.d.switch_to.window(setup.d.window_handles[1])
+    setup.d.close()
+    setup.d.switch_to.window(setup.d.window_handles[0])
     setup.d.close()
     import UM.test_manageroles_negative
 

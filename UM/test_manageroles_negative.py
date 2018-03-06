@@ -68,7 +68,7 @@ try:
 
         if parentLoggedInUser_Name != "":
 
-            if manageRoles_NegativeScenariosDict[str(k)]['operation'] == "multiple_loggedIn_tabs" :
+            if manageRoles_NegativeScenariosDict[str(k)]['operation'] == "multiple_loggedIn_windows" :
                 handle = getHandle(setup, "explore_Screen", "alllabels")
                 userScreenInstance.click(handle['alllabels']['label'][1])
 
