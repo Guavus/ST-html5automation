@@ -317,7 +317,7 @@ def setUserDetail(setup,screenInstance,screenName,userDetail,button='Create',che
     userNameFromUI = screenInstance.cm.sendkeys_input(userDetail['username'],h,0)
     checkEqualAssert(str(userNameFromUI),str(userDetail['username']),message="Verify Entered User Name")
     if not isColorValid(screenInstance, h,property=Constants.BORDERTOPCOLOR, index=0):
-        raise
+        raise Exception
     flag_usename=True
     dumpResultForButton(flag_usename and flag_fname and flag_lname and flag_email and flag_password and flag_cpassword, "UserName", screenInstance,setup)
 
@@ -328,14 +328,14 @@ def setUserDetail(setup,screenInstance,screenName,userDetail,button='Create',che
     firstNameFromUI = screenInstance.cm.sendkeys_input(userDetail['firstname'], h, 1)
     checkEqualAssert(str(firstNameFromUI), str(userDetail['firstname']),message="Verify Entered First Name")
     if not isColorValid(screenInstance, h,property=Constants.BORDERTOPCOLOR, index=1):
-        raise
+        raise Exception
     flag_fname=True
     dumpResultForButton(flag_usename and flag_fname and flag_lname and flag_email and flag_password and flag_cpassword,"First Name", screenInstance, setup)
 
     lastNameFromUI = screenInstance.cm.sendkeys_input(userDetail['lastname'], h, 2)
     checkEqualAssert(str(lastNameFromUI), str(userDetail['lastname']),message="Verify Entered Last Name")
     if not isColorValid(screenInstance, h,property=Constants.BORDERTOPCOLOR, index=2):
-        raise
+        raise Exception
     flag_lname=True
     dumpResultForButton(flag_usename and flag_fname and flag_lname and flag_email and flag_password and flag_cpassword,"Last Name", screenInstance, setup)
 
@@ -347,7 +347,7 @@ def setUserDetail(setup,screenInstance,screenName,userDetail,button='Create',che
     emailFromUI= screenInstance.cm.sendkeys_input(userDetail['email'],h,0,child="email")
     checkEqualAssert(str(emailFromUI), str(userDetail['email']),message="Verify Entered Email")
     if not isColorValid(screenInstance, h, property=Constants.BORDERTOPCOLOR,child='email', index=0):
-        raise
+        raise Exception
 
     detail['email'] = str(emailFromUI)
     flag_email=True
@@ -390,7 +390,7 @@ def setUserDetail(setup,screenInstance,screenName,userDetail,button='Create',che
     passwordFromUI=screenInstance.cm.sendkeys_input(userDetail['password'],h,0,child="password")
     checkEqualAssert(str(passwordFromUI), str(userDetail['password']),message="Verify Entered Password")
     if not isColorValid(screenInstance, h,property=Constants.BORDERTOPCOLOR,child='password', index=0):
-        raise
+        raise Exception
     flag_password=True
     dumpResultForButton(flag_usename and flag_email and flag_password and flag_cpassword, "Password", screenInstance,setup)
 
@@ -399,7 +399,7 @@ def setUserDetail(setup,screenInstance,screenName,userDetail,button='Create',che
     cpasswordFromUI = screenInstance.cm.sendkeys_input(userDetail['cpassword'], h,1,child="password")
     checkEqualAssert(str(cpasswordFromUI), str(userDetail['cpassword']),message="Verify Entered Confirm Password")
     if not isColorValid(screenInstance, h,property=Constants.BORDERTOPCOLOR,child='password', index=1):
-        raise
+        raise Exception
     flag_cpassword=True
     dumpResultForButton(flag_usename and flag_email and flag_password and flag_cpassword, "Confirm Password", screenInstance,setup)
 
@@ -419,7 +419,7 @@ def setUserDetail(setup,screenInstance,screenName,userDetail,button='Create',che
 
     if not button_status:
         logger.info("*************Create Button not enable**********")
-        raise
+        raise Exception
 
     if button_status and button=="Cancel":
         logger.info('Going to Click on Cancel Button')
@@ -613,5 +613,24 @@ def deleteUser(setup, tableHandle, screenInstance, k,targetUser_Username,actionU
 
 
 
+def enable_DisabledIcons(setup, tableHandle,screenInstance,valueUnderAction,tableHeader_text="Edit", colIndex=0):
+    elem = ""
+    column_ValuesFromTable = screenInstance.table.getColumnValueFromTable(colIndex, tableHandle)
 
+    if valueUnderAction in column_ValuesFromTable:
+        for header in tableHandle['table']['HEADERROW']:
+            if str(header.text) == str(tableHeader_text):
+                indexForColumnEdit = tableHandle['table']['HEADERROW'].index(header)
+                break
+        for value in column_ValuesFromTable:
+            if value == valueUnderAction:
+                indexColumnValueForRowToBeEdited = screenInstance.table.getIndexForValueInArray1(column_ValuesFromTable, value)
+                tableElem_cell = tableHandle['table']['ROWS'][indexColumnValueForRowToBeEdited * len(tableHandle['table']['HEADERROW']) + indexForColumnEdit]
+                elem = tableElem_cell.find_element_by_css_selector("div.buttonContainer").find_element_by_tag_name('span')
+                if "disable" in elem.get_attribute('class').lower():
+                    setup.d.execute_script("arguments[0].classList.remove('iconStyleDisable');", elem)
+                    break
+
+
+    return elem
 

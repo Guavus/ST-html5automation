@@ -20,6 +20,7 @@ class UMConstants(Constants):
     ROLE_IN_USE_MSG = "Role is already in use"
     SESSION_EXPIRED_MSG = "Session expired. Login again."
     ROLE_EXPIRED_MSG = "Role no more exists."
+    MALACIOUS_USER_ERROR_MSG = "Operation not permitted"
     AVAILABLE_PRIVILEGES = ['User Management','Export','Import','Workflow/UserDistribution','Workflow/DataExtraction']
     #ROLENAME_FORMAT = '[^A-Za-z0-9]' ## No special characters should be in the rolename
     MODIFIABLE_FIELDS_ALL = {"username":"disabled", "fname":"enabled", "lname":"enabled", "email":"enabled", "updatePasswordLink":"enabled", "password":"enabled", "cpassword":"enabled", "userrole":"enabled", "timezone":"enabled", "slider":"enabled"}

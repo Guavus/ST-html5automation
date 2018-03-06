@@ -126,8 +126,8 @@ try:
     manageRolesScenariosDict_intKeys = {int(key): value for key, value in manageRolesScenariosDict.items()}
     userLoginDetailsForManageRolesDict = setup.cM.getNodeElements("umUserLoginDetailsForManageRoles", "user")
     for k,manageRolesScenario in sorted(manageRolesScenariosDict_intKeys.iteritems()):
-        k = "26"    #************** to be removed
-        manageRolesScenario = manageRolesScenariosDict[str(k)] #******************* to be removed
+        #k = "26"    #************** to be removed
+        #manageRolesScenario = manageRolesScenariosDict[str(k)] #******************* to be removed
 
         logger.info("Executing Scenario id ---> " + str(k) )
         actionUser = manageRolesScenariosDict[str(k)]['actionuser']
