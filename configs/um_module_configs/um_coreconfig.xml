@@ -5,7 +5,7 @@
     <screenConfigs>
         <screenConfig id = "explore_Screen">
             <component id = "alllabels" selector="css selector" locator="div.umMenu" parent="True"/>
-            <component id = "alllinks" selector="css selector" locator="li.dropDown" parent="True"/>
+            <component id = "alllinks" selector="css selector" locator="kiwik-header" parent="True"/>
         </screenConfig>
 
         <screenConfig id = "roleManagement_Screen">
@@ -114,8 +114,6 @@
             <component id = "email" selector="css selector" locator='input[type="email"]'/>
             <component id ='updatePwd' selector="css selector" locator='label.updatePwd'/>
             <component id ='timezone' selector="css selector" locator='input.textInput.singleTimezoneLabel.ng-untouched.ng-pristine.ng-valid'/>
-
-
         </componentConfig>
 
     </componentConfigs>

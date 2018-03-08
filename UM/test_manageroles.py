@@ -20,7 +20,7 @@ try:
     ################### Verify table header on UM Role Management screen
     tableHandle = getHandle(setup, UMConstants.UMSCREEN_MANAGEROLES, 'table')
     actualHeader=roleScreenInstance.table.getIterfaceHeaders(tableHandle['table'])
-    checkEqualAssert(UMConstants.UMSCREENTABLEHEADERLIST_MANAGEROLES,actualHeader,message="Verify table header on UM Screen for Manage roles",testcase_id="Reflex-UM-188")
+    checkEqualAssert(str(UMConstants.UMSCREENTABLEHEADERLIST_MANAGEROLES),str(actualHeader),message="Verify table header on UM Screen for Manage roles",testcase_id="Reflex-UM-188")
 
     ############### Verify refresh button functionality on Role Management Screen
     tableData_beforeRefresh = roleScreenInstance.table.getTableData1(tableHandle)
@@ -125,6 +125,8 @@ try:
     manageRolesScenariosDict = setup.cM.getNodeElements("manageRoleScenarios", "scenario")
     manageRolesScenariosDict_intKeys = {int(key): value for key, value in manageRolesScenariosDict.items()}
     userLoginDetailsForManageRolesDict = setup.cM.getNodeElements("umUserLoginDetailsForManageRoles", "user")
+
+    check_TimezoneDropdownList_Flag = True
     for k,manageRolesScenario in sorted(manageRolesScenariosDict_intKeys.iteritems()):
         #k = "26"    #************** to be removed
         #manageRolesScenario = manageRolesScenariosDict[str(k)] #******************* to be removed
@@ -356,7 +358,7 @@ try:
                 handle = getHandle(setup, UMConstants.UMSCREEN_MANAGEUSERS, 'newUserIcon')
                 UMHelper.clickOnPopupIcon(setup, h=handle, screen=UMConstants.UMSCREEN_MANAGEROLES, parent='newUserIcon',child='icon')
                 try:
-                    userDetailsDictFromUI, userCreated_RoleAssigned_Status = UMHelper.setUserDetail(setup, userScreenInstance, UMConstants.UMPOPUP_ADDUSER, userDetail=manageRolesScenario,button="Create", checkComplusoryFieldFlag=False)
+                    userDetailsDictFromUI, userCreated_RoleAssigned_Status = UMHelper.setUserDetail(setup, userScreenInstance, UMConstants.UMPOPUP_ADDUSER, userDetail=manageRolesScenario,button="Create", checkComplusoryFieldFlag=False,check_TimezoneDropdownList_Flag=check_TimezoneDropdownList_Flag)
                     logger.debug("Control came out from setUserDetail method when performing operation user_create_assign_role")
                 except Exception as e:
                     logger.info("Got Exception on creating a user when executed scenario" + str(k) + " : " + str(e))
@@ -389,7 +391,7 @@ try:
                     resultlogger.error("Not Run TCs: Reflex-UM-201,Reflex-UM-202")
                     roleScreenInstance.hoverAndClickButton(setup, "Cancel", getHandle(setup, UMConstants.UMPOPUP_ADDUSER, 'allbuttons'))
 
-
+                check_TimezoneDropdownList_Flag = False
 
 
 
@@ -526,11 +528,27 @@ try:
     checkEqualAssert(True, click_status, message='Verify Help icon on Add Role Popup is clickable',testcase_id="Reflex-UM-191")
 
 
-    setup.d.switch_to.window(setup.d.window_handles[1])
-    setup.d.close()
-    setup.d.switch_to.window(setup.d.window_handles[0])
-    setup.d.close()
-    import UM.test_manageroles_negative
+    sleep_counter = 0
+    while len(setup.d.window_handles) != 2:
+        if sleep_counter == Constants.WEBDRIVERTIMEOUT:
+            logger.info("sleep_counter completed. Coming out of while loop")
+            break
+        time.sleep(1)
+        sleep_counter += 1
+
+    if sleep_counter == Constants.WEBDRIVERTIMEOUT and len(setup.d.window_handles) != 2:
+        logger.info("Could not get handle for the second window within sleep_counter time =" + str(
+            Constants.WEBDRIVERTIMEOUT) + ".  Not launching  script test_manageroles_negative.py")
+        setup.d.close()
+    else:
+        setup.d.switch_to.window(setup.d.window_handles[1])
+        logger.info("Closing Window:" + str(setup.d.window_handles[1]))
+        setup.d.close()
+        setup.d.switch_to.window(setup.d.window_handles[0])
+        logger.info("Closing Window:" + str(setup.d.window_handles[0]))
+        setup.d.close()
+        logger.info("Starting script: test_manageroles_negative")
+        import UM.test_manageroles_negative
 
 
 except Exception as e:

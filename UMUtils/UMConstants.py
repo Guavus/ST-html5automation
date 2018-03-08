@@ -12,7 +12,7 @@ class UMConstants(Constants):
     UMHEADER = "User Management"
     EXPECTEDOPTIONFIELDS_ON_ADDROLEPOPUP = ['Role Name*', 'Application Privileges*']
     #EXPECTEDOPTIONFIELDS_ON_ADDUSERPOPUP = ['Username*', 'First Name*', 'Last Name*', 'Email*', 'Password*', 'Confirm Password*','User Image', 'Role*', 'Network Data Privileges', 'Device Data Privileges', 'Timezone*']
-
+    EXPECTED_TIMEZONE_LIST = ["(GMT) UTC", "(GMT) EST"]
     REQUIREDFIELDSLABEL = "* required fields"
     ROLE_EXISTS_ERROR_MSG = "Role already exists"
     SAME_USER_ERROR_MSG = 'Username already exists.'

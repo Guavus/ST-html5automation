@@ -293,7 +293,7 @@ def errorMsgOnPopUp(setup,screenName,parent='errorMsgContainer',child='msg'):
 
 
 
-def setUserDetail(setup,screenInstance,screenName,userDetail,button='Create',checkComplusoryFieldFlag=False):
+def setUserDetail(setup,screenInstance,screenName,userDetail,button='Create',checkComplusoryFieldFlag=False,check_TimezoneDropdownList_Flag=False):
     detail={}
     flag_fname=False
     flag_lname=False
@@ -359,10 +359,18 @@ def setUserDetail(setup,screenInstance,screenName,userDetail,button='Create',che
 
     ########################################### Setting Timezone #######################################################
     logger.info("Going to set timezone =%s", userDetail['timezone'])
-    timezoneFromUI = screenInstance.cm.sendkeys_input(userDetail['timezone'], h, 0, child='timezone')
-    checkEqualAssert(str(userDetail['timezone']), str(timezoneFromUI), message="Verify Entered Timezone")
+    timezone_handle =  getHandle(setup, screenName, 'allselects')
 
-    detail['timezone'] = str(timezoneFromUI)
+    selectedTimezoneFromUI = screenInstance.dropdown.doSelectionOnVisibleDropDown(timezone_handle,str(userDetail['timezone']), index=1)
+    checkEqualAssert(str(userDetail['timezone']), str(selectedTimezoneFromUI), message="Verify Selected Timezone")
+
+    if check_TimezoneDropdownList_Flag:
+        timezoneDropdownListFromUI = []
+        timezoneDropdownListFromUI += [str(timezone) for timezone in timezone_handle['allselects']['select'][1].text.split("\n")]
+        checkEqualAssert(str(UMConstants.EXPECTED_TIMEZONE_LIST), str(timezoneDropdownListFromUI), message="Verify available timezone options in dropdown",testcase_id='Reflex-UM-266')
+
+
+    detail['timezone'] = str(selectedTimezoneFromUI)
     dumpResultForButton(flag_usename and flag_email and flag_password and flag_cpassword, "Timezone", screenInstance,setup)
 
     ############################################ Setting Enabled/Disabled Slider #######################################
@@ -523,24 +531,25 @@ def editUser(setup,tableHandle,screenInstance,userDetail,k,targetUser_Username,a
                 screenInstance.cm.sendkeys_input(userDetail['newcpassword'], handle, 1, child='password')
 
 
-            ## Check if input field for timezone is enabled
-            if handle['allinputs']['timezone'][0].is_enabled():
-                modifiableFieldsDictFromUI['timezone'] = 'enabled'
-                screenInstance.cm.sendkeys_input(userDetail['timezone'], handle, 0, child='timezone')
-
-
             ## Check if input field for Role is enabled
             handle = getHandle(setup, screen, 'allselects')
             if handle['allselects']['select'][0].is_enabled():
                 modifiableFieldsDictFromUI['userrole'] = 'enabled'
                 screenInstance.dropdown.doSelectionOnVisibleDropDown(handle,str(userDetail['userrole']), index=0)
 
+            ## Check if input field for timezone is enabled
+                if handle['allselects']['select'][1].is_enabled():
+                    modifiableFieldsDictFromUI['timezone'] = 'enabled'
+                    screenInstance.dropdown.doSelectionOnVisibleDropDown(handle,str(userDetail['timezone']),index=1)
+
+
             ## Check if input slider  is enabled
-            sliderHandle = getHandle(setup, screen, 'allsliders')
-            if findPropertyColor(screenInstance, sliderHandle, property=Constants.BACKGROUNDCOLOR, parent='allsliders',child='slider', index=0) == Constants.WHITECOLOR:
-                modifiableFieldsDictFromUI['slider'] = Constants.ENABLED_STATUS
-            else:
+            label_classname = setup.d.find_element_by_css_selector("div.switchContainer").find_element_by_tag_name("label").get_attribute("class")
+            if "disable" in label_classname.lower():
                 modifiableFieldsDictFromUI['slider'] = Constants.DISABLED_STATUS
+            else:
+                modifiableFieldsDictFromUI['slider'] = Constants.ENABLED_STATUS
+
 
 
             updateBtn_status = dumpResultForButton(True, "Edit user", button_label="Update", screenInstance=screenInstance, setup=setup,screen=screen, testcase_id='')
