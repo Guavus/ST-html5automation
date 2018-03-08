@@ -95,7 +95,7 @@ try:
     checkLoadMore = True    ### To check load more functionality only for the itertaion when it is set True
     checkShowOthers = True  ### To check show others functionality only for the itertaion when it is set True
     for ql in quickLink_list:
-        ql = "Last 7 days"
+        # ql = "Last 7 days"
         for cd in range(len(compareDimList)):
             #compareDimList[cd] = "Category"
             #compareDimList[cd] = "Manufacturer"
@@ -169,7 +169,7 @@ try:
 
                     elif tableData['rows']== Constants.NODATA:
                         msg1 = CBHelper.getNoDataMsg(setup, MRXConstants.COMPARATIVESCREEN, child='msgOnLegend')
-                        checkEqualAssert(MRXConstants.NODATAMSG, msg1,
+                        checkEqualAssert(MRXConstants.NODATAMSGCB, msg1,
                                      measure='Verify that the meaningful message should be shown on the Table view when no data is on screen.',
                                      testcase_id='')
 
