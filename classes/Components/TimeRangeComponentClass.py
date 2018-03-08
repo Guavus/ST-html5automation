@@ -267,34 +267,32 @@ class TimeRangeComponentClass(QuicklinkTimeRangeComponentClass):
                 h = 24
                 numberofday = numberofday - 1
 
-
             last6MonthsList = []
-            if (etepoch - stepoch) >= ((numberofday - 1) * 24 + int(h)) * 3600:
-                if (int(m) - 1) == 0:
-                    month = str('12')
+            if (etepoch - stepoch)>= ((numberofday - 1)*24 + int(h))*3600:
+                if (int(m) - 1 ) == 0:
+                    month= str('12')
                 else:
-                    month = str(int(m) - 1)
+                    month=str(int(m)-1)
 
-                for monthindex in range(1, 7):
+                for monthindex in range(1,7):
                     last6MonthsList += [month]
-                    if (int(month) - 1) == 0:
-                        month = str('12')
+                    if (int(month) - 1 ) == 0:
+                        month= str('12')
                     else:
                         month = str(int(month) - 1)
 
-                if (etepoch - stepoch) >= ((sum(
-                        [int(dayinmonth[str(monthindex)]) for monthindex in last6MonthsList]) + int(d) - 1) * 24 + int(h)) * 3600:
-                    return True, self.time_format(getDateString(etepoch - ((sum([int(dayinmonth[str(monthindex)]) for monthindex in last6MonthsList]) + numberofday - 1) * 24 + int(h)) * 3600, tPattern='%d %b %Y %H:%M'),getDateString(etepoch - ((numberofday - 1) * 24 + int(h)) * 3600,tPattern='%d %b %Y %H:%M'))
+
+
+
+                if (etepoch - stepoch) >= ((sum([int(dayinmonth[str(monthindex)]) for monthindex in last6MonthsList]) + int(d) - 1) * 24 + int(h)) * 3600:
+                    return True, self.time_format(getDateString(etepoch - ((sum([int(dayinmonth[str(monthindex)]) for monthindex in last6MonthsList]) + numberofday - 1) * 24 + int(h)) * 3600,tPattern ='%d %b %Y %H:%M'),getDateString(etepoch - ((numberofday - 1)*24 + int(h))*3600,tPattern ='%d %b %Y %H:%M'))
                 else:
-                    return True, self.time_format(stime1,getDateString(etepoch - ((numberofday - 1) * 24 + int(h)) * 3600,tPattern='%d %b %Y %H:%M'))
+                    return True,self.time_format(stime1,getDateString(etepoch - ((numberofday - 1)*24 + int(h))*3600,tPattern ='%d %b %Y %H:%M'))
             else:
                 return False, ""
 
         else:
             return False,""
-
-
-
 
     @staticmethod
     def getLabel(h,parent="ktrs",child="bar"):

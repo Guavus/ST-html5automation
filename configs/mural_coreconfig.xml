@@ -670,6 +670,16 @@
             <component id="title" selector="css selector" locator="div.titleSpan"/>
         </componentConfig>
 
+        <componentConfig id="leftFooter">
+            <component id="timezone" selector="tag name" locator="label"/>
+        </componentConfig>
+
+        <componentConfig id="rightFooter">
+            <component id="orgcopyright" selector="tag name" locator="label"/>
+        </componentConfig>
+
+
+
     </componentConfigs>
 
 </data>

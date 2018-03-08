@@ -229,7 +229,7 @@ class TableComponentClass(BaseComponentClass):
             try:
                 for j in range(j, j + colcount):
                     if count==colorColumnIndex:
-                        row.append(str(BaseComponentClass().rgb_to_hex(elHandle[j].find_element_by_xpath("./div").value_of_css_property('background-color'))).strip())
+                        row.append(str(BaseComponentClass().rgb_to_hex(elHandle[j].find_element_by_xpath("./*/div").value_of_css_property('background-color'))).strip())
                     else:
                         row.append(str(elHandle[j].text).strip())
                     count=count+1

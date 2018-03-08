@@ -41,8 +41,7 @@ class SetUp:
                 fp.set_preference("browser.download.folderList", 2)
                 fp.set_preference("browser.download.manager.showWhenStarting", False)
                 fp.set_preference("browser.download.dir",Constants.firefoxdownloadpath)
-                fp.set_preference("browser.helperApps.alwaysAsk.force", False)
-                #fp.set_preference("browser.helperApps.neverAsk.saveToDisk", "text/csv")
+                fp.set_preference("browser.helperApps.neverAsk.saveToDisk", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-exceltext/csv,application/csv,application/octet-stream")
 
                 self.d = webdriver.Firefox(executable_path=Constants.firefoxdriverpath,firefox_profile=fp)
             elif "safari" == Constants.BROWSER:
