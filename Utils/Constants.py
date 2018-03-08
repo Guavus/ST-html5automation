@@ -8,7 +8,9 @@ class Constants(object):
     # URL = "https://scrum.jalapeno.com:6443"
     # URL = "https://uiscrummural.cisco.com:6443/"
 
-    PROJECT = "UM"
+    HTMLPATH = "http://localhost/xampp/index2.html"
+
+    PROJECT = "MRX"
     #PROJECT = "MURAL"
 
     if PROJECT == "MRX":
