@@ -573,3 +573,4 @@ def checkComplusoryField(setup,screenInstance,screenName,userDetail,button='Crea
     dumpResultForButton(False, "Blank Confirm Password (Verifing complusory Field)", screenInstance, setup,testcase_id="MKR-3481")
     cpasswordFromUI = screenInstance.cm.sendkeys_input(userDetail['cpassword'], h,1,child="password")
     return
+
