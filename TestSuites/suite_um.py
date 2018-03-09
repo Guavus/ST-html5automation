@@ -97,7 +97,8 @@ if platform.system() == "Windows":
 else:
     delimiter = "/"
 
-test_file_strings = glob.glob('../UM*/test_manageroles*.py')
+test_file_strings = glob.glob('../UM*/test_manageroles.py')
+#test_file_strings = []
 
 # creating global object accessed through out all modules
 import __builtin__
@@ -125,7 +126,7 @@ version_string = [module.split(delimiter)[1] + "." + module.split(delimiter)[2].
 
 for module in version_string:
     try:
-        version= __import__(module).FindVersion.version
+        version= __import__(module).find_version.version
     except Exception as e:
         logger.error('Exception found while executing %s ::: %s', module, e)
 

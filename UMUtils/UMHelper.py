@@ -538,9 +538,9 @@ def editUser(setup,tableHandle,screenInstance,userDetail,k,targetUser_Username,a
                 screenInstance.dropdown.doSelectionOnVisibleDropDown(handle,str(userDetail['userrole']), index=0)
 
             ## Check if input field for timezone is enabled
-                if handle['allselects']['select'][1].is_enabled():
-                    modifiableFieldsDictFromUI['timezone'] = 'enabled'
-                    screenInstance.dropdown.doSelectionOnVisibleDropDown(handle,str(userDetail['timezone']),index=1)
+            if handle['allselects']['select'][1].is_enabled():
+                modifiableFieldsDictFromUI['timezone'] = 'enabled'
+                screenInstance.dropdown.doSelectionOnVisibleDropDown(handle,str(userDetail['timezone']),index=1)
 
 
             ## Check if input slider  is enabled

@@ -51,7 +51,7 @@
         <!--<scenario id="3" operation="enable_disabled_roleEdit" rolenamevalue_tobe_edited="Admin"  rolename="Adminaaa" actionuser="superadmin"/>-->
         <!--<scenario id="4" operation="enable_disabled_roleDelete"  rolenamevalue_tobe_deleted="Admin"  actionuser="superadmin"/>-->
         <scenario id="5" operation="edit_deletedRole"  rolenamevalue_tobe_deleted="kr_neg_role0" rolenamevalue_tobe_edited="kr_neg_role0" rolename="kr_neg_role1" applicationprivileges="3" actionuser="superadmin" actionuser2="adminuser_neg_3"/>
-        <!--<scenario id="6" operation="session_timeout" actionuser="superadmin"/>-->
+        <scenario id="6" operation="session_timeout" actionuser="superadmin"/>
 
     </manageRoleScenarios_Negative>
 
