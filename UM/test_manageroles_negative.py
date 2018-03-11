@@ -353,7 +353,7 @@ try:
 
                 if updateBtnStatus == True:
                     handle = getHandle(setup, UMConstants.UMPOPUP_ADDROLE, "allbuttons")
-                    roleScreenInstance.click(handle['allbuttons']['button'][0])
+                    roleScreenInstance.hoverAndClickButton(setup, "Update", handle)
                     erroFlag, msgFromUI = UMHelper.errorMsgOnPopUp(setup, UMConstants.UMPOPUP_ERROR, parent='ErrorMsg', child='msg')
                     checkEqualAssert(UMConstants.ROLE_EXPIRED_MSG,str(msgFromUI),message="Verify that valid error messages appears when one admin user tries to edit another user that has been deleted by other admin user in the same login session.",testcase_id='Reflex-UM-204')
 
@@ -364,7 +364,11 @@ try:
                         handle = getHandle(setup, UMConstants.UMPOPUP_ERROR, 'ErrorMsg')
                         checkEqualAssert(0,len(handle['ErrorMsg']['msg']),message="Verify that on clicking on 'Ok' button,  Error Popup disappears",testcase_id='Reflex-UM-204')
 
-
+                else:
+                    logger.info("Could not click on Update icon on role edit popup while updating role '" + str(rolenamevalue_tobe_edited))
+                    logger.info("Not run Tcs: Reflex-UM-204 ")
+                    handle = getHandle(setup, UMConstants.UMPOPUP_ADDROLE, "allbuttons")
+                    roleScreenInstance.hoverAndClickButton(setup, "Cancel", handle)
 
 
     setup.d.close()
