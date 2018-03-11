@@ -39,7 +39,7 @@ def sortTable(setup,instance,screenName,columnName="Name",testcase_id=""):
     instance.table.sortTable1(tableHandle,columnName)
     tableHandle = getHandle(setup,screenName, "table")
 
-    data2 = instance.table.getTableData1(tableHandle)
+    data2 = instance.table.getTableData1(tableHandle,length=30)
     columnIndex = instance.table.getIndexForValueInArray(data2['header'], columnName)
 
     col = []

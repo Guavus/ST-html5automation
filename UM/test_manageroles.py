@@ -23,7 +23,7 @@ try:
     checkEqualAssert(str(UMConstants.UMSCREENTABLEHEADERLIST_MANAGEROLES),str(actualHeader),message="Verify table header on UM Screen for Manage roles",testcase_id="Reflex-UM-188")
 
     ############### Verify refresh button functionality on Role Management Screen
-    tableData_beforeRefresh = roleScreenInstance.table.getTableData1(tableHandle)
+    tableData_beforeRefresh = roleScreenInstance.table.getTableData1(tableHandle,length=30)
     length = len(tableData_beforeRefresh['rows'])
     firsttab = setup.d.current_window_handle
     logger.debug("firsttab handle: " + firsttab)
@@ -44,7 +44,7 @@ try:
     click_status = roleScreenInstance.click(handle['allspans']['span'][0])
     logger.debug("Click status for refresh button on role management screen")
     tableHandle = getHandle(setup, UMConstants.UMSCREEN_MANAGEROLES, 'table')
-    tableData_afterRefresh = roleScreenInstance.table.getTableData1(tableHandle)
+    tableData_afterRefresh = roleScreenInstance.table.getTableData1(tableHandle,length=30)
     length = len(tableData_afterRefresh['rows'])
     checkEqualAssert(len(tableData_beforeRefresh['rows']) + 1,len(tableData_afterRefresh['rows']) , message="Verify refresh button successfully reloads data on UM Role Management screen",testcase_id="Reflex-UM-228")
 
@@ -128,7 +128,7 @@ try:
 
     check_TimezoneDropdownList_Flag = True
     for k,manageRolesScenario in sorted(manageRolesScenariosDict_intKeys.iteritems()):
-        #k = "26"    #************** to be removed
+        #k = "28"    #************** to be removed
         #manageRolesScenario = manageRolesScenariosDict[str(k)] #******************* to be removed
 
         logger.info("Executing Scenario id ---> " + str(k) )
@@ -176,7 +176,7 @@ try:
                 handle = getHandle(setup, "explore_Screen", "alllabels")
                 roleScreenInstance.click(handle['alllabels']['label'][1])
                 tableHandle = getHandle(setup, UMConstants.UMSCREEN_MANAGEROLES, 'table')
-                tableData_beforeCreateRole = roleScreenInstance.table.getTableData1(tableHandle)
+                tableData_beforeCreateRole = roleScreenInstance.table.getTableData1(tableHandle,length=30)
 
                 handle = getHandle(setup, UMConstants.UMSCREEN_MANAGEROLES, 'newRoleIcon')
                 click_status = UMHelper.clickOnPopupIcon(setup, h=handle, screen=UMConstants.UMSCREEN_MANAGEROLES, parent='newRoleIcon',child='icon')
@@ -211,7 +211,7 @@ try:
                     roleScreenInstance.hoverAndClickButton(setup, "Cancel", handle)
                 logger.debug("Getting table handle after Creating a new role")
                 tableHandle = getHandle(setup, UMConstants.UMSCREEN_MANAGEROLES, 'table')
-                tableData_afterCreateRole = roleScreenInstance.table.getTableData1(tableHandle)
+                tableData_afterCreateRole = roleScreenInstance.table.getTableData1(tableHandle,length=30)
                 if tableData_afterCreateRole['rows'] != Constants.NODATA:
                     numberOfRows_afterCreateRole = len(tableData_afterCreateRole['rows'])
                     roleEntry_forTableFromUI = []
@@ -245,7 +245,7 @@ try:
                 handle = getHandle(setup, "explore_Screen", "alllabels")
                 roleScreenInstance.click(handle['alllabels']['label'][1])
                 tableHandle = getHandle(setup, UMConstants.UMSCREEN_MANAGEROLES, 'table')
-                tableData_beforeUpdateRole = roleScreenInstance.table.getTableData1(tableHandle)
+                tableData_beforeUpdateRole = roleScreenInstance.table.getTableData1(tableHandle,length=30)
                 if tableData_beforeUpdateRole['rows'] != Constants.NODATA:
                     numberOfRows_beforeUpdateRole = len(tableData_beforeUpdateRole['rows'])
                     columnValueInRowToBeEdited = manageRolesScenariosDict[str(k)]['rolenamevalue_tobe_edited']
@@ -266,7 +266,7 @@ try:
                     expected_RoleEntry_forTable = [expectedRoleName] + expectedCheckedCheckBoxesList + ['', '']
                     logger.debug("Getting table handle after Updating an existing role")
                     tableHandle = getHandle(setup, UMConstants.UMSCREEN_MANAGEROLES, 'table')
-                    tableData_afterUpdateRole = roleScreenInstance.table.getTableData1(tableHandle)
+                    tableData_afterUpdateRole = roleScreenInstance.table.getTableData1(tableHandle,length=30)
                     if tableData_afterUpdateRole['rows'] != Constants.NODATA:
                         numberOfRows_afterUpdateRole = len(tableData_afterUpdateRole['rows'])
                         roleEntry_forTableFromUI = []
@@ -308,7 +308,7 @@ try:
                 handle = getHandle(setup, "explore_Screen", "alllabels")
                 roleScreenInstance.click(handle['alllabels']['label'][1])
                 tableHandle = getHandle(setup, UMConstants.UMSCREEN_MANAGEROLES, 'table')
-                tableData_beforeDeleteRole = roleScreenInstance.table.getTableData1(tableHandle)
+                tableData_beforeDeleteRole = roleScreenInstance.table.getTableData1(tableHandle,length=30)
                 if tableData_beforeDeleteRole['rows'] != Constants.NODATA:
                     numberOfRows_beforeDeleteRole = len(tableData_beforeDeleteRole['rows'])
                     columnValueInRowToBeDeleted = manageRolesScenariosDict[str(k)]['rolenamevalue_tobe_deleted']
@@ -326,7 +326,7 @@ try:
                         continue
 
                     tableHandle = getHandle(setup, UMConstants.UMSCREEN_MANAGEROLES, 'table')
-                    tableData_afterDeleteRole = roleScreenInstance.table.getTableData1(tableHandle)
+                    tableData_afterDeleteRole = roleScreenInstance.table.getTableData1(tableHandle,length=30)
                     if tableData_afterDeleteRole['rows'] != Constants.NODATA:
                         numberOfRows_afterDeleteRole = len(tableData_afterDeleteRole['rows'])
                     else:
@@ -403,7 +403,7 @@ try:
                 handle = getHandle(setup, "explore_Screen", "alllabels")
                 roleScreenInstance.click(handle['alllabels']['label'][0])
                 tableHandle = getHandle(setup, UMConstants.UMSCREEN_MANAGEUSERS, 'table')
-                tableData_beforeEditUser = roleScreenInstance.table.getTableData1(tableHandle)
+                tableData_beforeEditUser = roleScreenInstance.table.getTableData1(tableHandle,length=30)
                 if tableData_beforeEditUser['rows'] != Constants.NODATA:
                     targetUser = manageRolesScenariosDict[str(k)]['targetuser']
                     targetUser_Username = userLoginDetailsForManageRolesDict[targetUser]['username']
@@ -464,7 +464,7 @@ try:
                 handle = getHandle(setup, "explore_Screen", "alllabels")
                 roleScreenInstance.click(handle['alllabels']['label'][0])
                 tableHandle = getHandle(setup, UMConstants.UMSCREEN_MANAGEUSERS, 'table')
-                tableData_beforeDeleteUser = roleScreenInstance.table.getTableData1(tableHandle)
+                tableData_beforeDeleteUser = roleScreenInstance.table.getTableData1(tableHandle,length=30)
                 if tableData_beforeDeleteUser['rows'] != Constants.NODATA:
                     targetUser = manageRolesScenariosDict[str(k)]['targetuser']
                     targetUser_Username = userLoginDetailsForManageRolesDict[targetUser]['username']
@@ -476,7 +476,7 @@ try:
                         click_status, delete_status, click_status_fromDelPopup, popup_disappear_status = "","","",""
 
                     tableHandle = getHandle(setup, UMConstants.UMSCREEN_MANAGEUSERS, 'table')
-                    tableData_afterDeleteUser = roleScreenInstance.table.getTableData1(tableHandle)
+                    tableData_afterDeleteUser = roleScreenInstance.table.getTableData1(tableHandle,length=30)
 
                     if actionUser == "superadmin" and targetUser == 'superadmin':
                         checkEqualAssert(False, click_status,message="Verify that user'" + parentLoggedInUser_Name + "'  cannot delete user '" + targetUser + "'",testcase_id='Reflex-UM-246')
