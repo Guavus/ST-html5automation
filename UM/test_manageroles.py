@@ -527,20 +527,8 @@ try:
     click_status = UMHelper.clickOnPopupIcon(setup, h=handle, screen=UMConstants.UMPOPUP_ADDROLE,parent='popupIcons', child='helpIcon')
     checkEqualAssert(True, click_status, message='Verify Help icon on Add Role Popup is clickable',testcase_id="Reflex-UM-191")
 
-
-    sleep_counter = 0
-    while len(setup.d.window_handles) != 2:
-        if sleep_counter == Constants.WEBDRIVERTIMEOUT:
-            logger.info("sleep_counter completed. Coming out of while loop")
-            break
-        time.sleep(1)
-        sleep_counter += 1
-
-    if sleep_counter == Constants.WEBDRIVERTIMEOUT and len(setup.d.window_handles) != 2:
-        logger.info("Could not get handle for the second window within sleep_counter time =" + str(
-            Constants.WEBDRIVERTIMEOUT) + ".  Not launching  script test_manageroles_negative.py")
-        setup.d.close()
-    else:
+    all_windows_open_status = UMHelper.wait_for_windowHandles(setup, num_of_windows=2)
+    if all_windows_open_status:
         setup.d.switch_to.window(setup.d.window_handles[1])
         logger.info("Closing Window:" + str(setup.d.window_handles[1]))
         setup.d.close()
@@ -549,6 +537,10 @@ try:
         setup.d.close()
         logger.info("Starting script: test_manageroles_negative")
         import UM.test_manageroles_negative
+
+    else:
+        setup.d.close()
+
 
 
 except Exception as e:

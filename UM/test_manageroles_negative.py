@@ -73,31 +73,38 @@ try:
                 userScreenInstance.click(handle['alllabels']['label'][1])
 
                 setup.d.execute_script("window.open('"+Constants.URL+"','_blank');")
-                setup.d.switch_to.window(setup.d.window_handles[1])
-                handle = getHandle(setup, "explore_Screen", "alllinks")
-                userScreenInstance.click(handle['alllinks']['a'][0])  ## Click on Profile link
-                handle = getHandle(setup, "explore_Screen", "alllinks")
-                userScreenInstance.click(handle['alllinks']['a'][2])  ## Click on Logout
-                time.sleep(5)
-                setup.d.execute_script("window.close()")
+                all_windows_open_status = UMHelper.wait_for_windowHandles(setup,num_of_windows=2)
 
-                setup.d.switch_to.window(setup.d.window_handles[0])
-                handle = getHandle(setup, UMConstants.UMSCREEN_MANAGEROLES, 'newRoleIcon')
-                click_status = UMHelper.clickOnPopupIcon(setup, h=handle, screen=UMConstants.UMSCREEN_MANAGEROLES,parent='newRoleIcon', child='icon')
-
-                erroFlag, msgFromUI = UMHelper.errorMsgOnPopUp(setup, UMConstants.UMPOPUP_ERROR, parent='ErrorMsg', child='msg')
-                checkEqualAssert(UMConstants.SESSION_EXPIRED_MSG, msgFromUI,message=" Verify that a session expire msg appears on all other windows when same user is logged in multiple windows of the same browser  and suddenly user logs out from one of the windows.",testcase_id='Reflex-UM-199')
-
-                if erroFlag:
-                    handle = getHandle(setup, UMConstants.UMPOPUP_ERROR, 'allbuttons')
-                    roleScreenInstance.hoverAndClickButton(setup, "Ok", handle)
+                if all_windows_open_status:
+                    setup.d.switch_to.window(setup.d.window_handles[1])
+                    logger.info("Switched to window " + str(setup.d.window_handles[1]))
+                    handle = getHandle(setup, "explore_Screen", "alllinks")
+                    userScreenInstance.click(handle['alllinks']['a'][0])  ## Click on Profile link
+                    handle = getHandle(setup, "explore_Screen", "alllinks")
+                    userScreenInstance.click(handle['alllinks']['a'][2])  ## Click on Logout
                     time.sleep(5)
-                    handle = getHandle(setup, UMConstants.UMPOPUP_ERROR, 'ErrorMsg')
-                    loginHandle = getHandle(setup,Constants.LOGINSCREEN)
-                    checkEqualAssert(str([0,True]), str([len(handle['ErrorMsg']['msg']), len(loginHandle['username']['username']) > 0]),message="Verify that on clicking on 'Ok' button, Session Expire Error Popup disappears and login page is rendered again",testcase_id='Reflex-UM-199')
+                    setup.d.execute_script("window.close()")
 
+                    setup.d.switch_to.window(setup.d.window_handles[0])
+                    logger.info("Switched to window " + str(setup.d.window_handles[0]))
+                    handle = getHandle(setup, UMConstants.UMSCREEN_MANAGEROLES, 'newRoleIcon')
+                    click_status = UMHelper.clickOnPopupIcon(setup, h=handle, screen=UMConstants.UMSCREEN_MANAGEROLES,parent='newRoleIcon', child='icon')
 
+                    erroFlag, msgFromUI = UMHelper.errorMsgOnPopUp(setup, UMConstants.UMPOPUP_ERROR, parent='ErrorMsg', child='msg')
+                    checkEqualAssert(UMConstants.SESSION_EXPIRED_MSG, msgFromUI,message=" Verify that a session expire msg appears on all other windows when same user is logged in multiple windows of the same browser  and suddenly user logs out from one of the windows.",testcase_id='Reflex-UM-199')
 
+                    if erroFlag:
+                        handle = getHandle(setup, UMConstants.UMPOPUP_ERROR, 'allbuttons')
+                        roleScreenInstance.hoverAndClickButton(setup, "Ok", handle)
+                        time.sleep(5)
+                        handle = getHandle(setup, UMConstants.UMPOPUP_ERROR, 'ErrorMsg')
+                        loginHandle = getHandle(setup,Constants.LOGINSCREEN)
+                        checkEqualAssert(str([0,True]), str([len(handle['ErrorMsg']['msg']), len(loginHandle['username']['username']) > 0]),message="Verify that on clicking on 'Ok' button, Session Expire Error Popup disappears and login page is rendered again",testcase_id='Reflex-UM-199')
+
+                else:
+                    logger.error("Not Run TCs: Reflex-UM-199")
+                    resultlogger.error("Not Run TCs: Reflex-UM-199")
+                    continue
 
 
 
@@ -366,7 +373,8 @@ try:
 
                 else:
                     logger.info("Could not click on Update icon on role edit popup while updating role '" + str(rolenamevalue_tobe_edited))
-                    logger.info("Not run Tcs: Reflex-UM-204 ")
+                    logger.error("Not run Tcs: Reflex-UM-204 ")
+                    resultlogger.error("Not Run TCs: Reflex-UM-204")
                     handle = getHandle(setup, UMConstants.UMPOPUP_ADDROLE, "allbuttons")
                     roleScreenInstance.hoverAndClickButton(setup, "Cancel", handle)
 

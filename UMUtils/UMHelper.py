@@ -643,3 +643,21 @@ def enable_DisabledIcons(setup, tableHandle,screenInstance,valueUnderAction,tabl
 
     return elem
 
+
+def wait_for_windowHandles(setup,num_of_windows=2):
+    sleep_counter = 0
+    timer_up_flag = False
+    while len(setup.d.window_handles) != num_of_windows:
+        if sleep_counter == Constants.WEBDRIVERTIMEOUT:
+            logger.info("sleep_counter completed. Coming out of while loop")
+            timer_up_flag = True
+            break
+        time.sleep(1)
+        sleep_counter += 1
+
+    if timer_up_flag:
+        logger.info("Could not get handle for the other window within sleep_counter time =" + str(Constants.WEBDRIVERTIMEOUT))
+        return False
+    else:
+        logger.info("All window handles are retrieved")
+        return True
