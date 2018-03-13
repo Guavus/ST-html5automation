@@ -536,8 +536,9 @@ try:
         logger.info("Closing Window:" + str(setup.d.window_handles[0]))
         setup.d.close()
         logger.info("Starting script: test_manageroles_negative")
-        import UM.test_manageroles_negative
         import UM.test_change_password
+        import UM.test_manageroles_negative
+
 
     else:
         setup.d.close()
