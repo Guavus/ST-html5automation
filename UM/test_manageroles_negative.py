@@ -2,9 +2,9 @@ from MuralUtils.ContentHelper import *
 from UMUtils import UMHelper
 from classes.Pages.MuralScreens.RoleManagementScreen import *
 from classes.Pages.ExplorePageClass import *
-#from MRXUtils.MRXConstants import *
 from UMUtils.UMConstants import *
 from classes.Pages.MuralScreens.UserMangementScreen import UserManagementScreenClass
+from Utils import utility
 
 try:
     setup = SetUp()
@@ -13,7 +13,6 @@ try:
     wfstart = WorkflowStartComponentClass()
     userScreenInstance = UserManagementScreenClass(setup.d)
     roleScreenInstance=RoleManagementScreenClass(setup.d)
-
 
 
 
@@ -66,45 +65,173 @@ try:
 
 
 
+
+
+
+
+
+
+
         if parentLoggedInUser_Name != "":
 
+
+
+            ################# Verify the behaviour when  same user is logged in multiple windows of same broswer
             if manageRoles_NegativeScenariosDict[str(k)]['operation'] == "multiple_loggedIn_windows" :
                 handle = getHandle(setup, "explore_Screen", "alllabels")
                 userScreenInstance.click(handle['alllabels']['label'][1])
 
+                autologging_status = False
                 setup.d.execute_script("window.open('"+Constants.URL+"','_blank');")
-                all_windows_open_status = UMHelper.wait_for_windowHandles(setup,num_of_windows=2)
+                all_windows_open_status = utility.wait_for_windowHandles(setup,num_of_windows=2)
 
-                if all_windows_open_status:
+                if all_windows_open_status :
                     setup.d.switch_to.window(setup.d.window_handles[1])
                     logger.info("Switched to window " + str(setup.d.window_handles[1]))
-                    handle = getHandle(setup, "explore_Screen", "alllinks")
-                    userScreenInstance.click(handle['alllinks']['a'][0])  ## Click on Profile link
-                    handle = getHandle(setup, "explore_Screen", "alllinks")
-                    userScreenInstance.click(handle['alllinks']['a'][2])  ## Click on Logout
-                    time.sleep(5)
-                    setup.d.execute_script("window.close()")
+                    page_load_status = utility.wait_for_pageLoad(setup=setup, window_handle=setup.d.window_handles[1])
+                    if page_load_status:
+                        handle = getHandle(setup, "explore_Screen", "alllinks")
+                        if len(handle['alllinks']['a']) > 0:
+                            logger.info("User auto-logged in on launching UM screen in another window of the same broswer")
+                            autologging_status = True
+                            userScreenInstance.click(handle['alllinks']['a'][0])  ## Click on Profile link
+                            handle = getHandle(setup, "explore_Screen", "alllinks")
+                            userScreenInstance.click(handle['alllinks']['a'][2])  ## Click on Logout
+                            time.sleep(5)
+                            setup.d.execute_script("window.close()")
+                        else:
+                            logger.info("User was not auto-logged in on launching UM screen in another window of the same broswer")
+                            setup.d.execute_script("window.close()")
+                    else:
+                        logger.error("Not Run TCs: Reflex-UM-199,Reflex-UM-269")
+                        resultlogger.error("Not Run TCs: Reflex-UM-199,Reflex-UM-269")
+                        continue
 
                     setup.d.switch_to.window(setup.d.window_handles[0])
                     logger.info("Switched to window " + str(setup.d.window_handles[0]))
+                    page_load_status = utility.wait_for_pageLoad(setup=setup, window_handle=setup.d.window_handles[0])
+                    if page_load_status:
+                        handle = getHandle(setup, UMConstants.UMSCREEN_MANAGEROLES, 'newRoleIcon')
+                        click_status = UMHelper.clickOnPopupIcon(setup, h=handle, screen=UMConstants.UMSCREEN_MANAGEROLES,parent='newRoleIcon', child='icon')
+                        erroFlag, msgFromUI = UMHelper.errorMsgOnPopUp(setup, UMConstants.UMPOPUP_ERROR, parent='ErrorMsg', child='msg')
+                        checkEqualAssert(str([True, UMConstants.SESSION_EXPIRED_MSG]), str([autologging_status, msgFromUI]), message=" Verify that a session expire msg appears on all other windows when some action is performed by same user logged in multiple windows of the same browser and suddenly he logs out from one of the windows.",testcase_id='Reflex-UM-199,Reflex-UM-269')
+                        if erroFlag:
+                            handle = getHandle(setup, UMConstants.UMPOPUP_ERROR, 'allbuttons')
+                            roleScreenInstance.hoverAndClickButton(setup, "Ok", handle)
+                            time.sleep(5)
+                            handle = getHandle(setup, UMConstants.UMPOPUP_ERROR, 'ErrorMsg')
+                            loginHandle = getHandle(setup,Constants.LOGINSCREEN)
+                            checkEqualAssert(str([0,True]), str([len(handle['ErrorMsg']['msg']), len(loginHandle['username']['username']) > 0]),message="Verify that on clicking on 'Ok' button, Session Expire Error Popup disappears and login page is rendered again",testcase_id='Reflex-UM-199,Reflex-UM-269')
+                    else:
+                        logger.error("Not Run TCs: Reflex-UM-199,Reflex-UM-269")
+                        resultlogger.error("Not Run TCs: Reflex-UM-199,Reflex-UM-269")
+                        continue
+                else:
+                    logger.error("Not Run TCs: Reflex-UM-199,Reflex-UM-269")
+                    resultlogger.error("Not Run TCs: Reflex-UM-199,Reflex-UM-269")
+                    continue
+
+
+
+
+
+
+
+
+            ################# Verify the behaviour when  same user is logged in multiple tabs of same broswer
+            if manageRoles_NegativeScenariosDict[str(k)]['operation'] == "multiple_loggedIn_tabs":
+                handle = getHandle(setup, "explore_Screen", "alllabels")
+                userScreenInstance.click(handle['alllabels']['label'][1])
+
+                autologging_status = False
+                setup.d.find_element_by_tag_name('body').send_keys(Keys.COMMAND + 't')
+                all_windows_open_status = utility.wait_for_windowHandles(setup, num_of_windows=2)
+
+                if all_windows_open_status:
+                    setup.d.switch_to.window(setup.d.window_handles[1])
+                    setup.d.get(Constants.URL)
+                    logger.info("Switched to tab " + str(setup.d.window_handles[1]))
+                    page_load_status = utility.wait_for_pageLoad(setup=setup, window_handle=setup.d.window_handles[1])
+                    if page_load_status:
+                        handle = getHandle(setup, "explore_Screen", "alllinks")
+                        if len(handle['alllinks']['a']) > 0:
+                            logger.info("User auto-logged in on launching UM screen in another tab of the same broswer")
+                            autologging_status = True
+                            userScreenInstance.click(handle['alllinks']['a'][0])  ## Click on Profile link
+                            handle = getHandle(setup, "explore_Screen", "alllinks")
+                            userScreenInstance.click(handle['alllinks']['a'][2])  ## Click on Logout
+                            time.sleep(5)
+                            setup.d.find_element_by_tag_name('body').send_keys(Keys.COMMAND + 'w')
+                        else:
+                            logger.info("User was not auto-logged in on launching UM screen in another tab of the same broswer")
+                            setup.d.find_element_by_tag_name('body').send_keys(Keys.COMMAND + 'w')
+                    else:
+                        logger.error("Not Run TCs: Reflex-UM-199")
+                        resultlogger.error("Not Run TCs: Reflex-UM-199")
+                        continue
+
+                    setup.d.switch_to.window(setup.d.window_handles[0])
+                    logger.info("Switched to tab " + str(setup.d.window_handles[0]))
+                    page_load_status = utility.wait_for_pageLoad(setup=setup, window_handle=setup.d.window_handles[0])
+                    if page_load_status:
+                        handle = getHandle(setup, UMConstants.UMSCREEN_MANAGEROLES, 'newRoleIcon')
+                        click_status = UMHelper.clickOnPopupIcon(setup, h=handle, screen=UMConstants.UMSCREEN_MANAGEROLES,parent='newRoleIcon', child='icon')
+                        erroFlag, msgFromUI = UMHelper.errorMsgOnPopUp(setup, UMConstants.UMPOPUP_ERROR, parent='ErrorMsg',child='msg')
+                        checkEqualAssert(str([True, UMConstants.SESSION_EXPIRED_MSG]),  str([autologging_status, msgFromUI]), message=" Verify that a session expire msg appears on all other tabs when some action is performed by same user logged in multiple tabs of the same browser and suddenly he logs out from one of the tabs.",testcase_id='Reflex-UM-267')
+                        if erroFlag:
+                            handle = getHandle(setup, UMConstants.UMPOPUP_ERROR, 'allbuttons')
+                            roleScreenInstance.hoverAndClickButton(setup, "Ok", handle)
+                            time.sleep(5)
+                            handle = getHandle(setup, UMConstants.UMPOPUP_ERROR, 'ErrorMsg')
+                            loginHandle = getHandle(setup, Constants.LOGINSCREEN)
+                            checkEqualAssert(str([0, True]), str([len(handle['ErrorMsg']['msg']), len(loginHandle['username']['username']) > 0]),message="Verify that on clicking on 'Ok' button, Session Expire Error Popup disappears and login page is rendered again",testcase_id='Reflex-UM-267')
+                    else:
+                        logger.error("Not Run TCs: Reflex-UM-")
+                        resultlogger.error("Not Run TCs: Reflex-UM-")
+                        continue
+                else:
+                    logger.error("Not Run TCs: Reflex-UM-")
+                    resultlogger.error("Not Run TCs: Reflex-UM-")
+                    continue
+
+
+
+
+
+            ################# Verify the behaviour when  same user is logged in multiple browsers
+            if manageRoles_NegativeScenariosDict[str(k)]['operation'] == "multiple_loggedIn_browsers":
+                handle = getHandle(setup, "explore_Screen", "alllabels")
+                userScreenInstance.click(handle['alllabels']['label'][1])
+
+                second_browser = manageRolesNegativeScenario['browser2']
+                setup1 = SetUp(browser=second_browser)
+                loginHandle = getHandle(setup1, Constants.LOGINSCREEN)
+                if len(loginHandle['username']['username']) > 0:
+                    logger.info("Login screen appeared on launching UM in another browser")
+                    autologging_status = False
+                    actionuser2 = manageRolesNegativeScenario['actionuser2']
+                    login(setup1, userLoginDetailsForManageRolesDict[actionuser2]['username'],userLoginDetailsForManageRolesDict[actionuser2]['password'])
+                    handle = getHandle(setup1, "explore_Screen", "alllinks")
+                    userScreenInstance.click(handle['alllinks']['a'][0])  ## Click on Profile link
+                    handle = getHandle(setup1, "explore_Screen", "alllinks")
+                    userScreenInstance.click(handle['alllinks']['a'][2])  ## Click on Logout
+                    time.sleep(5)
+                    setup1.d.close()
+
                     handle = getHandle(setup, UMConstants.UMSCREEN_MANAGEROLES, 'newRoleIcon')
                     click_status = UMHelper.clickOnPopupIcon(setup, h=handle, screen=UMConstants.UMSCREEN_MANAGEROLES,parent='newRoleIcon', child='icon')
-
-                    erroFlag, msgFromUI = UMHelper.errorMsgOnPopUp(setup, UMConstants.UMPOPUP_ERROR, parent='ErrorMsg', child='msg')
-                    checkEqualAssert(UMConstants.SESSION_EXPIRED_MSG, msgFromUI,message=" Verify that a session expire msg appears on all other windows when same user is logged in multiple windows of the same browser  and suddenly user logs out from one of the windows.",testcase_id='Reflex-UM-199')
-
-                    if erroFlag:
-                        handle = getHandle(setup, UMConstants.UMPOPUP_ERROR, 'allbuttons')
-                        roleScreenInstance.hoverAndClickButton(setup, "Ok", handle)
-                        time.sleep(5)
-                        handle = getHandle(setup, UMConstants.UMPOPUP_ERROR, 'ErrorMsg')
-                        loginHandle = getHandle(setup,Constants.LOGINSCREEN)
-                        checkEqualAssert(str([0,True]), str([len(handle['ErrorMsg']['msg']), len(loginHandle['username']['username']) > 0]),message="Verify that on clicking on 'Ok' button, Session Expire Error Popup disappears and login page is rendered again",testcase_id='Reflex-UM-199')
-
+                    handle = getHandle(setup, UMConstants.UMPOPUP_ADDROLE, 'content')
+                    handle_length_status = len(handle['content']['requiredFieldLabel']) > 0
+                    handle = getHandle(setup, UMConstants.UMPOPUP_ADDROLE, 'allbuttons')
+                    roleScreenInstance.hoverAndClickButton(setup, "Cancel", handle)
                 else:
-                    logger.error("Not Run TCs: Reflex-UM-199")
-                    resultlogger.error("Not Run TCs: Reflex-UM-199")
-                    continue
+                    logger.info("User autologged in on launching UM in another browser")
+                    autologging_status = True
+                    handle_length_status = False
+                    setup1.d.close()
+
+                checkEqualAssert(str([False,True]), str([autologging_status, handle_length_status]),message=" Verify that when same user is logged in different browsers then on logging out from one browser does not expire user session on the other browser",testcase_id='Reflex-UM-268')
+
 
 
 

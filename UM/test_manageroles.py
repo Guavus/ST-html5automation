@@ -2,9 +2,9 @@ from MuralUtils.ContentHelper import *
 from UMUtils import UMHelper
 from classes.Pages.MuralScreens.RoleManagementScreen import *
 from classes.Pages.ExplorePageClass import *
-#from MRXUtils.MRXConstants import *
 from UMUtils.UMConstants import *
 from classes.Pages.MuralScreens.UserMangementScreen import UserManagementScreenClass
+from Utils import utility
 
 try:
     setup = SetUp()
@@ -527,7 +527,7 @@ try:
     click_status = UMHelper.clickOnPopupIcon(setup, h=handle, screen=UMConstants.UMPOPUP_ADDROLE,parent='popupIcons', child='helpIcon')
     checkEqualAssert(True, click_status, message='Verify Help icon on Add Role Popup is clickable',testcase_id="Reflex-UM-191")
 
-    all_windows_open_status = UMHelper.wait_for_windowHandles(setup, num_of_windows=2)
+    all_windows_open_status = utility.wait_for_windowHandles(setup, num_of_windows=2)
     if all_windows_open_status:
         setup.d.switch_to.window(setup.d.window_handles[1])
         logger.info("Closing Window:" + str(setup.d.window_handles[1]))
@@ -537,6 +537,7 @@ try:
         setup.d.close()
         logger.info("Starting script: test_manageroles_negative")
         import UM.test_manageroles_negative
+        import UM.test_change_password
 
     else:
         setup.d.close()

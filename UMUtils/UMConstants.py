@@ -25,4 +25,6 @@ class UMConstants(Constants):
     #ROLENAME_FORMAT = '[^A-Za-z0-9]' ## No special characters should be in the rolename
     MODIFIABLE_FIELDS_ALL = {"username":"disabled", "fname":"enabled", "lname":"enabled", "email":"enabled", "updatePasswordLink":"enabled", "password":"enabled", "cpassword":"enabled", "userrole":"enabled", "timezone":"enabled", "slider":"enabled"}
     MODIFIABLE_FIELDS_NO_PASS_ROLECHANGE_DISABLE = {"username":"disabled", "fname":"enabled", "lname":"enabled", "email":"enabled", "updatePasswordLink":"disabled", "password":"disabled", "cpassword":"disabled", "userrole":"disabled", "timezone":"enabled", "slider":"disabled"}
-
+    EXPLORE_SCREEN = "explore_Screen"
+    CHANGE_PASSWORD_SCREEN = "changepassword_screen"
+    CHANGE_PASSWORD = 'Change Password'
