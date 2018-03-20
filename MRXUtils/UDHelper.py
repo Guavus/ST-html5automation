@@ -1096,3 +1096,113 @@ def mapToggleStateWithSelectedFilter(selectedFilter,toggleState):
         logger.error("Not able to map Selected filter with toggle state")
         return selectedFilter
 
+def UDRQuery(query):
+    try:
+        logger.info("Raw Query ::" + str(query))
+        measure = query["measure"][0]
+        dimension = query["dimension"][0]
+        table_name = query["table_name"]
+        starttime = query["starttime"]
+        endtime = query["endtime"]
+        method = query["method"]
+        query_filter1 =filterquery(query)
+
+        logger.info("########  QUERY BUILDER  ##############")
+        # print measure,dimension,table_name,starttime,endtime,method
+        logger.info("Measure :- " + str(measure))
+        logger.info("Table Name :-" + str(table_name))
+        logger.info("Start time :- " + str(starttime) + " Endtime :- " + str(endtime))
+        logger.info("Method :- " + str(method))
+
+        if(method=="aggr_measure"):
+            # print "hello"
+            if(measure=="totalbytes"):
+                udr_query = "select sum(downbytes+upbytes) from " + table_name + " where bintag >= " + starttime + " and bintag <= " + endtime + " " +query_filter1 +";"
+                # print udr_query
+            else:
+                udr_query = "select sum("+measure+") from "+table_name+" where bintag >= "+starttime+" and bintag <= "+endtime+" " + query_filter1+";"
+                # print udr_query
+        elif(method=="distinct_dimension"):
+            udr_query = "select count(distinct("+dimension+")from " + table_name + " where bintag >= " + starttime + " and bintag <= " + endtime + " " + query_filter1+";"
+            # print udr_query
+        logger.info("Query for the Data Validation ::" + str(udr_query))
+        return udr_query
+    except Exception as e:
+        logger.error("Got Exception : %s", str(e))
+
+
+def filterquery(query):
+    query_filter = ""
+    query_filter1 = ""
+    ignore_dim = ['data', 'dimension', 'endtime', 'id', 'measure', 'method', 'starttime', 'table_name', 'testcase']
+    try:
+
+        for key in query.keys():
+
+            if(key=="segment_name"):
+                last_element = (query[key])[-1]
+                del (query[key])[-1]
+                # segment_query= "select sum(downbytes) from daily_points where subscriberid in (select subscriber from segment_subscriber where segment in (select distinct(segment) from segment_subscriber where segmentname in ('autopraveen_4','autopraveen_5')));"
+                tmp = ""
+                for i in range(len(query[key])):
+                    print query[key][i]
+                    tmp = tmp + "'" + query[key][i] + "'" + ","
+                    print tmp
+                query_segment = tmp.strip(",")
+                print query_segment
+                if (last_element == "Equal"):
+                    query_filter1 = "and "+"(subscriberid in (select subscriber from segment_subscriber where segment in (select distinct(segment) from segment_subscriber where segmentname in ("+query_segment+"))))"
+                else:
+                    query_filter1 = "and " + "(subscriberid  not in (select subscriber from segment_subscriber where segment in (select distinct(segment) from segment_subscriber where segmentname in (" + query_segment + "))))"
+                print query_filter1
+            elif ("Tree" in key):
+                print key
+                tree_or_query = ""
+                # for ele in query[key]['table_header']:
+                #     print ele
+                for i in range(len(query[key]['data'])):
+                    print query[key]['data'][i]
+                    tree_and_query = ""
+                    for j, value in enumerate(query[key]['data'][i]):
+                        print j, value
+                        tmp = query[key]['table_header'][j] + "=" + "\"" + value + "\"" + " and "
+                        # print tmp
+                        tree_and_query = tree_and_query + tmp
+                    tree_and_query = tree_and_query.strip(" and")
+                    tree_and_query = "(" + tree_and_query + ")"
+                    tree_and_query = tree_and_query + " or "
+                    print tree_and_query
+                    tree_or_query = tree_or_query + tree_and_query
+                tree_or_query = tree_or_query.strip(" or")
+                tree_or_query = " and (" + tree_or_query + ")"
+                print tree_or_query
+                query_filter1 = query_filter1 + tree_or_query
+                print query_filter1
+            elif (key not in ignore_dim):
+                print key
+                if (key == ""):
+                    break
+                last_element = (query[key])[-1]
+                print last_element
+                del (query[key])[-1]
+                filters = query[key]
+                print filters
+                tmp = ""
+                for ele in filters:
+                    # print ele
+                    tmp = tmp + "\"" + ele + "\"" + ","
+                tmp = tmp.strip(",")
+                if(last_element=="Equal"):
+                    query_filter = " and " + key + " IN (" + tmp + ")"
+                else:
+                    query_filter = " and " + key + " NOT IN (" + tmp + ")"
+                print query_filter
+                query_filter1 = query_filter1 + query_filter
+        # print query_filter1
+        logger.info("Where clause for the filter  :: " + str(query_filter1))
+        return query_filter1
+    except Exception as e:
+        logger.error("Got Exception : %s", str(e))
+
+
+

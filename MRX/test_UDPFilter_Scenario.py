@@ -65,9 +65,15 @@ def fireBV(query,method,table_name,data,testcase=''):
     import time
     query['id']=str(time.time()).split('.')[0]
 
-    logger.info("Going to dump info from UI for Backend Data validation ::" + str(query))
+    udr_query =UDHelper.UDRQuery(query)
+    dump_query={}
+    dump_query['data'] = data
+    dump_query['testcase'] = testcase
+    dump_query['query']=udr_query
+    dump_query['id'] = query['id']
+    logger.info("Going to dump info from UI for Backend Data validation ::" + str(dump_query))
     with open("UDRDumpFile.txt",mode='a') as fs:
-        fs.write(json.dumps(query))
+        fs.write(json.dumps(dump_query))
         fs.write(" __DONE__" + "\n")
 
 try:
