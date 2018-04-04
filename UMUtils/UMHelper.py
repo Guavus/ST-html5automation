@@ -3,8 +3,8 @@ from UMUtils.UMConstants import *
 
 
 
-def dumpResultForButton(condition,request,screenInstance,setup,button_label="Create",screen=UMConstants.UMPOPUP_ADDROLE,testcase_id=""):
-    button_status=screenInstance.cm.isButtonEnabled(button_label,getHandle(setup,screen,"allbuttons"))
+def dumpResultForButton(condition,request,screenInstance,setup,button_label="Create",screen=UMConstants.UMPOPUP_ADDROLE,testcase_id="",parent="allbuttons",child="button"):
+    button_status=screenInstance.cm.isButtonEnabled(button_label,getHandle(setup,screen,parent))
     checkEqualAssert(condition,button_status,message="Checking State of Button '" + button_label + "' for Fields entered : "+str(request),testcase_id=testcase_id)
     return button_status
 
@@ -642,4 +642,134 @@ def enable_DisabledIcons(setup, tableHandle,screenInstance,valueUnderAction,tabl
 
 
     return elem
+
+
+
+
+def check_element_enabled(setup,element, expected_ele_state,request, attribute_to_find='class',testcase_id=""):
+    ele_state = ""
+    try:
+        attribute_name = str(element.get_attribute(attribute_to_find))
+        if attribute_name != "":
+            logger.info("Successfully got attribute "+str(attribute_to_find) + "for the element")
+            if "disable" in attribute_name.lower():
+                ele_state = Constants.DISABLED_STATUS
+            else:
+                ele_state = Constants.ENABLED_STATUS
+        else:
+            logger.info("Could not get attribute " + str(attribute_to_find) + "for the element")
+    except :
+        logger.info(" Could not get attribute " + str(attribute_to_find) + " for the element" )
+
+    finally:
+        checkEqualAssert(expected_ele_state, ele_state, message="Checking State of Element for Fields entered : " + str(request),testcase_id=testcase_id)
+        return ele_state
+
+
+
+def validateMinimumPasswordRequirement(setup,screenName,parent='validatePasswordMsg',child='msg',index=0):
+    logger.info("Method Called : validateMinimumPasswordRequirement")
+    h=getHandle(setup,screenName,parent)
+    if len(h[parent][child])>index:
+        return str(h[parent][child][index].text).strip()
+    else:
+        return ""
+
+
+
+def errorMsgOnChangePasswordPopup(setup,screenName,parent='ErrorMsg',child='msg',index=0):
+    logger.info("Method Called : errorMsgOnChangePasswordPopup")
+    h = getHandle(setup, screenName, parent)
+    if len(h[parent][child]) > index:
+        return str(h[parent][child][index].text).strip(),True
+    else:
+        return "",False
+
+
+
+
+
+def ChangePassword(setup,screenInstance,screenName,handle,usersDetail,parentLoggedInUser_Name,button='Change'):
+    if len(handle['allinputs']['password'])>0:
+
+        logger.info("Going to Enter Current Password =%s",usersDetail['currentpassword'])
+        currentpasswordfromUI = screenInstance.cm.sendkeys_input(usersDetail['currentpassword'], handle,0,child='password')
+        checkEqualAssert(str(currentpasswordfromUI), str(usersDetail['currentpassword']),message="Verify Current Password")
+
+        check_element_enabled(setup, element=handle['alllinks']['a'][1], attribute_to_find='class',expected_ele_state=Constants.DISABLED_STATUS, request="Current Password")
+
+
+        logger.info("Going to Enter New Password =%s",usersDetail['newpassword'])
+        newpasswordFromUI = screenInstance.cm.sendkeys_input(usersDetail['newpassword'], handle,1, child="password")
+        checkEqualAssert(str(newpasswordFromUI), str(usersDetail['newpassword']),message="Verify Entered Password")
+
+        screenInstance.cm.sendkeys_input(Keys.TAB,handle,1,child="password",clear=False)
+        msg=validateMinimumPasswordRequirement(setup,screenName)
+
+        if msg!='':
+            r = "issue_" + str(random.randint(0, 9999999)) + ".png"
+            setup.d.save_screenshot(r)
+            logger.info('Password = %s is not valid :: Screenshot save with name =%s',newpasswordFromUI,r)
+            resultlogger.info('Password = %s is not valid :: Screenshot save with name =%s <br>',newpasswordFromUI,r)
+            screenInstance.clickIcon(handle, setup.d, child='closePopupIcon')
+            checkEqualAssert(True,msg!='',message="Minimum requirement for Password not satisfied :: Msg = "+str(msg))
+            return msg,False
+
+
+        check_element_enabled(setup, element=handle['alllinks']['a'][1], attribute_to_find='class',expected_ele_state=Constants.DISABLED_STATUS, request="New Password")
+
+
+        logger.info("Going to set Confirm Password =%s", usersDetail['newcpassword'])
+        newcpasswordFromUI = screenInstance.cm.sendkeys_input(usersDetail['newcpassword'],handle, 2, child="password")
+        checkEqualAssert(str(newcpasswordFromUI), str(usersDetail['newcpassword']),message="Verify Entered Password")
+        screenInstance.cm.sendkeys_input(Keys.TAB, handle, 2, child="password",clear=False)
+        msg = validateMinimumPasswordRequirement(setup, screenName)
+        if msg!= '':
+            r = "issue_" + str(random.randint(0, 9999999)) + ".png"
+            setup.d.save_screenshot(r)
+            logger.info('Confirm Password = %s not match with New Password :: Screenshot save with name =%s', newcpasswordFromUI, r)
+            resultlogger.info('Confirm Password = %s not match with New Password :: Screenshot save with name =%s <br>', newcpasswordFromUI, r)
+            screenInstance.clickIcon(handle,setup.d,child='closePopupIcon')
+            return msg,False
+
+        button_status = check_element_enabled(setup, element=handle['alllinks']['a'][1], attribute_to_find='class',expected_ele_state=Constants.ENABLED_STATUS, request="Confirm New Password")
+
+        if button_status == Constants.ENABLED_STATUS and button == "Change":
+            click_status = screenInstance.cm.clickButton(button, handle,parent='alllinks', child='a')
+            checkEqualAssert(True, click_status,message="Verify whether " + button + " button clicked or not")
+            isError(setup)
+            errorMsg,erroFlag=errorMsgOnChangePasswordPopup(setup,screenName)
+            if erroFlag:
+                r = "issue_" + str(random.randint(0, 9999999)) + ".png"
+                setup.d.save_screenshot(r)
+                logger.info('Error Found on Change Password Popup :: Screenshot save with name =%s',str(errorMsg),r)
+                resultlogger.info('Error Found on Change Password Popup :: Screenshot save with name =%s <br>',str(errorMsg),r)
+                password_changed_status = False
+                handle = getHandle(setup, UMConstants.UMPOPUP_ERROR, "allbuttons")
+                screenInstance.hoverAndClickButton(setup, "Ok", handle)
+                time.sleep(5)
+            else:
+                logger.info("Password Changed successfully")
+                password_changed_status = True
+                #### Code to be added once password change functionaly is working successfully, for the expected popup on password change
+
+            checkEqualAssert(True, password_changed_status, message="Verify that user '" + str(parentLoggedInUser_Name) + "' can successfully update his own password ",testcase_id='Reflex-UM-242,Reflex-UM-243')
+            return errorMsg, password_changed_status
+
+
+
+        if button == "Cancel":
+            screenInstance.cm.clickButton(button, handle, parent='alllinks', child='a')
+            return "Cancel",True
+
+        return '',True
+
+    else:
+        logger.error("Handle for input type Password not Found")
+        resultlogger.error("Handle for input (type =Password) not Found <br>")
+        return '',False
+
+
+
+
 

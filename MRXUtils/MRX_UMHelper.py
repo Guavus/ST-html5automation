@@ -1,5 +1,6 @@
 from Utils.utility import *
 from MRXUtils.MRXConstants import *
+from Utils.Constants import *
 
 
 def findPropertyColor(screenInstance,h,property,parent="allinputs",child="input",index=0):

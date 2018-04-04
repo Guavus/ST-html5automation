@@ -31,7 +31,7 @@
             <component id = "allinputs" selector="css selector" locator="div.addEditRoleFormDiv" parent="True"/>
             <!--<component id = "allinputs" selector="css selector" locator="gvs-popup.add-edit-role-popup" parent="True"/>-->
             <!--&lt;!&ndash;<component id = "allcheckboxes" selector="css selector" locator="gvs-popup.add-edit-user-popup" parent="True"/>&ndash;&gt;-->
-            <component id ="allbuttons" selector="css selector" locator="div.gvs-deep-ocean buttons" parent="True"/>-->
+            <component id ="allbuttons" selector="css selector" locator="div.gvs-deep-ocean.buttons" parent="True"/>-->
             <component id ="popupIcons" selector="css selector" locator="gvs-popup.add-edit-role-popup" parent="True"/>
             <component id="errorMsgContainer" selector="css selector" locator="gvs-popup.add-edit-role-popup" parent="True"/>
             <component id="alllabels" selector="css selector" locator="div.addEditRoleFormContainer" parent="True"/>
@@ -40,7 +40,8 @@
         </screenConfig>
 
         <screenConfig id = "deletePopUp_Screen">
-            <component id ="allbuttons" selector="css selector" locator="div.gvs-deep-ocean buttons" parent="True"/>-->
+            <component id ="allbuttons" selector="css selector" locator="div.gvs-deep-ocean buttons" parent="True"/>
+
         </screenConfig>
 
         <screenConfig id = "errorPopup_Screen">
@@ -69,6 +70,12 @@
 
             <component id="alllabels" selector="css selector" locator="div[class*=add][class*=User],div[class*=add][class*=Edit]" parent="True"/>
         </screenConfig>
+
+        <screenConfig id = "changepassword_screen">
+            <component id ="alllinks" selector="css selector" locator="div.gvs-popup-footer" parent="True"/>
+            <component id ="ErrorMsg" selector="css selector" locator="div.content" parent="True"/>
+        </screenConfig>
+
     </screenConfigs>
 
 
@@ -87,10 +94,8 @@
             <!--<component id = "signin" selector="css selector" locator='[translate="login.form.button"]' action="click"/>-->
         </componentConfig>
 
-<<<<<<< HEAD
-    </componentConfigs>
+    
 
-=======
         <componentConfig id="newRoleIcon">
             <component id="icon" selector="css selector" locator="span[class*=new][class*=role][class*=icon]"/>
         </componentConfig>
@@ -140,5 +145,4 @@
 
 
 
->>>>>>> 14324a362b3e2892b23849f1ea96e3d1bab8cb56
 </data>

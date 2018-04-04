@@ -1390,3 +1390,45 @@ def takeScreenshot(driver):
         driver.save_screenshot(r)
         logger.error("UI is not present or loaded. Screenshot dumped with %s", str(r))
         resultlogger.info("******** UI is not present or loaded. Screenshot dumped with %s", str(r))
+
+
+
+
+def wait_for_windowHandles(setup,num_of_windows=2):
+    sleep_counter = 0
+    timer_up_flag = False
+    while len(setup.d.window_handles) != num_of_windows:
+        if sleep_counter == Constants.WEBDRIVERTIMEOUT:
+            logger.info("sleep_counter completed. Coming out of while loop in the method wait_for_windowHandles")
+            timer_up_flag = True
+            break
+        time.sleep(1)
+        sleep_counter += 1
+
+    if timer_up_flag:
+        logger.info("Could not get handle for the other window within sleep_counter time = " + str(Constants.WEBDRIVERTIMEOUT))
+        return False
+    else:
+        logger.info("All " + str(len(setup.d.window_handles)) +" window handles are retrieved")
+        return True
+
+
+
+def wait_for_pageLoad(setup,window_handle):
+    sleep_counter = 0
+    timer_up_flag = False
+    while str(setup.d.execute_script("return document.readyState")) != "complete":
+        if sleep_counter == Constants.WEBDRIVERTIMEOUT:
+            logger.info("sleep_counter completed. Coming out of while loop in the method wait_for_pageLoad")
+            timer_up_flag = True
+            break
+        time.sleep(1)
+        sleep_counter += 1
+
+    if timer_up_flag:
+        logger.info("Could not load page for the window  : "+ str(window_handle) + " within sleep_counter time = " + str(Constants.WEBDRIVERTIMEOUT))
+        return False
+    else:
+        logger.info("Page loaded successfully for window : " + str(window_handle))
+        return True
+

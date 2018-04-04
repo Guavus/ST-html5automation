@@ -11,7 +11,7 @@ import platform
 
 
 class SetUp:
-    def __init__(self):
+    def __init__(self,browser=Constants.BROWSER):
 
         if platform.system() == "Windows":
             delimiter = "\\"
@@ -19,7 +19,7 @@ class SetUp:
             delimiter = "/"
 
         if Constants.SECURITY:
-            if "chrome" == Constants.BROWSER:
+            if "chrome" == browser:
                 os.system("mkdir "+Constants.chromdownloadpath)
                 removeFileAtGivenPath(Constants.chromdownloadpath)
 
@@ -34,17 +34,27 @@ class SetUp:
 
                 # self.d = webdriver.Firefox()
                 self.d = webdriver.Chrome(Constants.chromedriverpath, chrome_options=chromeOptions)
-            elif "ff" == Constants.BROWSER:
+            elif "ff" == browser:
                 os.system("mkdir "+Constants.firefoxdownloadpath)
                 removeFileAtGivenPath(Constants.firefoxdownloadpath)
                 fp = webdriver.FirefoxProfile()
                 fp.set_preference("browser.download.folderList", 2)
                 fp.set_preference("browser.download.manager.showWhenStarting", False)
                 fp.set_preference("browser.download.dir",Constants.firefoxdownloadpath)
+
                 fp.set_preference("browser.helperApps.neverAsk.saveToDisk", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-exceltext/csv,application/csv,application/octet-stream")
 
+                fp.set_preference("browser.helperApps.alwaysAsk.force", False)
+                #fp.set_preference("browser.helperApps.neverAsk.saveToDisk", "text/csv")
+                fp.set_preference("browser.tabs.remote.autostart", False)
+                fp.set_preference("browser.tabs.remote.autostart.1", False)
+                fp.set_preference("browser.tabs.remote.autostart.2", False)
+                fp.set_preference("security.insecure_password.ui.enabled", False);
+                fp.set_preference("security.insecure_field_warning.contextual.enabled", False);
+
+
                 self.d = webdriver.Firefox(executable_path=Constants.firefoxdriverpath,firefox_profile=fp)
-            elif "safari" == Constants.BROWSER:
+            elif "safari" == browser:
                 self.d = webdriver.Safari()
 
 

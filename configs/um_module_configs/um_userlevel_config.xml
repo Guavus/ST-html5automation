@@ -46,14 +46,21 @@
 
     <manageRoleScenarios_Negative>
         <scenario id="0" operation="multiple_loggedIn_windows" actionuser="superadmin"/>
-        <scenario id="1" operation="enable_disabled_userEdit" firstname="aaa_neg"  newpassword="Jellyfish@1new" newcpassword="Jellyfish@1new" actionuser="superadmin" targetuser="superadmin"/>
-        <scenario id="2" operation="enable_disabled_userDelete" actionuser="adminuser_neg_1" targetuser="adminuser_neg_1"/>
-        <!--<scenario id="3" operation="enable_disabled_roleEdit" rolenamevalue_tobe_edited="Admin"  rolename="Adminaaa" actionuser="superadmin"/>-->
-        <!--<scenario id="4" operation="enable_disabled_roleDelete"  rolenamevalue_tobe_deleted="Admin"  actionuser="superadmin"/>-->
-        <scenario id="5" operation="edit_deletedRole"  rolenamevalue_tobe_deleted="kr_neg_role0" rolenamevalue_tobe_edited="kr_neg_role0" rolename="kr_neg_role1" applicationprivileges="3" actionuser="superadmin" actionuser2="adminuser_neg_3"/>
-        <scenario id="6" operation="session_timeout" actionuser="superadmin"/>
+        <scenario id="1" operation="multiple_loggedIn_tabs" actionuser="superadmin"/>
+        <scenario id="2" operation="multiple_loggedIn_browsers" browser2="chrome" actionuser="superadmin" actionuser2="superadmin"/>
+        <scenario id="3" operation="enable_disabled_userEdit" firstname="aaa_neg"  newpassword="Jellyfish@1new" newcpassword="Jellyfish@1new" actionuser="superadmin" targetuser="superadmin"/>
+        <scenario id="4" operation="enable_disabled_userDelete" actionuser="adminuser_neg_1" targetuser="adminuser_neg_1"/>
+        <!--<scenario id="5" operation="enable_disabled_roleEdit" rolenamevalue_tobe_edited="Admin"  rolename="Adminaaa" actionuser="superadmin"/>-->
+        <!--<scenario id="6" operation="enable_disabled_roleDelete"  rolenamevalue_tobe_deleted="Admin"  actionuser="superadmin"/>-->
+        <scenario id="7" operation="edit_deletedRole"  rolenamevalue_tobe_deleted="kr_neg_role0" rolenamevalue_tobe_edited="kr_neg_role0" rolename="kr_neg_role1" applicationprivileges="3" actionuser="superadmin" actionuser2="adminuser_neg_3"/>
+        <scenario id="8" operation="session_timeout" actionuser="superadmin"/>
 
     </manageRoleScenarios_Negative>
+
+    <changePasswordScenario>
+        <user_um id="0" username="admin" firstname="admin" lastname="admin" email="admin@gmail.com"  password="abc125"  cpassword="abc125" currentpassword="abc125" newpassword="New@12345"  newcpassword="New@12345" userrole="Admin" value="" enabled="1" button="Create" actionuser="superadmin"/>
+        <user_um id="1" username="autotest_234test" firstname="lll" lastname="mmm" email="p_412@gs.com"  password="Jellyfish@1"  cpassword="Jellyfish@1" currentpassword="Jellyfish@1" newpassword="New@12345"  newcpassword="New@12345" userrole="Admin" value="" enabled="1" button="Create" actionuser="adminuser_pass_1"/>
+    </changePasswordScenario>
 
     <umUserLoginDetailsForManageRoles>
         <user id="superadmin" name="admin admin" username="admin" password="abc125"/>
@@ -63,6 +70,7 @@
         <user id="adminuser_neg_1" name="zz bb" username="trial_neg1" password="Jellyfish@1"/>
         <user id="adminuser_neg_2" name="tt nn" username="trial_neg2" password="Jellyfish@1"/>
         <user id="adminuser_neg_3" name="hh nn" username="trial_neg3" password="Jellyfish@1"/>
+        <user id="adminuser_pass_1" name="lll mmm" username="autotest_234test" password="Jellyfish@1"/>
         <user id="normaluser1" name="cs bb" username="norm1" password="Jellyfish@1"/>
         <user id="normaluser2" name="sss ooo" username="norm2" password="Jellyfish@1"/>
     </umUserLoginDetailsForManageRoles>
