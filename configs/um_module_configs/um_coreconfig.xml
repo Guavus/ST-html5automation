@@ -81,7 +81,7 @@
         </componentConfig>
 
         <componentConfig id="signin">
-            <component id = "signin" selector="xpath" locator='//*[contains(text(), "Sign in")]' action="click"/>
+            <component id = "signin" selector="xpath" locator='//*[contains(text(), "Sign In")]' action="click"/>
             <!--<component id = "signin" selector="css selector" locator='[translate="login.form.button"]' action="click"/>-->
         </componentConfig>
 

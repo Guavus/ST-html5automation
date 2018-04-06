@@ -7,7 +7,7 @@ class Constants(object):
     # URL = "https://muralautomation.cisco.com:6443/"
     # URL = "https://scrum.jalapeno.com:6443"
     # URL = "https://uiscrummural.cisco.com:6443/"
-
+    HTMLPATH = "http://localhost/xampp/index2.html"
     PROJECT = "UM"
     #PROJECT = "MURAL"
 
@@ -19,7 +19,7 @@ class Constants(object):
     elif PROJECT == "UM":
         byteUnits = ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"]
         TimeRangeSpliter='-'
-        ConfigXMLFile=['../configs/mural_coreconfig.xml', '../configs/mrx_solutionconfig.xml','../configs/mrx_userlevel_config.xml', '../configs/um_module_configs/um_coreconfig.xml']
+        ConfigXMLFile=['../configs/mural_coreconfig.xml', '../configs/mrx_solutionconfig.xml','../configs/mrx_userlevel_config.xml', '../configs/um_module_configs/um_coreconfig.xml','../configs/um_module_configs/um_userlevel_config.xml']
 
     else:
         byteUnits = ["", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"]
@@ -27,8 +27,8 @@ class Constants(object):
         ConfigXMLFile=['../configs/mural_coreconfig.xml', '../configs/mural_solutionconfig.xml', '../configs/mural_userlevel_config.xml']
 
 
-    BROWSER = "chrome"
-    # BROWSER = "ff"
+    #BROWSER = "chrome"
+    BROWSER = "ff"
     isOffline = False
     if isOffline:
         URL = 'localhost:3333'
@@ -39,7 +39,9 @@ class Constants(object):
         #URL = "https://ucsd.cisco.com:7443"
         #URL="http://192.168.174.71:9080"
         #URL="http://192.168.113.191:9080/app/user-distribution"
-        URL="http://192.168.104.179:8080/um/"
+        #URL="http://192.168.104.179:8080/um/"
+        #URL="http://dev009-vip-01.devops.guavus.mtl/usermanagement/"
+        URL="http://192.168.133.177/usermanagement/"
         # URL="http://192.168.195.144:9080"
         MRX_UM_URL = "http://192.168.104.190/um/"
         #URL="https://funupgrade.guavus.com:6443"
@@ -79,6 +81,7 @@ class Constants(object):
     DRILLTONENE="DRILLTONENE"
     # driver based constants
     WEBDRIVERTIMEOUT = 1
+    SESSION_TIMEOUT = 36000
 
     SECURITY=True
     # Component based constants
@@ -98,10 +101,12 @@ class Constants(object):
 
     # chromedriverpath = "/Users/praveen.garg1/html5automation/chromedriver/chromedriver"
     # chromedriverpath = "C:\Users\Administrator\Downloads\chromedriver_win32\chromedriver.exe"
-    chromdownloadpath= "C:\Users\Administrator\csvdownload"
-    chromedriverpath = "/Users/mayank.mahajan/PycharmProjects/html5automation/chromedriver/chromedriver7"
-    firefoxdriverpath = "/Users/praveen.garg1/Downloads/geckodriver"
-    firefoxdownloadpath = "/Users/praveen.garg1/html5automation/download"
+    chromdownloadpath= "/Users/kritika.saxena/UI_Auto/Downloads"
+    chromedriverpath = "/usr/local/bin//chromedriver"
+    #firefoxdriverpath = "/Users/praveen.garg1/Downloads/geckodriver"
+    #firefoxdownloadpath = "/Users/praveen.garg1/html5automation/download"
+    firefoxdriverpath = "/usr/local/bin/geckodriver"
+    firefoxdownloadpath = "/Users/kritika.saxena/UI_Auto/Downloads"
 
     # common components
     ALLBUTTONS = "allbuttons"
@@ -130,6 +135,7 @@ class Constants(object):
     GREENCOLOR="#00E0B8"
     BACKGROUNDCOLOR='background-color'
     BORDERCOLOR='border-color'
+    BORDERTOPCOLOR = 'border-top-color'
     ACTIVE_STATUS='Active'
     INACTIVE_STATUS='Inactive'
     ENABLED_STATUS = 'enabled'
