@@ -34,7 +34,7 @@ try:
     roleScreenInstance.click(handle['alllabels']['label'][1])
     handle = getHandle(setup1, UMConstants.UMSCREEN_MANAGEROLES, 'newRoleIcon')
     click_status = UMHelper.clickOnPopupIcon(setup=setup1, h=handle, screen=UMConstants.UMSCREEN_MANAGEROLES,parent='newRoleIcon', child='icon')
-    expectedRoleName, expectedCheckedCheckBoxesList, roleNameFromUI, checkedCheckBoxesListFromUI, createBtnStatus = UMHelper.setRoleDetails(roleScreenInstance, setup=setup1, k=0, screen=UMConstants.UMPOPUP_ADDROLE, roleDetail={"id":"0","rolename":"krref_"+str(random.randint(0,100)),"applicationprivileges":"3,4"})
+    expectedRoleName, expectedCheckedCheckBoxesList, roleNameFromUI, checkedCheckBoxesListFromUI, createBtnStatus = UMHelper.setRoleDetails(roleScreenInstance, setup=setup1, k=0, screen=UMConstants.UMPOPUP_ADDROLE, roleDetail={"id":"0","rolename":"krref_"+str(random.randint(0,100)),"applicationprivileges":"0"})
     handle = getHandle(setup1, UMConstants.UMPOPUP_ADDROLE, 'allbuttons')
     roleScreenInstance.hoverAndClickButton(setup1, "Create", handle)
     setup1.d.close()
