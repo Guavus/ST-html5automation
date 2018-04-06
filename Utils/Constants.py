@@ -80,7 +80,7 @@ class Constants(object):
     DRILLTONE="DRILLTONE"
     DRILLTONENE="DRILLTONENE"
     # driver based constants
-    WEBDRIVERTIMEOUT = 1
+    WEBDRIVERTIMEOUT = 15
     SESSION_TIMEOUT = 36000
 
     SECURITY=True
