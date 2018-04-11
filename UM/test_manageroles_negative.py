@@ -243,7 +243,7 @@ try:
             if manageRoles_NegativeScenariosDict[str(k)]['operation'] == "session_timeout":
                 handle = getHandle(setup, "explore_Screen", "alllabels")
                 userScreenInstance.click(handle['alllabels']['label'][1])
-
+                logger.info("sleeping for " + str(Constants.SESSION_TIMEOUT) + " seconds")
                 time.sleep(Constants.SESSION_TIMEOUT)
 
                 handle = getHandle(setup, UMConstants.UMSCREEN_MANAGEROLES, 'newRoleIcon')

@@ -42,11 +42,10 @@ class Constants(object):
         #URL="http://192.168.174.71:9080"
         #URL="http://192.168.113.191:9080/app/user-distribution"
         #URL="http://192.168.104.179:8080/um/"
-        #URL="http://192.168.195.144:9080"
-        #MRX_UM_URL = "http://192.168.104.190/um/"
-        URL="http://192.168.192.251/mrx"
-        MRX_UM_URL = "http://192.168.192.251/um"
-
+        #URL="http://dev009-vip-01.devops.guavus.mtl/usermanagement/"
+        URL="http://192.168.133.177/usermanagement/"
+        # URL="http://192.168.195.144:9080"
+        MRX_UM_URL = "http://192.168.104.190/um/"
         #URL="https://funupgrade.guavus.com:6443"
 
         #URL="http://192.168.192.204:28080/"
@@ -95,7 +94,8 @@ class Constants(object):
     DRILLTONE="DRILLTONE"
     DRILLTONENE="DRILLTONENE"
     # driver based constants
-    WEBDRIVERTIMEOUT = 1
+    WEBDRIVERTIMEOUT = 15
+    SESSION_TIMEOUT = 36000
 
     SECURITY=True
     # Component based constants
@@ -114,12 +114,15 @@ class Constants(object):
     localserver = "http://localhost:3333/index2.html"
 
     # chromedriverpath = "/Users/praveen.garg1/html5automation/chromedriver/chromedriver"
-    chromedriverpath = "C:\Users\Administrator\Downloads\chromedriver_win32\chromedriver.exe"
-    chromdownloadpath= "C:\Users\Administrator\csvdownload"
+    # chromedriverpath = "C:\Users\Administrator\Downloads\chromedriver_win32\chromedriver.exe"
+    # chromdownloadpath= "C:\Users\Administrator\csvdownload"
     # chromedriverpath = "/Users/mayank.mahajan/PycharmProjects/html5automation/chromedriver/chromedriver7"
     # firefoxdriverpath = "/Users/praveen.garg1/Downloads/geckodriver"
     # firefoxdownloadpath = "/Users/praveen.garg1/html5automation/download"
-
+    chromdownloadpath = "C:\Users\stldap\Downloads\csvdownload"
+    chromedriverpath = "C:\Users\stldap\Downloads\chromedriver_win32\chromedriver.exe"
+    firefoxdownloadpath = "C:\Users\stldap\Downloads\csvdownload"
+    firefoxdriverpath = "C:\Users\stldap\Downloads\geckodriver-v0.20.0-win64\geckodriver.exe"
     # common components
     ALLBUTTONS = "allbuttons"
     ALLSELECTS = "allselects"
@@ -147,6 +150,7 @@ class Constants(object):
     GREENCOLOR="#00E0B8"
     BACKGROUNDCOLOR='background-color'
     BORDERCOLOR='border-color'
+    BORDERTOPCOLOR = 'border-top-color'
     ACTIVE_STATUS='Active'
     INACTIVE_STATUS='Inactive'
     ENABLED_STATUS = 'enabled'
